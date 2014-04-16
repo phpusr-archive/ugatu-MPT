@@ -107,7 +107,7 @@ class RehashTable(tableSize: Index) extends IdTableAbstract {
   }
   
   /** Возврат таблицы идентификаторов */
-  override def getHashTable = {
+  override def getIdTable = {
     for (index <- MinIndex until tableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
   }
   

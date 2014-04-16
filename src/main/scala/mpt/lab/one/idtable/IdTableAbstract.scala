@@ -51,6 +51,6 @@ abstract class IdTableAbstract {
   def find(idName: String): Option[NodeAbstract]
 
   /** Возврат таблицы идентификаторов */
-  def getHashTable: Seq[String]
+  def getIdTable: Seq[String]
 
 }

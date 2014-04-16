@@ -15,7 +15,7 @@ import mpt.lab.one.idtable.{NodeAbstract, IdTableAbstract}
 class BinaryTree extends IdTableAbstract {
 
   /** Возврат таблицы идентификаторов */
-  override def getHashTable: Seq[String] = ???
+  override def getIdTable: Seq[String] = ???
 
   /** Поиск элемента в таблице по имени */
   override def find(idName: String): Option[NodeAbstract] = ???
