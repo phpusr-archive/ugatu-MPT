@@ -9,6 +9,7 @@ package mpt.lab.one.stat
 /**
  * Подсчет статистики получения элементов
  */
+// TODO add tests
 class Stat {
   /** Кол-во элементов */
   var elementsCount = 0
