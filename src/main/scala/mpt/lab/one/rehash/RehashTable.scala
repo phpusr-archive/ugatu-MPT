@@ -62,6 +62,7 @@ class RehashTable(tableSize: Hash) {
   //TODO add stat
   @tailrec
   private def addRec(id: String, hash: Hash) {
+    // Инкремент счетчика кол-ва итераций добавления элемента
     addStat.inc()
 
     // Элемент таблицы под индексом == hash
@@ -75,26 +76,29 @@ class RehashTable(tableSize: Hash) {
       println(">> Already exists!") //TODO
     } else {
       // Иначе запуск этой же функции с другим хэшем
-      val newHash = (hash + 1) % tableSize
+      val newHash = (hash + 1) % tableSize //TODO вынести
       addRec(id, newHash)
     }
   }
   
   /** Поиск элемента в таблице по имени */
-  def find(name: String): Node = {
+  def find(name: String) = {
+    // Инкремент счетчика кол-ва поисков
     findStat.newElement()
-    var el: Node = null
-    var found = false
-    var index = 0
-    while(!found && index < tableSize) {
-      el = hashTable(index)
-      if (el.name == name) found = true
+    // Рекурсивный поиск элемента
+    findRec(name, hashTable.head, hashTable.tail)
+  }
 
-      findStat.inc()
-      index += 1
-    }
-
-    el
+  /** Рекурсионный поиск элемента в таблице по имени */
+  def findRec(name: String, el: Node, list: Seq[Node]): Option[Node] = {
+    // Инкремент счетчика кол-ва итераций поиска элемента
+    findStat.inc()
+    // Если найден, то возвращаем его
+    if (el.name == name) Some(el)
+    // Если список пустой, то возвратить None
+    else if (list.isEmpty) None
+    // Иначе запуск этой же функции, со списком без головы
+    else findRec(name, list.head, list.tail)
   }
   
   /** Очистка таблицы */
