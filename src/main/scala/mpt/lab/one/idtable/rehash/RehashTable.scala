@@ -20,7 +20,7 @@ case class Node(name: String) extends NodeAbstract(name)
  * Организация таблиц идентификаторов
  * Метод: Простое рехэширование
  */
-class RehashTable(tableSize: Index) extends IdTableAbstract {
+class RehashTable(tableSize: Index) extends IdTableAbstract(tableSize) {
 
   /** Минимальный индекс таблицы */
   private val MinIndex = IndexType.Zero
@@ -110,11 +110,5 @@ class RehashTable(tableSize: Index) extends IdTableAbstract {
   override def getIdTable = {
     for (index <- MinIndex until tableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
   }
-  
-  /** 
-   * Хэш-функция
-   * (Сумма всех символов числа) mod Размер таблицы 
-   */
-  private def getHash(string: String) = string.getBytes.sum.abs % tableSize
-  
+
 }

@@ -1,6 +1,7 @@
 package mpt.lab.one.idtable
 
 import mpt.lab.one.stat.Stat
+import mpt.lab.one.idtable.IndexType._
 
 /**
  * @author phpusr
@@ -24,7 +25,7 @@ abstract class NodeAbstract(name: String)
 /**
  * Абстрактная таблица идентификаторов
  */
-abstract class IdTableAbstract {
+abstract class IdTableAbstract(tableSize: Index) {
 
   /** Статистика добавления элементов */
   protected val addStat = new Stat
@@ -40,6 +41,12 @@ abstract class IdTableAbstract {
 
   /** Возврат результатов статистики */
   def getStat = (addStat.avg(), findStat.avg())
+
+  /**
+   * Хэш-функция
+   * (Сумма всех символов числа) mod Размер таблицы
+   */
+  protected def getHash(string: String) = string.getBytes.sum.abs % tableSize
 
   /** Инициализация таблицы идентификаторов */
   def init()
