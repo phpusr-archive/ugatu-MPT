@@ -3,6 +3,7 @@ package mpt.lab.one.rehash
 import scala.collection.mutable.ArrayBuffer
 import mpt.lab.one.rehash.HashType.Hash
 import scala.annotation.tailrec
+import mpt.lab.one.stat.Stat
 
 /**
  * @author phpusr
@@ -34,19 +35,34 @@ class RehashTable(tableSize: Hash) {
   private val MinIndex = HashType.Zero
   private val hashTable = new ArrayBuffer[Node](tableSize)
 
+  /** Статистика добавления элементов */
+  private val addStat = new Stat
+  /** Статистика поиска элементов TODO */
+  private val findStat = new Stat
+  /** Возврат результатов статистики */
+  def getStat = (addStat.avg(), findStat.avg())
+
   //Инициализация
   clear()
 
   /** Добавление элемента в таблицу */
   def add(id: String) {
-    val idHash = getHash(id)
-    addRec(id, idHash)
+    // Если в таблице есть хоть одно свободное место
+    if (addStat.elementsCount < tableSize) {
+      // Изменить статистику и добавить элемент
+      addStat.newElement()
+      val idHash = getHash(id)
+      addRec(id, idHash)
+    } else {
+      println(">> Table is full") //TODO
+    }
   }
 
   /** Рекурсивный поиск свободной ячейки и добавление туда */
   //TODO add stat
   @tailrec
   private def addRec(id: String, hash: Hash) {
+    addStat.inc()
     // Элемент таблицы под индексом == hash
     val el = hashTable(hash)
 
