@@ -72,10 +72,13 @@ class RehashTable(tableSize: Index) extends IdTableAbstract {
       None
     } else {
       // Иначе запуск этой же функции с другим хэшем
-      val newHash = (hash + 1) % tableSize //TODO вынести
+      val newHash = rehash(hash)
       addRec(idName, newHash)
     }
   }
+
+  /** Функция рехэширования */
+  private def rehash(hash: Index) = (hash + 1) % tableSize
   
   /** Поиск элемента в таблице по имени */
   override def find(idName: String) = {
