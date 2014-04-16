@@ -1,9 +1,9 @@
 package mpt.lab.one.rehash
 
 import scala.collection.mutable.ArrayBuffer
-import mpt.lab.one.rehash.IndexType.Index
+import mpt.lab.one.IndexType.Index
 import scala.annotation.tailrec
-import mpt.lab.one.stat.Stat
+import mpt.lab.one.{NodeAbstract, IdTableAbstract, IndexType}
 
 /**
  * @author phpusr
@@ -14,53 +14,47 @@ import mpt.lab.one.stat.Stat
 /**
  * Элемент таблицы
  */
-case class Node(name: String)
-
-/**
- * Тип индексов элементов таблицы
- */
-object IndexType {
-  type Index = Int
-  val Zero = 0
-}
+case class Node(name: String) extends NodeAbstract(name)
 
 /**
  * Организация таблиц идентификаторов
  * Метод: Простое рехэширование
  */
-class RehashTable(tableSize: Index) {
-  
-  /** Хранилище элементов таблицы */
+class RehashTable(tableSize: Index) extends IdTableAbstract {
+
+  /** Минимальный индекс таблицы */
   private val MinIndex = IndexType.Zero
+
+  /** Хранилище элементов таблицы */
   private val hashTable = new ArrayBuffer[Node](tableSize)
 
-  /** Статистика добавления элементов */
-  private val addStat = new Stat
-  /** Статистика поиска элементов */
-  private val findStat = new Stat
-  /** Возврат результатов статистики */
-  def getStat = (addStat.avg(), findStat.avg())
+  ///////////////////////////////////////////
 
-  //Инициализация
-  clear()
+  init()
+
+  ///////////////////////////////////////////
+
+  /** Инициализация */
+  override def init() = clear()
 
   /** Добавление элемента в таблицу */
-  def add(id: String) {
+  override def add(idName: String) = {
     // Если в таблице есть хоть одно свободное место
     if (addStat.elementsCount < tableSize) {
       // Изменить статистику и добавить элемент
       addStat.newElement()
-      val idHash = getHash(id)
-      addRec(id, idHash)
+      val idHash = getHash(idName)
+      addRec(idName, idHash)
     } else {
+      // Если нет, то выдать сообщение и возвратить None
       println(">> Table is full") //TODO
+      None
     }
   }
 
   /** Рекурсивный поиск свободной ячейки и добавление туда */
-  //TODO add stat
   @tailrec
-  private def addRec(id: String, hash: Index) {
+  private def addRec(idName: String, hash: Index): Option[Node] = {
     // Инкремент счетчика кол-ва итераций добавления элемента
     addStat.inc()
 
@@ -69,35 +63,38 @@ class RehashTable(tableSize: Index) {
 
     if (el == null) {
       // Если ячейка пуста, то добавляем туда
-      hashTable(hash) = Node(id)
-    } else if (el.name == id) {
+      val node = Node(idName)
+      hashTable(hash) = node
+      Some(node)
+    } else if (el.name == idName) {
       // Если в ячейке уже есть данный Id, то выводим оообщение
       println(">> Already exists!") //TODO
+      None
     } else {
       // Иначе запуск этой же функции с другим хэшем
       val newHash = (hash + 1) % tableSize //TODO вынести
-      addRec(id, newHash)
+      addRec(idName, newHash)
     }
   }
   
   /** Поиск элемента в таблице по имени */
-  def find(name: String) = {
+  override def find(idName: String) = {
     // Инкремент счетчика кол-ва поисков
     findStat.newElement()
     // Рекурсивный поиск элемента
-    findRec(name, hashTable.head, hashTable.tail)
+    findRec(idName, hashTable.head, hashTable.tail)
   }
 
   /** Рекурсионный поиск элемента в таблице по имени */
-  def findRec(name: String, el: Node, list: Seq[Node]): Option[Node] = {
+  private def findRec(idName: String, el: Node, list: Seq[Node]): Option[Node] = {
     // Инкремент счетчика кол-ва итераций поиска элемента
     findStat.inc()
     // Если найден, то возвращаем его
-    if (el.name == name) Some(el)
+    if (el.name == idName) Some(el)
     // Если список пустой, то возвратить None
     else if (list.isEmpty) None
     // Иначе запуск этой же функции, со списком без головы
-    else findRec(name, list.head, list.tail)
+    else findRec(idName, list.head, list.tail)
   }
   
   /** Очистка таблицы */
@@ -107,7 +104,7 @@ class RehashTable(tableSize: Index) {
   }
   
   /** Возврат таблицы идентификаторов */
-  def getHashTable = {
+  override def getHashTable = {
     for (index <- MinIndex until tableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
   }
   
