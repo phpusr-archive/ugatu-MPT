@@ -50,6 +50,9 @@ abstract class IdTableAbstract {
   /** Поиск элемента в таблице по имени */
   def find(idName: String): Option[NodeAbstract]
 
+  /** Очистка таблицы */
+  def clear()
+
   /** Возврат таблицы идентификаторов */
   def getIdTable: Seq[String]
 

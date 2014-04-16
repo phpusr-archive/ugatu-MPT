@@ -28,6 +28,9 @@ class BinaryTree extends IdTableAbstract {
   /** Поиск элемента в таблице по имени */
   override def find(idName: String): Option[NodeAbstract] = ???
 
+  /** Очистка таблицы */
+  override def clear() = ???
+
   /** Возврат таблицы идентификаторов */
   override def getIdTable: Seq[String] = ???
 

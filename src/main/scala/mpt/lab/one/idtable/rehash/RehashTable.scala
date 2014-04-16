@@ -101,7 +101,7 @@ class RehashTable(tableSize: Index) extends IdTableAbstract {
   }
   
   /** Очистка таблицы */
-  def clear() = {
+  override def clear() = {
     hashTable.clear()
     for (i <- MinIndex until tableSize) hashTable += null
   }
