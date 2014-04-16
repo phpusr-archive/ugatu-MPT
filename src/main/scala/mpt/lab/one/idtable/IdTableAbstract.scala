@@ -20,7 +20,7 @@ object IndexType {
 /**
  * Абстрактный класс элементов таблицы
  */
-abstract class NodeAbstract(name: String)
+abstract class NodeAbstract(name: String, hash: Index)
 
 /**
  * Абстрактная таблица идентификаторов

@@ -14,7 +14,7 @@ import scala.annotation.tailrec
 /**
  * Элемент таблицы
  */
-case class Node(name: String) extends NodeAbstract(name)
+case class Node(name: String, hash: Index) extends NodeAbstract(name, hash)
 
 /**
  * Организация таблиц идентификаторов
@@ -63,7 +63,7 @@ class RehashTable(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
     if (el == null) {
       // Если ячейка пуста, то добавляем туда
-      val node = Node(idName)
+      val node = Node(idName, getHash(idName))
       hashTable(hash) = node
       Some(node)
     } else if (el.name == idName) {
