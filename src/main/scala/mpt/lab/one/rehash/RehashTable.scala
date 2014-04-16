@@ -63,6 +63,7 @@ class RehashTable(tableSize: Hash) {
   @tailrec
   private def addRec(id: String, hash: Hash) {
     addStat.inc()
+
     // Элемент таблицы под индексом == hash
     val el = hashTable(hash)
 
@@ -80,7 +81,21 @@ class RehashTable(tableSize: Hash) {
   }
   
   /** Поиск элемента в таблице по имени */
-  def find(name: String) = hashTable.find(e => e != null && e.name == name)
+  def find(name: String): Node = {
+    findStat.newElement()
+    var el: Node = null
+    var found = false
+    var index = 0
+    while(!found && index < tableSize) {
+      el = hashTable(index)
+      if (el.name == name) found = true
+
+      findStat.inc()
+      index += 1
+    }
+
+    el
+  }
   
   /** Очистка таблицы */
   def clear() = {
