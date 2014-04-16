@@ -64,7 +64,7 @@ class RehashTable(tableSize: Hash) {
   }
   
   /** Поиск элемента в таблице по имени */
-  def find(name: String) = ???
+  def find(name: String) = hashTable.find(e => e != null && e.name == name)
   
   /** Очистка таблицы */
   def clear() = {
