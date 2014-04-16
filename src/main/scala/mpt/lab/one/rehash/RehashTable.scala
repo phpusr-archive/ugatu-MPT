@@ -1,7 +1,7 @@
 package mpt.lab.one.rehash
 
 import scala.collection.mutable.ArrayBuffer
-import mpt.lab.one.rehash.HashType.Hash
+import mpt.lab.one.rehash.IndexType.Index
 import scala.annotation.tailrec
 import mpt.lab.one.stat.Stat
 
@@ -17,11 +17,10 @@ import mpt.lab.one.stat.Stat
 case class Node(name: String)
 
 /**
- * Тип hash
+ * Тип индексов элементов таблицы
  */
-object HashType {
-  type Hash = Int
-
+object IndexType {
+  type Index = Int
   val Zero = 0
 }
 
@@ -29,15 +28,15 @@ object HashType {
  * Организация таблиц идентификаторов
  * Метод: Простое рехэширование
  */
-class RehashTable(tableSize: Hash) {
+class RehashTable(tableSize: Index) {
   
   /** Хранилище элементов таблицы */
-  private val MinIndex = HashType.Zero
+  private val MinIndex = IndexType.Zero
   private val hashTable = new ArrayBuffer[Node](tableSize)
 
   /** Статистика добавления элементов */
   private val addStat = new Stat
-  /** Статистика поиска элементов TODO */
+  /** Статистика поиска элементов */
   private val findStat = new Stat
   /** Возврат результатов статистики */
   def getStat = (addStat.avg(), findStat.avg())
@@ -61,7 +60,7 @@ class RehashTable(tableSize: Hash) {
   /** Рекурсивный поиск свободной ячейки и добавление туда */
   //TODO add stat
   @tailrec
-  private def addRec(id: String, hash: Hash) {
+  private def addRec(id: String, hash: Index) {
     // Инкремент счетчика кол-ва итераций добавления элемента
     addStat.inc()
 
