@@ -20,6 +20,8 @@ case class Node(name: String)
  */
 object HashType {
   type Hash = Int
+
+  val Zero = 0
 }
 
 /**
@@ -29,7 +31,7 @@ object HashType {
 class RehashTable(tableSize: Hash) {
   
   /** Хранилище элементов таблицы */
-  private val MinIndex = 0
+  private val MinIndex = HashType.Zero
   private val hashTable = new ArrayBuffer[Node](tableSize)
 
   //Инициализация
