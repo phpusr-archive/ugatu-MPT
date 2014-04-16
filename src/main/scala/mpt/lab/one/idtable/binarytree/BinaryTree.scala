@@ -9,21 +9,26 @@ import mpt.lab.one.idtable.{NodeAbstract, IdTableAbstract}
  */
 
 /**
+ * Элемент дерева
+ */
+case class Node(name: String, left: Node, right: Node) extends NodeAbstract(name)
+
+/**
  * Организация таблиц идентификаторов
  * Метод: Бинарное дерево
  */
 class BinaryTree extends IdTableAbstract {
 
-  /** Возврат таблицы идентификаторов */
-  override def getIdTable: Seq[String] = ???
-
-  /** Поиск элемента в таблице по имени */
-  override def find(idName: String): Option[NodeAbstract] = ???
+  /** Инициализация таблицы идентификаторов */
+  override def init(): Unit = ???
 
   /** Добавление элемента в таблицу */
   override def add(idName: String): Option[NodeAbstract] = ???
 
-  /** Инициализация таблицы идентификаторов */
-  override def init(): Unit = ???
+  /** Поиск элемента в таблице по имени */
+  override def find(idName: String): Option[NodeAbstract] = ???
+
+  /** Возврат таблицы идентификаторов */
+  override def getIdTable: Seq[String] = ???
 
 }
