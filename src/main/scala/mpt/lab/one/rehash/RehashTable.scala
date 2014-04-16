@@ -26,12 +26,11 @@ object HashType {
  * Организация таблиц идентификаторов
  * Метод: Простое рехэширование
  */
-class RehashTable {
+class RehashTable(tableSize: Hash) {
   
   /** Хранилище элементов таблицы */
   private val MinIndex = 0
-  private val HashTableSize = 500
-  private val hashTable = new ArrayBuffer[Node](HashTableSize)
+  private val hashTable = new ArrayBuffer[Node](tableSize)
 
   //Инициализация
   clear()
@@ -57,7 +56,7 @@ class RehashTable {
       println(">> Already exists!") //TODO
     } else {
       // Иначе запуск этой же функции с другим хэшем
-      val newHash = (hash + 1) % HashTableSize
+      val newHash = (hash + 1) % tableSize
       addRec(id, newHash)
     }
   }
@@ -68,18 +67,18 @@ class RehashTable {
   /** Очистка таблицы */
   def clear() = {
     hashTable.clear()
-    for (i <- MinIndex until HashTableSize) hashTable += null
+    for (i <- MinIndex until tableSize) hashTable += null
   }
   
   /** Возврат таблицы идентификаторов */
   def getHashTable = {
-    for (index <- MinIndex until HashTableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
+    for (index <- MinIndex until tableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
   }
   
   /** 
    * Хэш-функция
    * (Сумма всех символов числа) mod Размер таблицы 
    */
-  private def getHash(string: String) = string.getBytes.sum.abs % HashTableSize
+  private def getHash(string: String) = string.getBytes.sum.abs % tableSize
   
 }
