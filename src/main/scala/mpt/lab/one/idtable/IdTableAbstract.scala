@@ -1,4 +1,4 @@
-package mpt.lab.one
+package mpt.lab.one.idtable
 
 import mpt.lab.one.stat.Stat
 

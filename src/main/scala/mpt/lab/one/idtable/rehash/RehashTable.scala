@@ -1,9 +1,9 @@
-package mpt.lab.one.rehash
+package mpt.lab.one.idtable.rehash
 
 import scala.collection.mutable.ArrayBuffer
-import mpt.lab.one.IndexType.Index
+import mpt.lab.one.idtable.{NodeAbstract, IdTableAbstract, IndexType}
+import IndexType.Index
 import scala.annotation.tailrec
-import mpt.lab.one.{NodeAbstract, IdTableAbstract, IndexType}
 
 /**
  * @author phpusr
