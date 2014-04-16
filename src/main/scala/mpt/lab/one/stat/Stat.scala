@@ -18,19 +18,22 @@ class Stat {
   private var allElementsCounter = 0
 
   /**
-   * Новый элемент
+   * Считать новый элемент
+   *
    * Сбросить подсчет текущего
-   * Пересчитать среднее
+   * Увеличить кол-во элементов
    */
   def newElement() {
-    elementsCount += 1
     currentElementCounter = 0
+    elementsCount += 1
   }
+
   /** Увеличить счетчик для текущего элемента */
   def inc() {
     currentElementCounter += 1
     allElementsCounter += 1
   }
+
   /** Среднее число операций для элемента */
   def avg() = allElementsCounter.toDouble / elementsCount
 }
