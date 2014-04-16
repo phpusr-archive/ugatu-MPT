@@ -25,7 +25,7 @@ abstract class NodeAbstract(name: String)
 /**
  * Абстрактная таблица идентификаторов
  */
-abstract class IdTableAbstract(tableSize: Index) {
+abstract class IdTableAbstract(MaxTableSize: Index) {
 
   /** Статистика добавления элементов */
   protected val addStat = new Stat
@@ -46,7 +46,7 @@ abstract class IdTableAbstract(tableSize: Index) {
    * Хэш-функция
    * (Сумма всех символов числа) mod Размер таблицы
    */
-  protected def getHash(string: String) = string.getBytes.sum.abs % tableSize
+  protected def getHash(string: String) = string.getBytes.sum.abs % MaxTableSize
 
   /** Инициализация таблицы идентификаторов */
   def init()

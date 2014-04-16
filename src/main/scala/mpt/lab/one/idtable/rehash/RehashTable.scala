@@ -20,13 +20,13 @@ case class Node(name: String) extends NodeAbstract(name)
  * Организация таблиц идентификаторов
  * Метод: Простое рехэширование
  */
-class RehashTable(tableSize: Index) extends IdTableAbstract(tableSize) {
+class RehashTable(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
   /** Минимальный индекс таблицы */
   private val MinIndex = IndexType.Zero
 
   /** Хранилище элементов таблицы */
-  private val hashTable = new ArrayBuffer[Node](tableSize)
+  private val hashTable = new ArrayBuffer[Node](MaxTableSize)
 
   ///////////////////////////////////////////
 
@@ -40,7 +40,7 @@ class RehashTable(tableSize: Index) extends IdTableAbstract(tableSize) {
   /** Добавление элемента в таблицу */
   override def add(idName: String) = {
     // Если в таблице есть хоть одно свободное место
-    if (addStat.elementsCount < tableSize) {
+    if (addStat.elementsCount < MaxTableSize) {
       // Изменить статистику и добавить элемент
       addStat.newElement()
       val idHash = getHash(idName)
@@ -78,7 +78,7 @@ class RehashTable(tableSize: Index) extends IdTableAbstract(tableSize) {
   }
 
   /** Функция рехэширования */
-  private def rehash(hash: Index) = (hash + 1) % tableSize
+  private def rehash(hash: Index) = (hash + 1) % MaxTableSize
   
   /** Поиск элемента в таблице по имени */
   override def find(idName: String) = {
@@ -103,12 +103,12 @@ class RehashTable(tableSize: Index) extends IdTableAbstract(tableSize) {
   /** Очистка таблицы */
   override def clear() = {
     hashTable.clear()
-    for (i <- MinIndex until tableSize) hashTable += null
+    for (i <- MinIndex until MaxTableSize) hashTable += null
   }
   
   /** Возврат таблицы идентификаторов */
   override def getIdTable = {
-    for (index <- MinIndex until tableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
+    for (index <- MinIndex until MaxTableSize if hashTable(index) != null) yield s"$index: ${hashTable(index)}"
   }
 
 }
