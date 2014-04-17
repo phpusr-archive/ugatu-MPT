@@ -104,17 +104,19 @@ object MainForm extends SimpleSwingApplication {
             }) = c
           }) = c
 
-          // Кнопка выхода TODO ниже
-          c.gridy = 4
-          c.fill = None
-          c.anchor = GridBagPanel.Anchor.Center
-          layout(new Button("Exit") {
-            preferredSize = new Dimension(200, preferredSize.height)
-          }) = c
+        }) = c // end search panel
 
+
+        // Кнопка выхода
+        c.gridy = 2
+        c.fill = None
+        c.anchor = GridBagPanel.Anchor.Center
+        layout(new Button("Exit") {
+          preferredSize = new Dimension(200, preferredSize.height)
         }) = c
-      }) = c
-    }
+
+      }) = c // end right part
+    } // end main panel
 
     //size = new Dimension(600, 300)
     centerOnScreen()
