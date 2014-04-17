@@ -40,6 +40,8 @@ object MainForm extends SimpleSwingApplication {
   }
   /** Кнопка поиска ид-а */
   private val searchButton = new Button("Find")
+  /** Кнопка сброса статистики поиска */
+  private val resetButton = new Button("Reset")
 
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
@@ -140,7 +142,7 @@ object MainForm extends SimpleSwingApplication {
             contents += new Label("All found: ")
             contents += new Label("161")
           }) = c
-          layout(new Button("Reset")) = c
+          layout(resetButton) = c
 
           // Кнопка найти все
           c.gridy = 2
@@ -184,7 +186,7 @@ object MainForm extends SimpleSwingApplication {
 
   // Обработчики событий формы
   listenTo(generateIdsButton, clearIdsButton)
-  listenTo(searchButton)
+  listenTo(searchButton, resetButton)
   listenTo(exitButton)
 
   reactions += {
@@ -202,7 +204,7 @@ object MainForm extends SimpleSwingApplication {
       ids.foreach(binaryTree.add)
 
     // Поиск элемента
-    case ButtonClicked(`searchButton`) =>      
+    case ButtonClicked(`searchButton`) =>
       val rNode = rehashTable.find(searchTextField.text)
       rFoundLabel.text = if (rNode.isDefined) "Id found" else "Id not found"
 
@@ -211,6 +213,8 @@ object MainForm extends SimpleSwingApplication {
 
       updateStat()
 
+    // Сброс статистики поиска
+    case ButtonClicked(`resetButton`) => resetSearchStat()
 
     // Очистка поле ввода ид-во
     case ButtonClicked(`clearIdsButton`) => idsTextArea.text = ""
@@ -219,18 +223,28 @@ object MainForm extends SimpleSwingApplication {
     case ButtonClicked(`exitButton`) => System.exit(0)
   }
 
+  // Статистика поиска
+  val rFindStat = rehashTable.getStat.get("find").get
+  val bFindStat = binaryTree.getStat.get("find").get
+
+  /** Сброс статистики поиска */
+  private def resetSearchStat() {
+    searchTextField.text = ""
+    rFindStat.reset()
+    bFindStat.reset()
+    updateStat()
+  }
+
   /** Обновить статистику на форме */
   private def updateStat() {
     val format = "%.3f"
-    
+
     // Статистика для таблици рехэширвония
-    val rFindStat = rehashTable.getStat.get("find").get
     rEqualsLabel.text = rFindStat.currentElementCounter.toString
     rAllEqualsLabel.text = rFindStat.allElementsCounter.toString
     rAvgEqualsLabel.text = rFindStat.avg().formatted(format)
 
     // Статистика для бинарного дерева
-    val bFindStat = binaryTree.getStat.get("find").get
     bEqualsLabel.text = bFindStat.currentElementCounter.toString
     bAllEqualsLabel.text = bFindStat.allElementsCounter.toString
     bAvgEqualsLabel.text = bFindStat.avg().formatted(format)
