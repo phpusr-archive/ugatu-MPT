@@ -40,8 +40,15 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
   /** Добавление элемента в таблицу */
   override def add(idName: String): Option[Node] = {
+    // Инкремент счетчика кол-ва добавленных элементов
+    addStat.newElement()
+
+    // Добавление элемента в дерево
     val hash = getHash(idName)
     if (root.isEmpty) {
+      // Инкремент счетчика кол-ва итераций добавления элемента
+      addStat.inc()
+      // Добавление элемента в корень дерева
       root = Some(Node(idName, hash, None, None))
       root
     } else {
@@ -51,6 +58,10 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
   /** Рекурсивное добавление элемента в дерево */
   private def addRec(idName: String, hash: Index, node: Option[Node]): Option[Node] = {
+    // Инкремент счетчика кол-ва итераций добавления элемента
+    addStat.inc()
+
+    // Добавление элемента в дерево
     if (node.isEmpty) { // Если узел пустой
       new Some(Node(idName, hash, None, None)) //Создаем новый узел, знач-е узла берем из idName
     } else if (node.get.name == idName) { // Если элемент уже есть, не добавляем его
@@ -69,10 +80,20 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   }
 
   /** Поиск элемента в таблице по имени */
-  override def find(idName: String): Option[Node] = findRec(idName, root)
+  override def find(idName: String): Option[Node] = {
+    // Инкремент счетчика кол-ва поисков
+    findStat.newElement()
+
+    // Рекурсивный поиск элемента
+    findRec(idName, root)
+  }
 
   /** Рекурсивный поиск элемента в таблице по имени */
   private def findRec(idName: String, node: Option[Node]): Option[Node] = {
+    // Инкремент счетчика кол-ва итераций поиска элемента
+    findStat.inc()
+
+    // Поиск элемента
     if (node.isEmpty) {
       None // Если текущий узел пустой, то возвращаем None
     } else if (node.get.name == idName) node // Если элемент найден, то возвращаем его
