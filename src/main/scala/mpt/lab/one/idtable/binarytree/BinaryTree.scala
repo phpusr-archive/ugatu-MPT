@@ -15,6 +15,10 @@ import scala.collection.mutable.ListBuffer
  */
 case class Node(name: String, hash: Index, var left: Option[Node], var right: Option[Node]) extends NodeAbstract(name, hash) {
   def this(name: String, hash: Index) = this(name, hash, None, None) //TODO
+
+  override def toString = s"hash: $hash, name: $name" +
+    s"\nL: ${left.getOrElse("-")} " +
+    s"\nR: ${right.getOrElse("_")}"
 }
 
 /**
@@ -44,13 +48,13 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   private def addRec(idName: String, hash: Index, node: Option[Node]): Option[Node] = {
     if (node.isEmpty) { // Если узел пустой
       new Some(Node(idName, hash, None, None)) //Создаем новый узел, знач-е узла берем из idName
-    } else if (hash == node.get.hash) { // Если hash == текущему узлу
+    } else if (node.get.name == idName) { // Если элемент уже есть, не добавляем его
       println(">> Already exists!") //TODO
-      None
+      node
     } else if (hash > node.get.hash) { // Если hash > текущего узла
       node.get.right = addRec(idName, hash, node.get.right)
       node
-    } else if (hash < node.get.hash) { // Если hash < текущего узла
+    } else if (hash <= node.get.hash) { // Если hash <= текущего узла
       node.get.left = addRec(idName, hash, node.get.left)
       node
     } else {
@@ -67,6 +71,7 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
   /** Возврат таблицы идентификаторов */
   override def getIdTable: Seq[String] = {
+    println(">> root: " + root) //TODO
     val list = ListBuffer[String]()
     buildIdTableRec(root, list)
     
