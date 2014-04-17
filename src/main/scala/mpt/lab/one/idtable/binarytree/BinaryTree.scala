@@ -2,6 +2,7 @@ package mpt.lab.one.idtable.binarytree
 
 import mpt.lab.one.idtable.{NodeAbstract, IdTableAbstract}
 import mpt.lab.one.idtable.IndexType._
+import scala.collection.mutable.ListBuffer
 
 /**
  * @author phpusr
@@ -65,6 +66,20 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   override def clear() = ???
 
   /** Возврат таблицы идентификаторов */
-  override def getIdTable: Seq[String] = ???
+  override def getIdTable: Seq[String] = {
+    val list = ListBuffer[String]()
+    buildIdTableRec(root, list)
+    
+    list
+  }
+
+  /** Рекурсивный возврат таблицы идентификаторов */
+  private def buildIdTableRec(node: Option[Node], list: ListBuffer[String]) {
+    if (!node.isEmpty) {
+      buildIdTableRec(node.get.left, list)
+      list += node.get.name
+      buildIdTableRec(node.get.right, list)
+    }
+  }
 
 }
