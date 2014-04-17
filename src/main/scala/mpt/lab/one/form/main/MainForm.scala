@@ -80,11 +80,11 @@ object MainForm extends SimpleSwingApplication {
       layout(foundLabel) = c
       c.anchor = GridBagPanel.Anchor.West
       c.gridy = 1
-      layout(defaultValuePanel("Equals", equalsLabel)) = c
+      layout(defaultValuePanel("Equals:", equalsLabel)) = c
       c.gridy = 2
-      layout(defaultValuePanel("All equals", allEqualsLabel)) = c
+      layout(defaultValuePanel("All equals:", allEqualsLabel)) = c
       c.gridy = 3
-      layout(defaultValuePanel("Avg equals", avgEqualsLabel)) = c
+      layout(defaultValuePanel("Avg equals:", avgEqualsLabel)) = c
     }
 
     (panel, equalsLabel, allEqualsLabel, avgEqualsLabel, foundLabel)
