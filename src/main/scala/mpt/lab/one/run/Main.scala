@@ -15,7 +15,8 @@ import mpt.lab.one.form.main.MainForm
  */
 object Main extends App {
   // Установка темы оформления
-  UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel")
+  //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel")
+  UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName)
   // Создание и запуск главной формы
   MainForm.main(args)
 }

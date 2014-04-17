@@ -90,7 +90,8 @@ object MainForm extends SimpleSwingApplication {
     (panel, equalsLabel, allEqualsLabel, avgEqualsLabel, foundLabel)
   }
 
-  // ФормаMainForm
+  // Форма MainForm
+  //TODO полный LookAndFeel
   def top: Frame = new MainFrame {
     contents = new GridBagPanel {
       import GridBagPanel.Fill._
