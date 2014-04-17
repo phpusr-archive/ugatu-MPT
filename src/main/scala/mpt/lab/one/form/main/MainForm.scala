@@ -3,6 +3,8 @@ package mpt.lab.one.form.main
 import scala.swing._
 import scala.swing.event.ButtonClicked
 import scala.util.Random
+import mpt.lab.one.idtable.binarytree.BinaryTree
+import mpt.lab.one.idtable.rehash.RehashTable
 
 /**
  * @author phpusr
@@ -170,7 +172,18 @@ object MainForm extends SimpleSwingApplication {
 
   reactions += {
     // Генерация ид-ов
-    case ButtonClicked(`generateIdsButton`) => idsTextArea.append(generateIds())
+    case ButtonClicked(`generateIdsButton`) =>
+      val ids = generateIds()
+      idsTextArea.append(ids.mkString("\n"))
+
+      // Загрузка id-ов в бинарное дерево
+      val binaryTree = new BinaryTree(ids.size)
+      ids.foreach(binaryTree.add)
+
+      // Загрузка id-ов в таблицу с рехэшированием
+      val rehashTable = new RehashTable((ids.size * 1.5).toInt)
+      ids.foreach(rehashTable.add)
+
 
     // Очистка поле ввода ид-во
     case ButtonClicked(`clearIdsButton`) => idsTextArea.text = ""
@@ -181,12 +194,7 @@ object MainForm extends SimpleSwingApplication {
 
   /** Генерация строки с ид-ми */
   private def generateIds = () => {
-    val str = new StringBuilder
-    for (i <- 1 to IdsCount) {      
-      val randomString = generateRandomString(IdSymbolsCount)
-      str.append(randomString + "\n")
-    }
-    str.toString()
+    for (i <- 1 to IdsCount) yield generateRandomString(IdSymbolsCount)
   }
 
   /** Генерация рандомной строки из латинских больших и малых букв */
