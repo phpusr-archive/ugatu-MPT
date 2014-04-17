@@ -45,9 +45,10 @@ object MainForm extends SimpleSwingApplication {
   private val exitButton = new Button("Exit") {
     preferredSize = new Dimension(150, preferredSize.height)
   }
-  
-  private val leftStatPanel = defaultStatPanel()
-  private val rightStatPanel = defaultStatPanel()
+
+  // Компоненты статистики
+  private val (rehashStatPanel, rEqualsLabel, rAllEqualsLabel, rAvgEqualsLabel) = defaultStatComponents()
+  private val (binaryWoodStatPanel, bEqualsLabel, bAllEqualsLabel, bAvgEqualsLabel) = defaultStatComponents()
 
 
   //--------------------------------
@@ -59,9 +60,12 @@ object MainForm extends SimpleSwingApplication {
     contents += new Label(title)
     contents += valueLabel
   }
+  /** Лейбл для значения (по умолчанию) */
+  private def defaultValueLabel = () => new Label("0")
   /** Панель статистики (по умолчанию) */
-  private def defaultStatPanel = () => {
-    new GridBagPanel {
+  private def defaultStatComponents = () => {
+    val (equalsLabel, allEqualsLabel, avgEqualsLabel) = (defaultValueLabel(), defaultValueLabel(), defaultValueLabel())
+    val panel = new GridBagPanel {
       border = defaultTitleBorder("Rehash")
       val c = new Constraints
       c.weightx = 1
@@ -69,12 +73,14 @@ object MainForm extends SimpleSwingApplication {
       layout(new Label("Id found")) = c
       c.anchor = GridBagPanel.Anchor.West
       c.gridy = 1
-      layout(defaultValuePanel("Equals", new Label("0"))) = c
+      layout(defaultValuePanel("Equals", equalsLabel)) = c
       c.gridy = 2
-      layout(defaultValuePanel("All equals", new Label("0"))) = c
+      layout(defaultValuePanel("All equals", allEqualsLabel)) = c
       c.gridy = 3
-      layout(defaultValuePanel("Avg equals", new Label("0"))) = c
+      layout(defaultValuePanel("Avg equals", avgEqualsLabel)) = c
     }
+
+    (panel, equalsLabel, allEqualsLabel, avgEqualsLabel)
   }
 
   // ФормаMainForm
@@ -148,10 +154,10 @@ object MainForm extends SimpleSwingApplication {
             val c = new Constraints
             c.weightx = 0.5
             c.fill = Both
-            layout(leftStatPanel) = c
+            layout(rehashStatPanel) = c
 
             // Правая панель
-            layout(rightStatPanel) = c
+            layout(binaryWoodStatPanel) = c
           }) = c
 
         }) = c // end search panel
@@ -196,7 +202,17 @@ object MainForm extends SimpleSwingApplication {
     // Поиск элемента
     case ButtonClicked(`searchButton`) =>
       rehashTable.find(searchTextField.text)
+      // Статистика для таблици рехэширвония
+      val rFindStat = rehashTable.getStat.get("find").get
+      rEqualsLabel.text = rFindStat.currentElementCounter.toString
+      rAllEqualsLabel.text = rFindStat.allElementsCounter.toString
+      rAvgEqualsLabel.text = rFindStat.avg().toString
+      // Статистика для бинарного дерева
       binaryTree.find(searchTextField.text)
+      val bFindStat = binaryTree.getStat.get("find").get
+      bEqualsLabel.text = bFindStat.currentElementCounter.toString
+      bAllEqualsLabel.text = bFindStat.allElementsCounter.toString
+      bAvgEqualsLabel.text = bFindStat.avg().toString
 
 
     // Очистка поле ввода ид-во
