@@ -12,13 +12,33 @@ import scala.swing._
  * Главная форма
  */
 object MainForm extends SimpleSwingApplication {
+  
+  private val leftStatPanel = defaultStatPanel()
+  private val rightStatPanel = defaultStatPanel()
 
   /** Заголовок для панели (по умолчанию) */
   private def defaultTitleBorder = (title: String) => Swing.TitledBorder(Swing.EtchedBorder, title)
   /** Панель со значением (по умолчанию) */
-  private def defaultStatPanel = (title: String, valueLabel: Label) => new FlowPanel {
+  private def defaultValuePanel = (title: String, valueLabel: Label) => new FlowPanel {
     contents += new Label(title)
     contents += valueLabel
+  }
+  /** Панель статистики (по умолчанию) */
+  private def defaultStatPanel = () => {
+    new GridBagPanel {
+      border = defaultTitleBorder("Rehash")
+      val c = new Constraints
+      c.weightx = 1
+      c.anchor = GridBagPanel.Anchor.Center
+      layout(new Label("Id found")) = c
+      c.anchor = GridBagPanel.Anchor.West
+      c.gridy = 1
+      layout(defaultValuePanel("Equals", new Label("0"))) = c
+      c.gridy = 2
+      layout(defaultValuePanel("All equals", new Label("0"))) = c
+      c.gridy = 3
+      layout(defaultValuePanel("Avg equals", new Label("0"))) = c
+    }
   }
 
   // ФормаMainForm
@@ -86,22 +106,10 @@ object MainForm extends SimpleSwingApplication {
             val c = new Constraints
             c.weightx = 0.5
             c.fill = Both
-            layout(new BoxPanel(Orientation.Vertical) {
-              border = defaultTitleBorder("Rehash")
-              contents += new Label("Id found")
-              contents += defaultStatPanel("Equals", new Label("0"))
-              contents += defaultStatPanel("All equals", new Label("0"))
-              contents += defaultStatPanel("Avg equals", new Label("0"))
-            }) = c
+            layout(leftStatPanel) = c
 
             // Правая панель
-            layout(new BoxPanel(Orientation.Vertical) {
-              border = defaultTitleBorder("Binary tree")
-              contents += new Label("Id found")
-              contents += defaultStatPanel("Equals", new Label("0"))
-              contents += defaultStatPanel("All equals", new Label("0"))
-              contents += defaultStatPanel("Avg equals", new Label("0"))
-            }) = c
+            layout(rightStatPanel) = c
           }) = c
 
         }) = c // end search panel
