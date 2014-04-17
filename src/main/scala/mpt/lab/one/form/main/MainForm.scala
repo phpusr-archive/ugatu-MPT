@@ -42,6 +42,10 @@ object MainForm extends SimpleSwingApplication {
   private val searchButton = new Button("Find")
   /** Кнопка сброса статистики поиска */
   private val resetButton = new Button("Reset")
+  /** Кнопка найти все */
+  private val findAllButton = new Button("Find all")
+  /** Лейбл всего найдено */
+  private val allFoundLabel = defaultValueLabel()
 
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
@@ -139,14 +143,14 @@ object MainForm extends SimpleSwingApplication {
           c.gridy = 1
           c.anchor = GridBagPanel.Anchor.West
           layout(new FlowPanel {
-            contents += new Label("All found: ")
-            contents += new Label("161")
+            contents += new Label("All found:")
+            contents += allFoundLabel
           }) = c
           layout(resetButton) = c
 
           // Кнопка найти все
           c.gridy = 2
-          layout(new Button("Find all")) = c
+          layout(findAllButton) = c
 
           // Панель с выводом статистики
           c.gridy = 3
@@ -186,7 +190,7 @@ object MainForm extends SimpleSwingApplication {
 
   // Обработчики событий формы
   listenTo(generateIdsButton, clearIdsButton)
-  listenTo(searchButton, resetButton)
+  listenTo(searchButton, resetButton, findAllButton)
   listenTo(exitButton)
 
   reactions += {
@@ -212,6 +216,10 @@ object MainForm extends SimpleSwingApplication {
       bFoundLabel.text = if (bNode.isDefined) "Id found" else "Id not found"
 
       updateStat()
+
+    //TODO
+    case ButtonClicked(`findAllButton`) => ???
+      //TODO implement
 
     // Сброс статистики поиска
     case ButtonClicked(`resetButton`) => resetSearchStat()
