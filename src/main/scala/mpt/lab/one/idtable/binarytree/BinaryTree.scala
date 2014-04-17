@@ -16,7 +16,12 @@ import scala.collection.mutable.ListBuffer
 case class Node(name: String, hash: Index, var left: Option[Node], var right: Option[Node]) extends NodeAbstract(name, hash) {
   def this(name: String, hash: Index) = this(name, hash, None, None) //TODO
 
-  override def toString = s"hash: $hash, name: $name" +
+  override def toString = s"hash: $hash, name: $name, " +
+    s"L: ${if (!left.isEmpty) left.get.name else "-"} " +
+    s"R: ${if (!right.isEmpty) right.get.name else "-"} "
+
+  /** Вывод поддерева начиная с текущего элемента */
+  def toSubtreeString = s"hash: $hash, name: $name" +
     s"\nL: ${left.getOrElse("-")} " +
     s"\nR: ${right.getOrElse("_")}"
 }
@@ -85,7 +90,7 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
   /** Возврат таблицы идентификаторов */
   override def getIdTable: Seq[String] = {
-    println(">> root: " + root) //TODO
+    println(">> root: " + root.get.toSubtreeString) //TODO
     val list = ListBuffer[String]()
     buildIdTableRec(root, list)
     
