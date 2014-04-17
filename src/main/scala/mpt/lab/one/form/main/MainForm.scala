@@ -180,12 +180,26 @@ object MainForm extends SimpleSwingApplication {
   }
 
   /** Генерация строки с ид-ми */
-  private def generateIds() = {
+  private def generateIds = () => {
     val str = new StringBuilder
-    for (i <- 1 to IdsCount) {
-      str.append(Random.nextString(IdSymbolsCount) + "\n")
+    for (i <- 1 to IdsCount) {      
+      val randomString = generateRandomString(IdSymbolsCount)
+      str.append(randomString + "\n")
     }
     str.toString()
+  }
+
+  /** Генерация рандомной строки из латинских больших и малых букв */
+  private def generateRandomString = (size: Int) => {
+    // Кодировка символов
+    val CharsetType = "utf8"
+    // Начальный символ, сооветсвует: A
+    val StartSymbol = 65
+    // Конечный символ, сооветсвует: z
+    val EndSymbol = 122
+
+    val bytes = for (i <- 1 to size) yield (Random.nextInt(EndSymbol - StartSymbol + 1) + StartSymbol).toByte
+    new String(bytes.toArray, CharsetType)
   }
 
 }
