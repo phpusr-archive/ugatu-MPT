@@ -200,22 +200,10 @@ object MainForm extends SimpleSwingApplication {
       ids.foreach(binaryTree.add)
 
     // Поиск элемента
-    case ButtonClicked(`searchButton`) =>
-      val format = "%.3f"
-
-      rehashTable.find(searchTextField.text)
-      // Статистика для таблици рехэширвония
-      val rFindStat = rehashTable.getStat.get("find").get
-      rEqualsLabel.text = rFindStat.currentElementCounter.toString
-      rAllEqualsLabel.text = rFindStat.allElementsCounter.toString
-      rAvgEqualsLabel.text = rFindStat.avg().formatted(format)
-
+    case ButtonClicked(`searchButton`) =>      
+      rehashTable.find(searchTextField.text)      
       binaryTree.find(searchTextField.text)
-      // Статистика для бинарного дерева
-      val bFindStat = binaryTree.getStat.get("find").get
-      bEqualsLabel.text = bFindStat.currentElementCounter.toString
-      bAllEqualsLabel.text = bFindStat.allElementsCounter.toString
-      bAvgEqualsLabel.text = bFindStat.avg().formatted(format)
+      updateStat()
 
 
     // Очистка поле ввода ид-во
@@ -223,6 +211,23 @@ object MainForm extends SimpleSwingApplication {
 
     // Выход из программы
     case ButtonClicked(`exitButton`) => System.exit(0)
+  }
+
+  /** Обновить статистику на форме */
+  private def updateStat() {
+    val format = "%.3f"
+    
+    // Статистика для таблици рехэширвония
+    val rFindStat = rehashTable.getStat.get("find").get
+    rEqualsLabel.text = rFindStat.currentElementCounter.toString
+    rAllEqualsLabel.text = rFindStat.allElementsCounter.toString
+    rAvgEqualsLabel.text = rFindStat.avg().formatted(format)
+
+    // Статистика для бинарного дерева
+    val bFindStat = binaryTree.getStat.get("find").get
+    bEqualsLabel.text = bFindStat.currentElementCounter.toString
+    bAllEqualsLabel.text = bFindStat.allElementsCounter.toString
+    bAvgEqualsLabel.text = bFindStat.avg().formatted(format)
   }
 
   /** Генерация строки с ид-ми */
