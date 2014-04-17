@@ -15,6 +15,11 @@ object MainForm extends SimpleSwingApplication {
 
   /** Заголовок для панели (по умолчанию) */
   private def defaultTitleBorder = (title: String) => Swing.TitledBorder(Swing.EtchedBorder, title)
+  /** Панель со значением (по умолчанию) */
+  private def defaultStatPanel = (title: String, valueLabel: Label) => new FlowPanel {
+    contents += new Label(title)
+    contents += valueLabel
+  }
 
   // ФормаMainForm
   def top: Frame = new MainFrame {
@@ -83,15 +88,23 @@ object MainForm extends SimpleSwingApplication {
             c.fill = Both
             layout(new BoxPanel(Orientation.Vertical) {
               border = defaultTitleBorder("Rehash")
+              contents += new Label("Id found")
+              contents += defaultStatPanel("Equals", new Label("0"))
+              contents += defaultStatPanel("All equals", new Label("0"))
+              contents += defaultStatPanel("Avg equals", new Label("0"))
             }) = c
 
             // Правая панель
             layout(new BoxPanel(Orientation.Vertical) {
               border = defaultTitleBorder("Binary tree")
+              contents += new Label("Id found")
+              contents += defaultStatPanel("Equals", new Label("0"))
+              contents += defaultStatPanel("All equals", new Label("0"))
+              contents += defaultStatPanel("Avg equals", new Label("0"))
             }) = c
           }) = c
 
-          // Кнопка выхода
+          // Кнопка выхода TODO ниже
           c.gridy = 4
           c.fill = None
           c.anchor = GridBagPanel.Anchor.Center
