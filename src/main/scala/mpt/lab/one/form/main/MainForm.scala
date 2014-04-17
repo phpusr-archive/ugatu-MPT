@@ -27,10 +27,14 @@ object MainForm extends SimpleSwingApplication {
     preferredSize = new Dimension(300, 0)
     lineWrap = true
   }
+  /** Кнопка очистки области ввода ид-ов */
+  private val clearIdsButton = new Button("Clear") {
+    preferredSize = new Dimension(130, preferredSize.height)
+  }
 
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
-    preferredSize = new Dimension(200, preferredSize.height)
+    preferredSize = new Dimension(150, preferredSize.height)
   }
   
   private val leftStatPanel = defaultStatPanel()
@@ -74,9 +78,17 @@ object MainForm extends SimpleSwingApplication {
       c.weightx = 0.5
       c.weighty = 1
       c.fill = Both
-      layout(new BorderPanel {
+      layout(new GridBagPanel {
         border = defaultTitleBorder("Input data")
-        layout(idsTextArea) = BorderPanel.Position.Center
+        val c = new Constraints
+        c.weightx = 1
+        c.weighty = 1
+        c.fill = Both
+        layout(idsTextArea) = c
+        c.gridy = 1
+        c.weighty = 0
+        c.fill = None
+        layout(clearIdsButton) = c
       }) = c
 
       // Правая часть
@@ -93,12 +105,14 @@ object MainForm extends SimpleSwingApplication {
         // Панель поиска идентификатора
         c.gridy = 1
         layout(new GridBagPanel {
-          // Поле вводе элемента для поиска
+          // Поле ввода элемента для поиска
           border = defaultTitleBorder("Find ids")
           val c = new Constraints
           c.fill = Horizontal
           c.weightx = 1
-          layout(new TextField()) = c
+          layout(new TextField() {
+            preferredSize = new Dimension(200, preferredSize.height)
+          }) = c
 
           // Кнопка поиска
           c.fill = None
@@ -109,7 +123,7 @@ object MainForm extends SimpleSwingApplication {
           c.gridy = 1
           c.anchor = GridBagPanel.Anchor.West
           layout(new FlowPanel {
-            contents += new Label("All find: ")
+            contents += new Label("All found: ")
             contents += new Label("161")
           }) = c
           layout(new Button("Reset")) = c
@@ -151,13 +165,15 @@ object MainForm extends SimpleSwingApplication {
 
 
   // Обработчики событий формы
-  listenTo(generateIdsButton)
+  listenTo(generateIdsButton, clearIdsButton)
   listenTo(exitButton)
 
   reactions += {
     // Генерация ид-ов
-    case ButtonClicked(`generateIdsButton`) =>
-      idsTextArea.append(generateIds())
+    case ButtonClicked(`generateIdsButton`) => idsTextArea.append(generateIds())
+
+    // Очистка поле ввода ид-во
+    case ButtonClicked(`clearIdsButton`) => idsTextArea.text = ""
 
     // Выход из программы
     case ButtonClicked(`exitButton`) => System.exit(0)
