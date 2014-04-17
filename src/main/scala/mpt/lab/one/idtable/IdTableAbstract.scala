@@ -40,7 +40,7 @@ abstract class IdTableAbstract(MaxTableSize: Index) {
   ///////////////////////////////////////////
 
   /** Возврат результатов статистики */
-  def getStat = (addStat.avg(), findStat.avg())
+  def getStat = Map("add" -> addStat, "find" -> findStat)
 
   /**
    * Хэш-функция

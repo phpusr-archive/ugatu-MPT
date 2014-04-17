@@ -14,9 +14,9 @@ class Stat {
   /** Кол-во элементов */
   var elementsCount = 0
   /** Число выполненных операций для текущего элемента  */
-  private var currentElementCounter = 0
+  var currentElementCounter = 0
   /** Число выполненных операций для всех элементов  */
-  private var allElementsCounter = 0
+  var allElementsCounter = 0
 
   /**
    * Считать новый элемент
