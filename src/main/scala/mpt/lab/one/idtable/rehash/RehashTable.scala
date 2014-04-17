@@ -89,11 +89,12 @@ class RehashTable(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   }
 
   /** Рекурсионный поиск элемента в таблице по имени */
+  @tailrec
   private def findRec(idName: String, el: Node, list: Seq[Node]): Option[Node] = {
     // Инкремент счетчика кол-ва итераций поиска элемента
     findStat.inc()
     // Если найден, то возвращаем его
-    if (el.name == idName) Some(el)
+    if (el != null && el.name == idName) Some(el)
     // Если список пустой, то возвратить None
     else if (list.isEmpty) None
     // Иначе запуск этой же функции, со списком без головы
