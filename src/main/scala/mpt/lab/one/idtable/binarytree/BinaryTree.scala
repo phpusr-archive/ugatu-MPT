@@ -21,9 +21,9 @@ case class Node(name: String, hash: Index, var left: Option[Node], var right: Op
     s"R: ${if (!right.isEmpty) right.get.name else "-"} "
 
   /** Вывод поддерева начиная с текущего элемента */
-  def toSubtreeString = s"hash: $hash, name: $name" +
-    s"\nL: ${left.getOrElse("-")} " +
-    s"\nR: ${right.getOrElse("_")}"
+  def toSubtreeString: String = s"hash: $hash, name: $name" +
+    s"\nL: ${if (!left.isEmpty) left.get.toSubtreeString else "-"} " +
+    s"\nR: ${if (!right.isEmpty) right.get.toSubtreeString else "-"} "
 }
 
 /**
@@ -45,15 +45,10 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
     // Добавление элемента в дерево
     val hash = getHash(idName)
-    if (root.isEmpty) {
-      // Инкремент счетчика кол-ва итераций добавления элемента
-      addStat.inc()
-      // Добавление элемента в корень дерева
-      root = Some(Node(idName, hash, None, None))
-      root
-    } else {
-      addRec(idName, hash, root)
-    }
+    root = addRec(idName, hash, root)
+
+    // Поиск добавленного элемента и его возврат
+    find(idName)
   }
 
   /** Рекурсивное добавление элемента в дерево */
