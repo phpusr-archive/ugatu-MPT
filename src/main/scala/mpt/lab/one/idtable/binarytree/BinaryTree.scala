@@ -35,8 +35,14 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   /** Корневой элемент дерева */
   private var root: Option[Node] = None
 
+  ///////////////////////////////////////////
+
+  init()
+
+  ///////////////////////////////////////////
+
   /** Инициализация таблицы идентификаторов */
-  override def init(): Unit = ???
+  override def init() = clear()
 
   /** Добавление элемента в таблицу */
   override def add(idName: String): Option[Node] = {
@@ -102,7 +108,9 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   }
 
   /** Очистка таблицы */
-  override def clear() = ???
+  override def clear() {
+    root = None
+  }
 
   /** Возврат таблицы идентификаторов */
   override def getIdTable: Seq[String] = {
