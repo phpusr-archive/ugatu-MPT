@@ -64,7 +64,21 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   }
 
   /** Поиск элемента в таблице по имени */
-  override def find(idName: String): Option[Node] = ???
+  override def find(idName: String): Option[Node] = findRec(idName, root)
+
+  /** Рекурсивный поиск элемента в таблице по имени */
+  private def findRec(idName: String, node: Option[Node]): Option[Node] = {
+    if (node.isEmpty) {
+      None // Если текущий узел пустой, то возвращаем None
+    } else if (node.get.name == idName) node // Если элемент найден, то возвращаем его
+    else {
+      // Иначе запускаем поиск для левого и прового поддеревьев
+      val left = findRec(idName, node.get.left)
+      val right = findRec(idName, node.get.right)
+      // Еслил рез-т поиска в левом поддереве не пустой, то возвращаем его, иначе рез-т правого
+      if (!left.isEmpty) left else right
+    }
+  }
 
   /** Очистка таблицы */
   override def clear() = ???
