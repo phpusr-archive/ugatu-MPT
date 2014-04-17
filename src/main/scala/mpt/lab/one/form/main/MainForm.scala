@@ -201,18 +201,21 @@ object MainForm extends SimpleSwingApplication {
 
     // Поиск элемента
     case ButtonClicked(`searchButton`) =>
+      val format = "%.3f"
+
       rehashTable.find(searchTextField.text)
       // Статистика для таблици рехэширвония
       val rFindStat = rehashTable.getStat.get("find").get
       rEqualsLabel.text = rFindStat.currentElementCounter.toString
       rAllEqualsLabel.text = rFindStat.allElementsCounter.toString
-      rAvgEqualsLabel.text = rFindStat.avg().toString
-      // Статистика для бинарного дерева
+      rAvgEqualsLabel.text = rFindStat.avg().formatted(format)
+
       binaryTree.find(searchTextField.text)
+      // Статистика для бинарного дерева
       val bFindStat = binaryTree.getStat.get("find").get
       bEqualsLabel.text = bFindStat.currentElementCounter.toString
       bAllEqualsLabel.text = bFindStat.allElementsCounter.toString
-      bAvgEqualsLabel.text = bFindStat.avg().toString
+      bAvgEqualsLabel.text = bFindStat.avg().formatted(format)
 
 
     // Очистка поле ввода ид-во
