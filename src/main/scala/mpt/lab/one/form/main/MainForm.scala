@@ -1,6 +1,8 @@
 package mpt.lab.one.form.main
 
 import scala.swing._
+import scala.swing.event.ButtonClicked
+import scala.util.Random
 
 /**
  * @author phpusr
@@ -12,9 +14,30 @@ import scala.swing._
  * Главная форма
  */
 object MainForm extends SimpleSwingApplication {
+
+  /** Кол-во сгенерированных ид-ов */
+  private val IdsCount = 10
+  /** Кол-во символов в ид-е */
+  private val IdSymbolsCount = 32
+
+  /** Кнопка генерации идентификаторов */
+  private val generateIdsButton = new Button("Generate")
+  /** Текстовая область ввода ид-ов */
+  private val idsTextArea = new TextArea {
+    preferredSize = new Dimension(300, 0)
+    lineWrap = true
+  }
+
+  /** Кнопка выхода */
+  private val exitButton = new Button("Exit") {
+    preferredSize = new Dimension(200, preferredSize.height)
+  }
   
   private val leftStatPanel = defaultStatPanel()
   private val rightStatPanel = defaultStatPanel()
+
+
+  //--------------------------------
 
   /** Заголовок для панели (по умолчанию) */
   private def defaultTitleBorder = (title: String) => Swing.TitledBorder(Swing.EtchedBorder, title)
@@ -53,9 +76,7 @@ object MainForm extends SimpleSwingApplication {
       c.fill = Both
       layout(new BorderPanel {
         border = defaultTitleBorder("Input data")
-        layout(new TextArea {
-          preferredSize = new Dimension(300, 0)
-        }) = BorderPanel.Position.Center
+        layout(idsTextArea) = BorderPanel.Position.Center
       }) = c
 
       // Правая часть
@@ -66,7 +87,7 @@ object MainForm extends SimpleSwingApplication {
         c.fill = Both
         layout(new FlowPanel {
           border = defaultTitleBorder("Source")
-          contents += new Button("Generate")
+          contents += generateIdsButton
         }) = c
 
         // Панель поиска идентификатора
@@ -119,9 +140,7 @@ object MainForm extends SimpleSwingApplication {
         c.gridy = 2
         c.fill = None
         c.anchor = GridBagPanel.Anchor.Center
-        layout(new Button("Exit") {
-          preferredSize = new Dimension(200, preferredSize.height)
-        }) = c
+        layout(exitButton) = c
 
       }) = c // end right part
     } // end main panel
@@ -129,4 +148,28 @@ object MainForm extends SimpleSwingApplication {
     //size = new Dimension(600, 300)
     centerOnScreen()
   }
+
+
+  // Обработчики событий формы
+  listenTo(generateIdsButton)
+  listenTo(exitButton)
+
+  reactions += {
+    // Генерация ид-ов
+    case ButtonClicked(`generateIdsButton`) =>
+      idsTextArea.append(generateIds())
+
+    // Выход из программы
+    case ButtonClicked(`exitButton`) => System.exit(0)
+  }
+
+  /** Генерация строки с ид-ми */
+  private def generateIds() = {
+    val str = new StringBuilder
+    for (i <- 1 to IdsCount) {
+      str.append(Random.nextString(IdSymbolsCount) + "\n")
+    }
+    str.toString()
+  }
+
 }
