@@ -47,8 +47,8 @@ object MainForm extends SimpleSwingApplication {
   }
 
   // Компоненты статистики
-  private val (rehashStatPanel, rEqualsLabel, rAllEqualsLabel, rAvgEqualsLabel) = defaultStatComponents()
-  private val (binaryWoodStatPanel, bEqualsLabel, bAllEqualsLabel, bAvgEqualsLabel) = defaultStatComponents()
+  private val (rehashStatPanel, rEqualsLabel, rAllEqualsLabel, rAvgEqualsLabel, rFoundLabel) = defaultStatComponents()
+  private val (binaryWoodStatPanel, bEqualsLabel, bAllEqualsLabel, bAvgEqualsLabel, bFoundLabel) = defaultStatComponents()
 
 
   //--------------------------------
@@ -65,12 +65,13 @@ object MainForm extends SimpleSwingApplication {
   /** Панель статистики (по умолчанию) */
   private def defaultStatComponents = () => {
     val (equalsLabel, allEqualsLabel, avgEqualsLabel) = (defaultValueLabel(), defaultValueLabel(), defaultValueLabel())
+    val foundLabel = new Label("Id found")
     val panel = new GridBagPanel {
       border = defaultTitleBorder("Rehash")
       val c = new Constraints
       c.weightx = 1
       c.anchor = GridBagPanel.Anchor.Center
-      layout(new Label("Id found")) = c
+      layout(foundLabel) = c
       c.anchor = GridBagPanel.Anchor.West
       c.gridy = 1
       layout(defaultValuePanel("Equals", equalsLabel)) = c
@@ -80,7 +81,7 @@ object MainForm extends SimpleSwingApplication {
       layout(defaultValuePanel("Avg equals", avgEqualsLabel)) = c
     }
 
-    (panel, equalsLabel, allEqualsLabel, avgEqualsLabel)
+    (panel, equalsLabel, allEqualsLabel, avgEqualsLabel, foundLabel)
   }
 
   // ФормаMainForm
@@ -175,7 +176,8 @@ object MainForm extends SimpleSwingApplication {
     //size = new Dimension(600, 300)
     centerOnScreen()
   }
-  
+
+  // Таблицы ид-ов
   val MaxTableSize = 500
   val binaryTree = new BinaryTree(MaxTableSize)
   val rehashTable = new RehashTable(MaxTableSize)
@@ -201,8 +203,12 @@ object MainForm extends SimpleSwingApplication {
 
     // Поиск элемента
     case ButtonClicked(`searchButton`) =>      
-      rehashTable.find(searchTextField.text)      
-      binaryTree.find(searchTextField.text)
+      val rNode = rehashTable.find(searchTextField.text)
+      rFoundLabel.text = if (rNode.isDefined) "Id found" else "Id not found"
+
+      val bNode = binaryTree.find(searchTextField.text)
+      bFoundLabel.text = if (bNode.isDefined) "Id found" else "Id not found"
+
       updateStat()
 
 
