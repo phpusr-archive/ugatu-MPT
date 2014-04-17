@@ -33,6 +33,13 @@ object MainForm extends SimpleSwingApplication {
   private val clearIdsButton = new Button("Clear") {
     preferredSize = new Dimension(130, preferredSize.height)
   }
+  
+  /** Поле ввода для поиска */
+  private val searchTextField = new TextField() {
+    preferredSize = new Dimension(200, preferredSize.height)
+  }
+  /** Кнопка поиска ид-а */
+  private val searchButton = new Button("Find")
 
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
@@ -112,14 +119,12 @@ object MainForm extends SimpleSwingApplication {
           val c = new Constraints
           c.fill = Horizontal
           c.weightx = 1
-          layout(new TextField() {
-            preferredSize = new Dimension(200, preferredSize.height)
-          }) = c
+          layout(searchTextField) = c
 
           // Кнопка поиска
           c.fill = None
           c.weightx = 0
-          layout(new Button("Find")) = c
+          layout(searchButton) = c
 
           // Панель с выводом кол-ва и кнопкой сброса
           c.gridy = 1
@@ -164,10 +169,14 @@ object MainForm extends SimpleSwingApplication {
     //size = new Dimension(600, 300)
     centerOnScreen()
   }
-
+  
+  val MaxTableSize = 500
+  val binaryTree = new BinaryTree(MaxTableSize)
+  val rehashTable = new RehashTable(MaxTableSize)
 
   // Обработчики событий формы
   listenTo(generateIdsButton, clearIdsButton)
+  listenTo(searchButton)
   listenTo(exitButton)
 
   reactions += {
@@ -176,13 +185,18 @@ object MainForm extends SimpleSwingApplication {
       val ids = generateIds()
       idsTextArea.append(ids.mkString("\n"))
 
+      // Загрузка id-ов в таблицу с рехэшированием
+      rehashTable.clear()
+      ids.foreach(rehashTable.add)
+
       // Загрузка id-ов в бинарное дерево
-      val binaryTree = new BinaryTree(ids.size)
+      binaryTree.clear()
       ids.foreach(binaryTree.add)
 
-      // Загрузка id-ов в таблицу с рехэшированием
-      val rehashTable = new RehashTable((ids.size * 1.5).toInt)
-      ids.foreach(rehashTable.add)
+    // Поиск элемента
+    case ButtonClicked(`searchButton`) =>
+      rehashTable.find(searchTextField.text)
+      binaryTree.find(searchTextField.text)
 
 
     // Очистка поле ввода ид-во
