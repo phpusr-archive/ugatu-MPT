@@ -36,6 +36,6 @@ class Stat {
   }
 
   /** Среднее число операций для элемента */
-  def avg() = allElementsCounter.toDouble / elementsCount
+  def avg() = allElementsCounter.toFloat / elementsCount
 }
 
