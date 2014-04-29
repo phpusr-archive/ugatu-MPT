@@ -53,8 +53,8 @@ object MainForm extends SimpleSwingApplication {
   }
 
   // Компоненты статистики
-  private val (rehashStatPanel, rEqualsLabel, rAllEqualsLabel, rAvgEqualsLabel, rFoundLabel) = defaultStatComponents()
-  private val (binaryWoodStatPanel, bEqualsLabel, bAllEqualsLabel, bAvgEqualsLabel, bFoundLabel) = defaultStatComponents()
+  private val (rehashStatPanel, rEqualsLabel, rAllEqualsLabel, rAvgEqualsLabel, rFoundLabel) = defaultStatComponents("Rehash")
+  private val (binaryWoodStatPanel, bEqualsLabel, bAllEqualsLabel, bAvgEqualsLabel, bFoundLabel) = defaultStatComponents("Binary")
 
 
   //--------------------------------
@@ -69,11 +69,11 @@ object MainForm extends SimpleSwingApplication {
   /** Лейбл для значения (по умолчанию) */
   private def defaultValueLabel = () => new Label("0")
   /** Панель статистики (по умолчанию) */
-  private def defaultStatComponents = () => {
+  private def defaultStatComponents = (title: String) => {
     val (equalsLabel, allEqualsLabel, avgEqualsLabel) = (defaultValueLabel(), defaultValueLabel(), defaultValueLabel())
     val foundLabel = new Label("Id found")
     val panel = new GridBagPanel {
-      border = defaultTitleBorder("Rehash")
+      border = defaultTitleBorder(title)
       val c = new Constraints
       c.weightx = 1
       c.anchor = GridBagPanel.Anchor.Center
@@ -91,7 +91,6 @@ object MainForm extends SimpleSwingApplication {
   }
 
   // Форма MainForm
-  //TODO полный LookAndFeel
   def top: Frame = new MainFrame {
     contents = new GridBagPanel {
       import GridBagPanel.Fill._
