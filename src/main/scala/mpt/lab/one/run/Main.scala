@@ -1,6 +1,6 @@
 package mpt.lab.one.run
 
-import javax.swing.UIManager
+import javax.swing.{JFrame, UIManager}
 import mpt.lab.one.form.main.MainForm
 
 
@@ -15,8 +15,16 @@ import mpt.lab.one.form.main.MainForm
  */
 object Main extends App {
   // Установка темы оформления
-  //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel")
-  UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName)
+  val lookAndFeelClassName = 2 match {
+    case 0 => UIManager.getCrossPlatformLookAndFeelClassName
+    case 1 => UIManager.getSystemLookAndFeelClassName
+    case 2 => "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+  }
+  UIManager.setLookAndFeel(lookAndFeelClassName)
+
+  // Установка панели с кнопками (свернуть, на весь экран закыть) от темы оформления
+  JFrame.setDefaultLookAndFeelDecorated(true)
+
   // Создание и запуск главной формы
   MainForm.main(args)
 }
