@@ -1,4 +1,4 @@
-package experiment
+package experiment.lab1
 
 import mpt.lab.one.idtable.rehash.RehashTable
 import mpt.lab.one.idtable.binarytree.BinaryTree
