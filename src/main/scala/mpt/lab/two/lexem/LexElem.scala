@@ -1,4 +1,4 @@
-package mpt.lab.two
+package mpt.lab.two.lexem
 
 import mpt.lab.one.idtable.rehash.Node
 

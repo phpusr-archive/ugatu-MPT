@@ -1,4 +1,4 @@
-package mpt.lab.two
+package mpt.lab.two.lexem
 
 /**
  * @author phpusr
