@@ -32,6 +32,9 @@ class LexAuto {
   /** Текущее имя идентификатора */
   private var currentIdName = ""
 
+  /** Текущая числовая константа */
+  private var currentNumberConst = ""
+
   ////////////////////////////////////////////////////////
 
   /**  Инициализация */
@@ -69,7 +72,7 @@ class LexAuto {
           case C => cState(char)
           case G => gState(char)
           case V => vState(char)
-          case D => ???
+          case D => dState(char)
         }
       }
     }
@@ -102,6 +105,7 @@ class LexAuto {
       } else if (isDigit(char)) {
         // Если цифра
         changeCurrentState(AutoPos.D)
+        currentNumberConst = char
       } else {
         // Что-то еще
         notSupportCase(char)
@@ -167,7 +171,38 @@ class LexAuto {
         // Что-то еще
         notSupportCase(char)
       }
+    }
+  }
 
+  /** Обработка числовых констант */
+  private def dState(char: String) {
+    char match {
+      // Если начало комментария
+      case "{" =>
+        addVarToList(currentIdName)
+        changeCurrentState(AutoPos.C)
+
+      // Если начало знака присваивания
+      case ":" =>
+        addVarToList(currentIdName)
+        changeCurrentState(AutoPos.G)
+
+      // Если цифры
+      case _ => if (isDigit(char)) {
+        currentNumberConst += char
+        logger.debug(s"\t new num: $currentNumberConst")
+      } else if (isWhitespace(char)) {
+        // Если незначащий символ
+        addConstToList(currentNumberConst)
+        changeCurrentState(AutoPos.F)
+      } else if (isListened(char, "(,).;")) {
+        // Если символ-разделитель
+        addConstKeyToList(currentNumberConst, char)
+        changeCurrentState(AutoPos.F)
+      } else {
+        // Что-то еще
+        notSupportCase(char)
+      }
     }
   }
 
@@ -248,10 +283,13 @@ class LexAuto {
   }
 
   /** Добавление лексемы типа "константа" в таблицу лексем */
-  private def addConstToList() = ???
+  private def addConstToList(const: String) = ???
 
   /** Добавление лексемы типа "константа" и типа "разделитель" в таблицу лексем */
-  private def addConstKeyToList() = ???
+  private def addConstKeyToList(const: String, key: String) {
+    addConstToList(const)
+    addKeyToList(key)
+  }
 
   /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
   private def addKeyToList(key: String) {
