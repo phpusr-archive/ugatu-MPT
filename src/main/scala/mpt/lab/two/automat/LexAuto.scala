@@ -154,6 +154,7 @@ class LexAuto {
       // Если буквы и цифры
       case _ => if (isLetter(char) || isDigit(char)) {
         currentIdName += char
+        logger.debug(s"\t new name: $currentIdName")
       } else if (isWhitespace(char)) {
         // Если незначащий символ
         addVarToList(currentIdName)
@@ -172,6 +173,7 @@ class LexAuto {
 
   /** Не поддерживаемая операция */
   private def notSupportCase(char: String) {
+    logger.debug(s"\t not support: $char")
     throw new MatchError(s"Not support case: '$char'")
   }
 

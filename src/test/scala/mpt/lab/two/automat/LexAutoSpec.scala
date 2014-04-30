@@ -133,7 +133,7 @@ class LexAutoSpec extends FlatSpec {
 
     "abc2434(3@4#.:".foreach { e =>
       intercept[MatchError] {
-        auto.makeLexList(Array("=" + e.toString), out) //TODO почему-то в логах нет 2-о символа
+        auto.makeLexList(Array(":" + e.toString), out)
       }
     }
 
