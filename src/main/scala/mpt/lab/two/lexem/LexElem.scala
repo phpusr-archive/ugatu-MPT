@@ -45,6 +45,9 @@ object LexElem {
   def createInfo = () => ???
 
   /** Создание лексемы другого типа */
-  def createKey = () => ???
+  def createKey = (key: String, position: Position) => {
+    val lexType = LexType(LexType.MeaninglessSymbol, key)
+    LexElem(lexType, null, 0, null, position)
+  }
 
 }

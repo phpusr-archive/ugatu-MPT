@@ -21,7 +21,7 @@ object LexType {
   private val Var = "Переменная"
   private val Const = "Константа"
   private val SignAssignment = "Знак присвоения"
-  private val MeaninglessSymbol = "Незначащий символ"
+  val MeaninglessSymbol = "Незначащий символ"
 
   // TODO continue
   val If = LexType(KeyWord, "if")
