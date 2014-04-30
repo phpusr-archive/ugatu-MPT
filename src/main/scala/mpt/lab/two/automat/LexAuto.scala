@@ -64,7 +64,7 @@ class LexAuto {
         currentState match {
           case H => hState(char)
           case C => cState(char)
-          case G => ???
+          case G => gState(char)
           case V => ???
           case D => ???
         }
@@ -111,12 +111,26 @@ class LexAuto {
       // Конец комментария
       case "}" => changeCurrentState(AutoPos.F)
 
+      // Текст комментария
       case _ => if (isAnyChar(char, "}")) {
         logger.debug(s"Comment char: $char")
       } else {
         // Что-то еще
         notSupportCase(char)
       }
+    }
+  }
+
+  /** Обработка знака присваивания */
+  private def gState(char: String) {
+    char match {
+      // Конец знака присваивания
+      case "=" =>
+        addKeyToList(":=")
+        changeCurrentState(AutoPos.F)
+
+      // Что-то еще
+      case _ => notSupportCase(char)
     }
   }
 

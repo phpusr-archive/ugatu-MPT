@@ -100,7 +100,6 @@ class LexAutoSpec extends FlatSpec {
     out.size == 0
   }
 
-
   //------------------ State C ------------------//
 
   /** Проверка обработки комментариев */
@@ -115,7 +114,32 @@ class LexAutoSpec extends FlatSpec {
 
     auto.makeLexList(Array("{comment}"), out)
     assert(auto.currentState == AutoPos.F)
+
+    out.size == 0
   }
 
+  //------------------ State G ------------------//
+
+  /** Проверка обработки знака присваивания */
+  it should "processing :=" in {
+    val out = ListBuffer[LexElem]()
+    val auto = new LexAuto
+
+    "abc2434(3@4#.:".foreach { e =>
+      intercept[MatchError] {
+        auto.makeLexList(Array("=", e.toString), out)
+      }
+    }
+
+    out.size == 0
+
+    auto.makeLexList(Array(":="), out)
+    assert(auto.currentState == AutoPos.F)
+    assert(out(0).lexInfo.name == LexType.MeaninglessSymbol)
+    assert(out(0).lexInfo.info == ":=")
+
+    out.size == 1
+
+  }
 
 }
