@@ -21,10 +21,21 @@ class LexAuto {
   private val NoErrors = 0
 
   /** Текущее состояние автомата */
-  private var currentState = AutoPos.H
+  var currentState = AutoPos.H
 
   /** Логирование */
   private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
+  
+  /** Таблица найденных лексем */
+  private var lexList: ListBuffer[LexElem] = null
+
+  ////////////////////////////////////////////////////////
+
+  /**  Инициализация */
+  private def init(listLex: ListBuffer[LexElem]) {
+    this.lexList = listLex
+    reset()
+  }
 
   /**
    * Моделирование работы КА
@@ -35,6 +46,9 @@ class LexAuto {
    *         в которой она присутствует
    */
   def makeLexList(lines: Array[String], listLex: ListBuffer[LexElem]): Int = {
+    // Инициализация
+    init(listLex)
+
     for (lineIndex <- 0 until lines.size) {
 
       // Обрабатываемая строка
@@ -60,6 +74,11 @@ class LexAuto {
     NoErrors
   }
 
+  /** Сброс состояния автомата */
+  private def reset() {
+    currentState = AutoPos.H
+  }
+
   /** Обработка начального состояния */
   private def hState(char: String) {
     char match {
@@ -72,7 +91,7 @@ class LexAuto {
       // Если незначащий символ
       case _ => if (isListened(char, "(,);") || isWhitespace(char)) {
         addKeyToList(char)
-        changeCurrentState(AutoPos.H)
+        changeCurrentState(AutoPos.F)
       } else if (isLetter(char, "iteoxa")) {
         // Если буква, за исключением (i,t,e,o,x,a)
         changeCurrentState(AutoPos.V)
@@ -173,7 +192,7 @@ class LexAuto {
   /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
   private def addKeyToList(key: String) = {
     logger.debug(s"\tadd key: '$key'")
-    LexElem.createKey(key, currentPosition)
+    lexList += LexElem.createKey(key, currentPosition)
   }
 
   /** Добавление лексемы типа "ключевое слово" и "разделитель" в таблицу лексем подряд */
