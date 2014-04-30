@@ -1,11 +1,10 @@
 package mpt.lab.two.automat
 
-import java.io.File
 import scala.collection.mutable.ListBuffer
-import scala.io.Source
 import mpt.lab.two.automat.AutoPos.AutoPos
 import scala.util.matching.Regex
 import mpt.lab.two.lexem.{Position, LexElem}
+import org.dyndns.phpusr.log.Logger
 
 /**
  * @author phpusr
@@ -24,30 +23,31 @@ class LexAuto {
   /** Текущее состояние автомата */
   private var currentState = AutoPos.H
 
+  /** Логирование */
+  private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
+
   /**
    * Моделирование работы КА
-   * @param file Текст программы
+   * @param lines Текст программы
    * @param listLex Таблица найденных лексем
    * @return 0 если лексический анализ выполнен без ошибок,
    *         а если ошибка обнаружена - номер строки в исходном файле,
    *         в которой она присутствует
    */
-  def makeLexList(file: File, listLex: ListBuffer[LexElem]): Int = {
-    val lines = Source.fromFile(file).getLines().toArray
-
-    for (lineIndex <- 0 to lines.size) {
+  def makeLexList(lines: Array[String], listLex: ListBuffer[LexElem]): Int = {
+    for (lineIndex <- 0 until lines.size) {
 
       // Обрабатываемая строка
       val line = lines(lineIndex)
 
-      for (charIndex <- 0 to line.size) {
+      for (charIndex <- 0 until line.size) {
 
-        // Обрабатываемый символ
+        // Обрабатываемый символ //TODO обработка конца строки
         val char = line(charIndex).toString
 
         import mpt.lab.two.automat.AutoPos._
         currentState match {
-          case H => ???
+          case H => hState(char)
           case C => ???
           case G => ???
           case V => ???
@@ -76,7 +76,7 @@ class LexAuto {
         changeCurrentState(AutoPos.D)
       } else {
         // Что-то еще
-        throw new MatchError(s"Not support case: $char")
+        throw new MatchError(s"Not support case: '$char'")
       }
     }
   }
@@ -84,6 +84,7 @@ class LexAuto {
   /** Меняет текущее состояние автомата */
   private def changeCurrentState(newState: AutoPos) {
     currentState = newState
+    logger.debug(s"change state: $newState")
   }
 
   /** Строка состоит из букв и не включает $excludeChars */
@@ -120,6 +121,7 @@ class LexAuto {
 
   /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
   private def addKeyToList(key: String) = {
+    logger.debug(s"add key: $key")
     LexElem.createKey(key, currentPosition)
   }
 
