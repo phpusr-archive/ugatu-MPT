@@ -49,7 +49,7 @@ class LexAuto {
         import mpt.lab.two.automat.AutoPos._
         currentState match {
           case H => hState(char)
-          case C => ???
+          case C => cState(char)
           case G => ???
           case V => ???
           case D => ???
@@ -81,9 +81,29 @@ class LexAuto {
         changeCurrentState(AutoPos.D)
       } else {
         // Что-то еще
-        throw new MatchError(s"Not support case: '$char'")
+        notSupportCase(char)
       }
     }
+  }
+
+  /** Обработка комментария */
+  private def cState(char: String) {
+    char match {
+      // Конец комментария
+      case "}" => changeCurrentState(AutoPos.F)
+
+      case _ => if (isAnyChar(char, "}")) {
+        logger.debug(s"Comment char: $char")
+      } else {
+        // Что-то еще
+        notSupportCase(char)
+      }
+    }
+  }
+
+  /** Не поддерживаемая операция */
+  private def notSupportCase(char: String) {
+    throw new MatchError(s"Not support case: '$char'")
   }
 
   /** Меняет текущее состояние автомата */
@@ -123,6 +143,17 @@ class LexAuto {
     val digitRegex = new Regex("^\\d+$")
 
     digitRegex.findFirstIn(string).isDefined
+  }
+
+  /** Строка состоит из любых символов кроме $excludeChars */
+  private def isAnyChar(string: String, excludeChars: String) = {
+    val anyCharRegex = new Regex("^.+$")
+    val excludeRegex = new Regex(s"[$excludeChars]")
+
+    val isAnyChar = anyCharRegex.findFirstIn(string).isDefined
+    val isNotExclude = excludeRegex.findFirstIn(string).isEmpty
+
+    isAnyChar && isNotExclude
   }
 
   private def currentPosition = Position(0, 0, 0) //TODO
