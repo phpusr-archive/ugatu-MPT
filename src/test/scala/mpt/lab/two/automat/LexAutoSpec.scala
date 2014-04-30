@@ -103,6 +103,19 @@ class LexAutoSpec extends FlatSpec {
 
   //------------------ State C ------------------//
 
+  /** Проверка обработки комментариев */
+  it should "processing comments" in {
+    val out = ListBuffer[LexElem]()
+    val auto = new LexAuto
+
+    "bcdfghjklmnpqrsuvwyz_ABCXYZ".foreach { e =>
+      auto.makeLexList(Array("{", e.toString), out)
+      assert(auto.currentState == AutoPos.C)
+    }
+
+    auto.makeLexList(Array("{comment}"), out)
+    assert(auto.currentState == AutoPos.F)
+  }
 
 
 }
