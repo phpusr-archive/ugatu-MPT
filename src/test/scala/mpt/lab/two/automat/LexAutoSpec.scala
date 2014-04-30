@@ -175,14 +175,37 @@ class LexAutoSpec extends FlatSpec {
 
     assert(out.size == 2)
 
+    // Незначащие символы
+    var eIndex = 2
+    "(,).;".foreach { e =>
+      auto.makeLexList(Array("w" + e.toString), out)
+      assert(auto.currentState == AutoPos.F)
+      assert(out(eIndex).lexInfo.name == LexType.Var)
+      assert(out(eIndex).lexInfo.info == "w")
+      assert(out(eIndex+1).lexInfo.name == LexType.MeaninglessSymbol)
+      assert(out(eIndex+1).lexInfo.info == e.toString)
+
+      eIndex += 2
+    }
+
+    // Символы-разделители
+    " \t".foreach { e =>
+      auto.makeLexList(Array("r" + e.toString), out)
+      assert(out(eIndex).lexInfo.name == LexType.Var)
+      assert(out(eIndex).lexInfo.info == "r")
+
+      eIndex += 1
+    }
+
     // Не поддерживаемые символы
+    val outSize = out.size
     "!№%?*".foreach { e =>
       intercept[MatchError] {
-        auto.makeLexList(Array("v" + e.toString), out)
+        auto.makeLexList(Array("s" + e.toString), out)
       }
     }
 
-    assert(out.size == 2)
+    assert(out.size == outSize)
 
   }
 }
