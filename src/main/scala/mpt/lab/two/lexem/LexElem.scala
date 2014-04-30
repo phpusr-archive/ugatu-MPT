@@ -36,7 +36,10 @@ case class Position(lineIndex: Int, columnIndex: Int, fromBegin: Int)
 object LexElem {
 
   /** Создание лексемы типа "переменная" */
-  def createVar = () => ???
+  def createVar = (variable: String, position: Position) => {
+    val lexType = LexType(LexType.Var, variable) //TODO add to id table
+    LexElem(lexType, null, 0, null, position)
+  }
 
   /** Создание лексемы типа "константа" */
   def createConst = () => ???

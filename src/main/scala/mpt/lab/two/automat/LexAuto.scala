@@ -29,6 +29,9 @@ class LexAuto {
   /** Таблица найденных лексем */
   private var lexList: ListBuffer[LexElem] = null
 
+  /** Текущее имя идентификатора */
+  private var currentIdName = ""
+
   ////////////////////////////////////////////////////////
 
   /**  Инициализация */
@@ -65,7 +68,7 @@ class LexAuto {
           case H => hState(char)
           case C => cState(char)
           case G => gState(char)
-          case V => ???
+          case V => vState(char)
           case D => ???
         }
       }
@@ -95,6 +98,7 @@ class LexAuto {
       } else if (isLetter(char, "iteoxa")) {
         // Если буква, за исключением (i,t,e,o,x,a)
         changeCurrentState(AutoPos.V)
+        currentIdName = char
       } else if (isDigit(char)) {
         // Если цифра
         changeCurrentState(AutoPos.D)
@@ -134,6 +138,38 @@ class LexAuto {
     }
   }
 
+  /** Обработка идентификатора */
+  private def vState(char: String) {
+    char match {
+      // Если начало комментария
+      case "{" =>
+        addVarToList(currentIdName)
+        changeCurrentState(AutoPos.C)
+
+      // Если начало знака присваивания
+      case ":" =>
+        addVarToList(currentIdName)
+        changeCurrentState(AutoPos.G)
+
+      // Если буквы и цифры
+      case _ => if (isLetter(char) || isDigit(char)) {
+        currentIdName += char
+      } else if (isWhitespace(char)) {
+        // Если незначащий символ
+        addVarToList(currentIdName)
+        changeCurrentState(AutoPos.F)
+      } else if (isListened(char, "(,).;")) {
+        // Если символ-разделитель
+        addVarKeyToList(currentIdName, char)
+        changeCurrentState(AutoPos.F)
+      } else {
+        // Что-то еще
+        notSupportCase(char)
+      }
+
+    }
+  }
+
   /** Не поддерживаемая операция */
   private def notSupportCase(char: String) {
     throw new MatchError(s"Not support case: '$char'")
@@ -159,6 +195,9 @@ class LexAuto {
 
     whitespaceRegex.findFirstIn(string).isDefined
   }
+
+  /** Строка состоит из букв */
+  private def isLetter(string: String) = isLetter(string, "")
 
   /** Строка состоит из букв и не включает $excludeChars */
   private def isLetter(string: String, excludeChars: String) = {
@@ -192,10 +231,17 @@ class LexAuto {
   private def currentPosition = Position(0, 0, 0) //TODO
 
   /** Добавление лексемы типа "переменная" в таблицу лексем */
-  private def addVarToList() = ???
+  //TODO наверное стоит переименовать в addIdToList и сделать проверку на ключевое слово
+  private def addVarToList(id: String) {
+    logger.debug(s"\tadd id: '$id'")
+    lexList += LexElem.createVar(id, currentPosition)
+  }
 
   /** Добавление лексемы типа "переменная" и типа "разделитель" в таблицу лексем */
-  private def addVarKeyToList() = ???
+  private def addVarKeyToList(id: String, key: String) = {
+    addVarToList(id)
+    addKeyToList(key)
+  }
 
   /** Добавление лексемы типа "константа" в таблицу лексем */
   private def addConstToList() = ???
@@ -204,7 +250,7 @@ class LexAuto {
   private def addConstKeyToList() = ???
 
   /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
-  private def addKeyToList(key: String) = {
+  private def addKeyToList(key: String) {
     logger.debug(s"\tadd key: '$key'")
     lexList += LexElem.createKey(key, currentPosition)
   }
