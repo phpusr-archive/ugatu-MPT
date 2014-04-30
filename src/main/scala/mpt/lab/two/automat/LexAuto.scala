@@ -44,6 +44,7 @@ class LexAuto {
 
         // Обрабатываемый символ //TODO обработка конца строки
         val char = line(charIndex).toString
+        logger.debug(s"char: '$char'")
 
         import mpt.lab.two.automat.AutoPos._
         currentState match {
@@ -62,14 +63,18 @@ class LexAuto {
   /** Обработка начального состояния */
   private def hState(char: String) {
     char match {
-      // Если не значащий символ
-      case "(" | "," | ")" | ";" => addKeyToList(char); changeCurrentState(AutoPos.H)
       // Если начало комментария
       case "{" => changeCurrentState(AutoPos.C)
+
       // Если начало знака присваивания
       case ":" => changeCurrentState(AutoPos.G)
-      // Если буква за исключением (i,t,e,o,x,a)
-      case _ => if (isLetter(char, "iteoxa")) {
+
+      // Если незначащий символ
+      case _ => if (isListened(char, "(,);") || isWhitespace(char)) {
+        addKeyToList(char)
+        changeCurrentState(AutoPos.H)
+      } else if (isLetter(char, "iteoxa")) {
+        // Если буква, за исключением (i,t,e,o,x,a)
         changeCurrentState(AutoPos.V)
       } else if (isDigit(char)) {
         // Если цифра
@@ -84,25 +89,40 @@ class LexAuto {
   /** Меняет текущее состояние автомата */
   private def changeCurrentState(newState: AutoPos) {
     currentState = newState
-    logger.debug(s"change state: $newState")
+    logger.debug(s"\tchange state: $newState")
+  }
+
+  /** Строка состоит из переданных символов */
+  private def isListened(string: String, includeChars: String) = {
+    val splitterRegex = new Regex(s"^[$includeChars]+$$")
+
+    splitterRegex.findFirstIn(string).isDefined
+  }
+
+
+  /** Строка состоит из незначащих символов */
+  private def isWhitespace(string: String) = {
+    val whitespaceRegex = new Regex("^\\s+$")
+
+    whitespaceRegex.findFirstIn(string).isDefined
   }
 
   /** Строка состоит из букв и не включает $excludeChars */
   private def isLetter(string: String, excludeChars: String) = {
-    val letterRegex = new Regex("[a-zA-Z_]")
+    val letterRegex = new Regex("^[a-zA-Z_]+$")
     val excludeRegex = new Regex(s"[$excludeChars]")
 
-    val isLetter = !letterRegex.findAllIn(string).isEmpty
-    val isNotExclude = excludeRegex.findAllIn(string).isEmpty
+    val isLetter = letterRegex.findFirstIn(string).isDefined
+    val isNotExclude = excludeRegex.findFirstIn(string).isEmpty
 
     isLetter && isNotExclude
   }
 
   /** Строка состоит из цифр */
   private def isDigit(string: String) = {
-    val digitRegex = new Regex("\\d")
+    val digitRegex = new Regex("^\\d+$")
 
-    !digitRegex.findAllIn(string).isEmpty
+    digitRegex.findFirstIn(string).isDefined
   }
 
   private def currentPosition = Position(0, 0, 0) //TODO
@@ -121,7 +141,7 @@ class LexAuto {
 
   /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
   private def addKeyToList(key: String) = {
-    logger.debug(s"add key: $key")
+    logger.debug(s"\tadd key: '$key'")
     LexElem.createKey(key, currentPosition)
   }
 
