@@ -197,15 +197,17 @@ class LexAuto {
   }
 
   /** Строка состоит из букв */
-  private def isLetter(string: String) = isLetter(string, "")
+  private def isLetter(string: String): Boolean = isLetter(string, null)
 
   /** Строка состоит из букв и не включает $excludeChars */
   private def isLetter(string: String, excludeChars: String) = {
     val letterRegex = new Regex("^[a-zA-Z_]+$")
-    val excludeRegex = new Regex(s"[$excludeChars]")
-
     val isLetter = letterRegex.findFirstIn(string).isDefined
-    val isNotExclude = excludeRegex.findFirstIn(string).isEmpty
+
+    val isNotExclude = if (excludeChars != null) {
+      val excludeRegex = new Regex(s"[$excludeChars]")
+      excludeRegex.findFirstIn(string).isEmpty
+    } else true
 
     isLetter && isNotExclude
   }
