@@ -19,6 +19,8 @@ class LexAutoSpec extends FlatSpec {
 
   /** Проверка добавления символов */
   it should "add whitespaces and splitters" in {
+    println("\n>> State H")
+
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto
 
@@ -104,11 +106,13 @@ class LexAutoSpec extends FlatSpec {
 
   /** Проверка обработки комментариев */
   it should "processing comments" in {
+    println("\n>> State C")
+
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto
 
     "bcdfghjklmnpqrsuvwyz_ABCXYZ".foreach { e =>
-      auto.makeLexList(Array("{", e.toString), out)
+      auto.makeLexList(Array("{" + e.toString), out)
       assert(auto.currentState == AutoPos.C)
     }
 
@@ -122,12 +126,14 @@ class LexAutoSpec extends FlatSpec {
 
   /** Проверка обработки знака присваивания */
   it should "processing :=" in {
+    println("\n>> State G")
+
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto
 
     "abc2434(3@4#.:".foreach { e =>
       intercept[MatchError] {
-        auto.makeLexList(Array("=", e.toString), out)
+        auto.makeLexList(Array("=" + e.toString), out) //TODO почему-то в логах нет 2-о символа
       }
     }
 
@@ -142,4 +148,41 @@ class LexAutoSpec extends FlatSpec {
 
   }
 
+  //------------------ State V ------------------//
+
+  /** Проверка обработки идентификаторов */
+  it should "" in {
+    println("\n>> State V")
+
+    val out = ListBuffer[LexElem]()
+    val auto = new LexAuto
+
+    // Добавление символов к имени ид-а
+    auto.makeLexList(Array("vabcdefghijklmnopqrstuvwxyz_0123456789_ABCXYZ"), out)
+    assert(auto.currentState == AutoPos.V)
+
+    // Начало комментария
+    auto.makeLexList(Array("v{"), out)
+    assert(auto.currentState == AutoPos.C)
+    assert(out(0).lexInfo.name == LexType.Var)
+    assert(out(0).lexInfo.info == "v")
+
+    // Начало присваивания
+    auto.makeLexList(Array("d:"), out)
+    assert(auto.currentState == AutoPos.G)
+    assert(out(1).lexInfo.name == LexType.Var)
+    assert(out(1).lexInfo.info == "d")
+
+    assert(out.size == 2)
+
+    // Не поддерживаемые символы
+    "!№%?*".foreach { e =>
+      intercept[MatchError] {
+        auto.makeLexList(Array("v" + e.toString), out)
+      }
+    }
+
+    assert(out.size == 2)
+
+  }
 }
