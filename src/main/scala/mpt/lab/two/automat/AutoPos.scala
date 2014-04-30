@@ -9,26 +9,26 @@ package mpt.lab.two.automat
 /**
  * Возможные состояния автомата
  */
-object AutoPos extends Enumeration {
+object AutoPos {
 
-  type AutoPos = Value
+  case class AutoPos(name: String, description: String)
 
   /** Начальное состояние */
-  val H = Value
+  val H = AutoPos("H", "Начальное состояние")
 
   /** Комментарий */
-  val C = Value
+  val C = AutoPos("C", "Комментарий")
 
   /** Двоеточие */
-  val G = Value
+  val G = AutoPos("G", "Двоеточие")
 
   /** Идетификатор */
-  val V = Value
+  val V = AutoPos("V", "Идетификатор")
 
   /** Числовая константа */
-  val D = Value
+  val D = AutoPos("D", "Числовая константа")
 
   /** Конченое состояние */
-  val F = Value
+  val F = AutoPos("F", "Конченое состояние")
 
 }
