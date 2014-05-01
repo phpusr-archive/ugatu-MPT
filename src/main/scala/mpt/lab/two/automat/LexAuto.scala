@@ -1,9 +1,9 @@
 package mpt.lab.two.automat
 
 import scala.collection.mutable.ListBuffer
-import scala.util.matching.Regex
 import mpt.lab.two.lexem.LexElem
 import org.dyndns.phpusr.log.Logger
+import mpt.lab.two.automat.StringMatcher._
 
 /**
  * @author phpusr
@@ -225,55 +225,6 @@ class LexAuto extends ElementAdder {
     prevState = currentState
     currentState = newState
     logger.debug(s"\t change state: $newState")
-  }
-
-  /** Строка состоит из переданных символов */
-  private def isListened(string: String, includeChars: String) = {
-    val splitterRegex = new Regex(s"^[$includeChars]+$$")
-
-    splitterRegex.findFirstIn(string).isDefined
-  }
-
-
-  /** Строка состоит из незначащих символов */
-  private def isWhitespace(string: String) = {
-    val whitespaceRegex = new Regex("^\\s+$")
-
-    whitespaceRegex.findFirstIn(string).isDefined
-  }
-
-  /** Строка состоит из букв */
-  private def isLetter(string: String): Boolean = isLetter(string, null)
-
-  /** Строка состоит из букв и не включает $excludeChars */
-  private def isLetter(string: String, excludeChars: String) = {
-    val letterRegex = new Regex("^[a-zA-Z_]+$")
-    val isLetter = letterRegex.findFirstIn(string).isDefined
-
-    val isNotExclude = if (excludeChars != null) {
-      val excludeRegex = new Regex(s"[$excludeChars]")
-      excludeRegex.findFirstIn(string).isEmpty
-    } else true
-
-    isLetter && isNotExclude
-  }
-
-  /** Строка состоит из цифр */
-  private def isDigit(string: String) = {
-    val digitRegex = new Regex("^\\d+$")
-
-    digitRegex.findFirstIn(string).isDefined
-  }
-
-  /** Строка состоит из любых символов кроме $excludeChars */
-  private def isAnyChar(string: String, excludeChars: String) = {
-    val anyCharRegex = new Regex("^.+$")
-    val excludeRegex = new Regex(s"[$excludeChars]")
-
-    val isAnyChar = anyCharRegex.findFirstIn(string).isDefined
-    val isNotExclude = excludeRegex.findFirstIn(string).isEmpty
-
-    isAnyChar && isNotExclude
   }
 
 }
