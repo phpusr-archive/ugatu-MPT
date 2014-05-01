@@ -19,7 +19,7 @@ case class LexType(name: String, info: String)
 object LexType {
   private val KeyWord = "Ключевое слово"
   val Var = "Переменная"
-  private val Const = "Константа"
+  val Const = "Константа"
   private val SignAssignment = "Знак присвоения"
   val MeaninglessSymbol = "Незначащий символ"
 

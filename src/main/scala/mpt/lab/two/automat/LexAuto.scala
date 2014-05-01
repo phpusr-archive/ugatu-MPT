@@ -190,7 +190,7 @@ class LexAuto {
       // Если цифры
       case _ => if (isDigit(char)) {
         currentNumberConst += char
-        logger.debug(s"\t new num: $currentNumberConst")
+        logger.debug(s"\t new digit: $currentNumberConst")
       } else if (isWhitespace(char)) {
         // Если незначащий символ
         addConstToList(currentNumberConst)
@@ -215,7 +215,7 @@ class LexAuto {
   /** Меняет текущее состояние автомата */
   private def changeCurrentState(newState: AutoPos) {
     currentState = newState
-    logger.debug(s"\tchange state: $newState")
+    logger.debug(s"\t change state: $newState")
   }
 
   /** Строка состоит из переданных символов */
@@ -272,7 +272,7 @@ class LexAuto {
   /** Добавление лексемы типа "переменная" в таблицу лексем */
   //TODO наверное стоит переименовать в addIdToList и сделать проверку на ключевое слово
   private def addVarToList(id: String) {
-    logger.debug(s"\tadd id: '$id'")
+    logger.debug(s"\t add id: '$id'")
     lexList += LexElem.createVar(id, currentPosition)
   }
 
@@ -283,7 +283,10 @@ class LexAuto {
   }
 
   /** Добавление лексемы типа "константа" в таблицу лексем */
-  private def addConstToList(const: String) = ???
+  private def addConstToList(const: String) {
+    logger.debug(s"\t add const: '$const'")
+    lexList += LexElem.createConst(const, currentPosition)
+  }
 
   /** Добавление лексемы типа "константа" и типа "разделитель" в таблицу лексем */
   private def addConstKeyToList(const: String, key: String) {
@@ -293,7 +296,7 @@ class LexAuto {
 
   /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
   private def addKeyToList(key: String) {
-    logger.debug(s"\tadd key: '$key'")
+    logger.debug(s"\t add key: '$key'")
     lexList += LexElem.createKey(key, currentPosition)
   }
 

@@ -42,7 +42,11 @@ object LexElem {
   }
 
   /** Создание лексемы типа "константа" */
-  def createConst = () => ???
+  def createConst = (const: String, position: Position) => {
+    val lexType = LexType(LexType.Const, const)
+    //TODO convert const
+    LexElem(lexType, null, 0, null, position)
+  }
 
   /** Создание информационной лексемы */
   def createInfo = () => ???
