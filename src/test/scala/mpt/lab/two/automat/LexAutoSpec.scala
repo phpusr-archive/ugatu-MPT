@@ -147,67 +147,6 @@ class LexAutoSpec extends FlatSpec {
 
   }
 
-  //------------------ State V ------------------//
-
-  /** Проверка обработки идентификаторов */
-  it should "processing id" in {
-    println("\n>> State V")
-
-    val out = ListBuffer[LexElem]()
-    val auto = new LexAuto
-
-    // Добавление символов к имени ид-а
-    auto.makeLexList(Array("vabcdefghijklmnopqrstuvwxyz_0123456789_ABCXYZ"), out)
-    assert(auto.prevState == AutoPos.V)
-
-    // Начало комментария
-    auto.makeLexList(Array("v{"), out)
-    assert(auto.currentState == AutoPos.C)
-    assert(out(1).lexInfo.name == LexType.Var)
-    assert(out(1).lexInfo.info == "v")
-
-    // Начало присваивания
-    auto.makeLexList(Array("d:="), out)
-    assert(auto.prevState == AutoPos.F)
-    assert(auto.currentState == AutoPos.F)
-    assert(out(2).lexInfo.name == LexType.Var)
-    assert(out(2).lexInfo.info == "d")
-
-    assert(out.size == 4)
-
-    // Незначащие символы
-    var eIndex = 4
-    "(,).;".foreach { e =>
-      auto.makeLexList(Array("w" + e.toString), out)
-      assert(auto.currentState == AutoPos.F)
-      assert(out(eIndex).lexInfo.name == LexType.Var)
-      assert(out(eIndex).lexInfo.info == "w")
-      assert(out(eIndex+1).lexInfo.name == LexType.MeaninglessSymbol)
-      assert(out(eIndex+1).lexInfo.info == e.toString)
-
-      eIndex += 2
-    }
-
-    // Символы-разделители
-    " \t".foreach { e =>
-      auto.makeLexList(Array("r" + e.toString), out)
-      assert(out(eIndex).lexInfo.name == LexType.Var)
-      assert(out(eIndex).lexInfo.info == "r")
-
-      eIndex += 1
-    }
-
-    // Не поддерживаемые символы
-    val outSize = out.size
-    "!№%?*".foreach { e =>
-      intercept[MatchError] {
-        auto.makeLexList(Array("s" + e.toString), out)
-      }
-    }
-
-    assert(out.size == outSize)
-  }
-
 
   //------------------ State D ------------------//
 
