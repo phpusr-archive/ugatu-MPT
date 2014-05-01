@@ -48,7 +48,13 @@ object LexKeyWord {
   /** Создание ключевого слова по имени */
   private def createKeyWord(info: String) = LexType(KeyWord, Some(info))
 
-  //////////////////////////////////////////
+}
+
+/**
+ * Операторы
+ */
+object LexOperators {
+  import mpt.lab.two.lexem.LexType._
 
   /** Знак присвоения */
   val Assignment = ":="

@@ -1,6 +1,6 @@
 package mpt.lab.two.automat
 
-import mpt.lab.two.lexem.{LexKeyWord, LexElem, Position}
+import mpt.lab.two.lexem.{LexOperators, LexKeyWord, LexElem, Position}
 import org.dyndns.phpusr.log.Logger
 import scala.collection.mutable.ListBuffer
 import mpt.lab.one.idtable.rehash.RehashTable
@@ -75,7 +75,7 @@ trait ElementAdder {
   /** Добавление лексемы типа "оператор" в таблицу лексем */
   protected def addOperatorToList(operator: String) {
     logger.debug(s"\t add operator: '$operator'")
-    val oper = LexKeyWord.getOperatorByName(operator)
+    val oper = LexOperators.getOperatorByName(operator)
     lexList += LexElem.createOperator(oper, currentPosition)
   }
 

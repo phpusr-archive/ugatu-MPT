@@ -1,7 +1,7 @@
 package mpt.lab.two.automat
 
 import scala.collection.mutable.ListBuffer
-import mpt.lab.two.lexem.{LexKeyWord, LexElem}
+import mpt.lab.two.lexem.{LexOperators, LexElem}
 import org.dyndns.phpusr.log.Logger
 import mpt.lab.two.automat.StringMatcher._
 
@@ -142,7 +142,7 @@ class LexAuto extends ElementAdder {
     char match {
       // Конец знака присваивания
       case "=" =>
-        addOperatorToList(LexKeyWord.Assignment)
+        addOperatorToList(LexOperators.Assignment)
         changeCurrentState(AutoPos.F)
 
       // Что-то еще
