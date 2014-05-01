@@ -7,11 +7,14 @@ package mpt.lab.two.automat
  */
 
 /**
+ * Состояние автомата
+ */
+case class AutoPos(name: String, description: String)
+
+/**
  * Возможные состояния автомата
  */
 object AutoPos {
-
-  case class AutoPos(name: String, description: String)
 
   /** Начальное состояние */
   val H = AutoPos("H", "Начальное состояние")

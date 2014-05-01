@@ -1,7 +1,6 @@
 package mpt.lab.two.automat
 
 import scala.collection.mutable.ListBuffer
-import mpt.lab.two.automat.AutoPos.AutoPos
 import scala.util.matching.Regex
 import mpt.lab.two.lexem.LexElem
 import org.dyndns.phpusr.log.Logger
