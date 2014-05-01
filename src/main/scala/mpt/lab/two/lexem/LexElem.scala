@@ -70,6 +70,7 @@ object LexElem {
   }
 
   /** Создание лексемы типа "оператор" */
+  //TODO операторы сравнения
   def createOperator = (lexType: LexType, position: Position) => {
     LexElem(lexType, None, None, None, position)
   }
@@ -81,7 +82,7 @@ object LexElem {
     LexElem(lexType, None, None, None, position)
   }
 
-  /** Создание лексемы другого типа */
+  /** Создание лексемы-разделителя */
   def createKey = (key: String, position: Position) => {
     val lexType = LexType(LexType.SplitterSign, Some(key))
     LexElem(lexType, None, None, None, position)

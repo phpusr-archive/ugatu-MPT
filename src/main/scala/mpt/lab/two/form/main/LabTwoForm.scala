@@ -37,6 +37,7 @@ object LabTwoForm extends SimpleSwingApplication {
 
         // Источник (Вкладка 1)
         pages += new Page("Source", new GridBagPanel {
+          //TODO доделать форму
           val c = new Constraints
           layout(new Button("Test")) = c
         })
