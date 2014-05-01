@@ -17,7 +17,7 @@ import mpt.lab.one.idtable.NodeAbstract
  * @param szInfo Проивзольная строка для информационной лексемы
  * @param pos Информация о позиции лексемы в тексте входной программы
  */
-case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: AnyVal, szInfo: String, pos: Position)
+case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Option[AnyVal], szInfo: Option[String], pos: Position)
 
 
 /**
@@ -38,14 +38,15 @@ object LexElem {
   /** Создание лексемы типа "переменная" */
   def createVar = (variable: String, position: Position, varInfo: Option[NodeAbstract]) => {
     val lexType = LexType(LexType.Var, None)
-    LexElem(lexType, varInfo, 0, null, position)
+    LexElem(lexType, varInfo, None, None, position)
   }
 
   /** Создание лексемы типа "константа" */
   def createConst = (const: String, position: Position) => {
-    val lexType = LexType(LexType.Const, Some(const))
-    //TODO convert const
-    LexElem(lexType, null, 0, null, position)
+    val lexType = LexType(LexType.Const, None)
+    //TODO вещественные числа
+    val number = const.toInt
+    LexElem(lexType, None, Some(number), None, position)
   }
 
   /** Создание информационной лексемы */
@@ -54,7 +55,7 @@ object LexElem {
   /** Создание лексемы другого типа */
   def createKey = (key: String, position: Position) => {
     val lexType = LexType(LexType.MeaninglessSymbol, Some(key))
-    LexElem(lexType, None, 0, null, position)
+    LexElem(lexType, None, None, None, position)
   }
 
 }
