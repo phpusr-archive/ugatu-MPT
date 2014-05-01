@@ -41,6 +41,11 @@ object LexElem {
     LexElem(lexType, varInfo, None, None, position)
   }
 
+  /** Создание лексемы типа "ключевое слово" */
+  def createKeyWord = (keyWord: LexType, name: String, position: Position) => {
+    LexElem(keyWord, None, None, None, position)
+  }
+
   /** Создание лексемы типа "константа" */
   def createConst = (const: String, position: Position) => {
     val lexType = LexType(LexType.Const, None)

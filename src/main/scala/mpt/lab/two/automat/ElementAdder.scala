@@ -1,6 +1,6 @@
 package mpt.lab.two.automat
 
-import mpt.lab.two.lexem.{LexElem, Position}
+import mpt.lab.two.lexem.{LexKeyWord, LexElem, Position}
 import org.dyndns.phpusr.log.Logger
 import scala.collection.mutable.ListBuffer
 import mpt.lab.one.idtable.rehash.RehashTable
@@ -31,18 +31,23 @@ trait ElementAdder {
 
   private def currentPosition = Position(0, 0, 0) //TODO
 
-  /** Добавление лексемы типа "переменная" в таблицу лексем */
-  //TODO наверное стоит переименовать в addIdToList и сделать проверку на ключевое слово
-  protected def addVarToList(id: String) {
-    logger.debug(s"\t add id: '$id'")
-
-    val varInfo = varTable.add(id)
-    lexList += LexElem.createVar(id, currentPosition, varInfo)
+  /** Добавление лексемы типа "слово" в таблицу лексем */
+  protected def addWordToList(word: String) {
+    val keyWord = LexKeyWord.getKeyWordByName(word)
+    
+    if (keyWord.isDefined) {
+      logger.debug(s"\t add key word: '$word'")
+      lexList += LexElem.createKeyWord(keyWord.get, word, currentPosition)
+    } else {
+      logger.debug(s"\t add var: '$word'")  
+      val varInfo = varTable.add(word)
+      lexList += LexElem.createVar(word, currentPosition, varInfo)
+    }
   }
 
-  /** Добавление лексемы типа "переменная" и типа "разделитель" в таблицу лексем */
-  protected def addVarKeyToList(id: String, key: String) = {
-    addVarToList(id)
+  /** Добавление лексемы типа "слово" и типа "разделитель" в таблицу лексем */
+  protected def addWordKeyToList(id: String, key: String) = {
+    addWordToList(id)
     addKeyToList(key)
   }
 

@@ -17,15 +17,45 @@ case class LexType(name: String, info: Option[String])
  * обычной и логарифмической форме), знак присваивания (:=).
  */
 object LexType {
-  private val KeyWord = "Ключевое слово"
+  val KeyWord = "Ключевое слово"
   val Var = "Переменная"
   val Const = "Константа"
-  private val SignAssignment = "Знак присвоения"
+  val SignAssignment = "Знак присвоения"
   val MeaninglessSymbol = "Незначащий символ"
+}
 
-  // TODO continue
-  val If = LexType(KeyWord, Some("if"))
+/**
+ * Ключевые слова
+ */
+object LexKeyWord {
+  import mpt.lab.two.lexem.LexType._
+
+  val If = "if"
+  val Then = "then"
+  val Else = "else"
+
+  val Words = Array(If, Then, Else)
+
+  /** Возвращает ключевое слово по имени */
+  def getKeyWordByName(name: String) = {
+    if (Words.contains(name)) {
+      Some(createKeyWord(name))
+    } else {
+      None
+    }
+  }
+
+  /** Создание ключевого слова по имени */
+  private def createKeyWord(info: String) = LexType(KeyWord, Some(info))
+
+  //////////////////////////////////////////
+
+  /** Знак присвоения */
+  val Assignment = LexType(SignAssignment, Some(":="))
+
+  //////////////////////////////////////////
 
   /** Конец строки */
   val LexStart = LexType(MeaninglessSymbol, Some("\n"))
+
 }

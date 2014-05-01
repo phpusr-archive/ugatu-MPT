@@ -17,7 +17,7 @@ import scala.collection.mutable.ListBuffer
 class StateVSpec extends FlatSpec {
 
   /** Проверка обработки идентификаторов */
-  it should "processing id" in {
+  it should "processing word" in {
     println("\n>> State V")
 
     val out = ListBuffer[LexElem]()

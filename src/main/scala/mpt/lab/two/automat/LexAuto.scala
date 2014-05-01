@@ -106,7 +106,7 @@ class LexAuto extends ElementAdder {
         // Если символ-разделитель
         addKeyToList(char)
         changeCurrentState(AutoPos.F)
-      } else if (isLetterWithExclude(char, "iteoxa")) {
+      } else if (isLetter(char)) {
         // Если буква, за исключением (i,t,e,o,x,a)
         changeCurrentState(AutoPos.V)
         currentIdName = char
@@ -155,12 +155,12 @@ class LexAuto extends ElementAdder {
     char match {
       // Если начало комментария
       case "{" =>
-        addVarToList(currentIdName)
+        addWordToList(currentIdName)
         changeCurrentState(AutoPos.C)
 
       // Если начало знака присваивания
       case ":" =>
-        addVarToList(currentIdName)
+        addWordToList(currentIdName)
         changeCurrentState(AutoPos.G)
 
       // Если буквы и цифры
@@ -169,11 +169,11 @@ class LexAuto extends ElementAdder {
         logger.debug(s"\t new name: $currentIdName")
       } else if (isWhitespace(char)) {
         // Если незначащий символ
-        addVarToList(currentIdName)
+        addWordToList(currentIdName)
         changeCurrentState(AutoPos.F)
       } else if (isListened(char, "(,).;")) {
         // Если символ-разделитель
-        addVarKeyToList(currentIdName, char)
+        addWordKeyToList(currentIdName, char)
         changeCurrentState(AutoPos.F)
       } else {
         // Что-то еще

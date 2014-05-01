@@ -51,15 +51,9 @@ class StageHSpec extends FlatSpec {
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto
 
-    "bcdfghjklmnpqrsuvwyz_ABCXYZ".foreach { e =>
+    "iteoxabcdfghjklmnpqrsuvwyz_ABCXYZ".foreach { e =>
       auto.makeLexList(Array(e.toString), out)
       assert(auto.prevState == AutoPos.V)
-    }
-
-    "iteoxa".foreach { e =>
-      intercept[MatchError] {
-        auto.makeLexList(Array(e.toString), out)
-      }
     }
 
     out.size == 0
