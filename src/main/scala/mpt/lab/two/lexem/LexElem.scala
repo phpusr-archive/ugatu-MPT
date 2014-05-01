@@ -17,7 +17,21 @@ import mpt.lab.one.idtable.NodeAbstract
  * @param szInfo Проивзольная строка для информационной лексемы
  * @param pos Информация о позиции лексемы в тексте входной программы
  */
-case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Option[AnyVal], szInfo: Option[String], pos: Position)
+case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Option[AnyVal], szInfo: Option[String], pos: Position) {
+  /** Значение лексемы */
+  def value = {
+    import mpt.lab.two.lexem.LexType._
+    val _value = lexInfo.name match {
+      case Var => varInfo.get.name
+      case Const => constVal.get
+      case KeyWord => lexInfo.info.get
+      case AssignmentSign => lexInfo.info.get
+      case SplitterSign => lexInfo.info.get
+    }
+
+    _value.toString
+  }
+}
 
 
 /**
@@ -42,8 +56,8 @@ object LexElem {
   }
 
   /** Создание лексемы типа "ключевое слово" */
-  def createKeyWord = (keyWord: LexType, name: String, position: Position) => {
-    LexElem(keyWord, None, None, None, position)
+  def createKeyWord = (lexType: LexType, position: Position) => {
+    LexElem(lexType, None, None, None, position)
   }
 
   /** Создание лексемы типа "константа" */
@@ -54,12 +68,17 @@ object LexElem {
     LexElem(lexType, None, Some(number), None, position)
   }
 
+  /** Создание лексемы типа "оператор" */
+  def createOperator = (lexType: LexType, position: Position) => {
+    LexElem(lexType, None, None, None, position)
+  }
+
   /** Создание информационной лексемы */
   def createInfo = () => ???
 
   /** Создание лексемы другого типа */
   def createKey = (key: String, position: Position) => {
-    val lexType = LexType(LexType.MeaninglessSymbol, Some(key))
+    val lexType = LexType(LexType.SplitterSign, Some(key))
     LexElem(lexType, None, None, None, position)
   }
 

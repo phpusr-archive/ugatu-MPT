@@ -3,6 +3,10 @@ package mpt.lab.two.form.main
 import scala.swing._
 import scala.swing.TabbedPane.Page
 import scala.swing.event.ButtonClicked
+import scala.io.Source
+import mpt.lab.two.automat.LexAuto
+import mpt.lab.two.lexem.LexElem
+import scala.collection.mutable.ListBuffer
 
 /**
  * @author phpusr
@@ -74,6 +78,17 @@ object LabTwoForm extends SimpleSwingApplication {
     case ButtonClicked(`exitButton`) => System.exit(0)
   }
 
-  lexemModel.addRow(List("One", "Two", "3"))
+  test()
+
+  def test() {
+    val lines = Source.fromFile("data/TestProg.txt").getLines().toArray
+
+    val auto = new LexAuto
+    val out = ListBuffer[LexElem]()
+    auto.makeLexList(lines, out)
+
+    out.map(e => Seq("0", e.lexInfo.name, e.value)).foreach(lexemModel.addRow)
+
+  }
 
 }

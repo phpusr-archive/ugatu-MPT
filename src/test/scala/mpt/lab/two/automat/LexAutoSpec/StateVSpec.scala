@@ -54,7 +54,7 @@ class StateVSpec extends FlatSpec {
       assert(out(eIndex).lexInfo.info.isEmpty)
       assert(out(eIndex).varInfo.get.name == "w")
 
-      assert(out(eIndex+1).lexInfo.name == LexType.MeaninglessSymbol)
+      assert(out(eIndex+1).lexInfo.name == LexType.SplitterSign)
       assert(out(eIndex+1).lexInfo.info.get == e.toString)
       assert(out(eIndex+1).varInfo.isEmpty)
 

@@ -37,7 +37,7 @@ trait ElementAdder {
     
     if (keyWord.isDefined) {
       logger.debug(s"\t add key word: '$word'")
-      lexList += LexElem.createKeyWord(keyWord.get, word, currentPosition)
+      lexList += LexElem.createKeyWord(keyWord.get, currentPosition)
     } else {
       logger.debug(s"\t add var: '$word'")  
       val varInfo = varTable.add(word)
@@ -71,5 +71,12 @@ trait ElementAdder {
 
   /** Добавление лексемы типа "ключевое слово" и "разделитель" в таблицу лексем подряд */
   protected def add2KeysToList() = ???
+
+  /** Добавление лексемы типа "оператор" в таблицу лексем */
+  protected def addOperatorToList(operator: String) {
+    logger.debug(s"\t add operator: '$operator'")
+    val oper = LexKeyWord.getOperatorByName(operator)
+    lexList += LexElem.createOperator(oper, currentPosition)
+  }
 
 }

@@ -20,12 +20,14 @@ object LexType {
   val KeyWord = "Ключевое слово"
   val Var = "Переменная"
   val Const = "Константа"
-  val SignAssignment = "Знак присвоения"
-  val MeaninglessSymbol = "Незначащий символ"
+  val AssignmentSign = "Знак присвоения"
+  val SplitterSign = "Символ-разделитель"
 }
 
 /**
  * Ключевые слова
+ *
+ * TODO уменьшить доступ
  */
 object LexKeyWord {
   import mpt.lab.two.lexem.LexType._
@@ -51,11 +53,18 @@ object LexKeyWord {
   //////////////////////////////////////////
 
   /** Знак присвоения */
-  val Assignment = LexType(SignAssignment, Some(":="))
+  val Assignment = ":="
+
+  /** Возвращает оператор по имени */
+  def getOperatorByName(name: String) = {
+    name match {
+      case Assignment => LexType(AssignmentSign, Some(Assignment))
+    }
+  }
 
   //////////////////////////////////////////
 
-  /** Конец строки */
-  val LexStart = LexType(MeaninglessSymbol, Some("\n"))
+  /** Конец строки */ //TODO убрать или использовать
+  val LexStart = LexType(SplitterSign, Some("\n"))
 
 }

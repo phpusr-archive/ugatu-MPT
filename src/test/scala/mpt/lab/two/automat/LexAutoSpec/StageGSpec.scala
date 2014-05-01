@@ -33,7 +33,7 @@ class StageGSpec extends FlatSpec {
 
     auto.makeLexList(Array(":="), out)
     assert(auto.currentState == AutoPos.F)
-    assert(out(0).lexInfo.name == LexType.MeaninglessSymbol)
+    assert(out(0).lexInfo.name == LexType.SplitterSign)
     assert(out(0).lexInfo.info.get == ":=")
 
     out.size == 1
