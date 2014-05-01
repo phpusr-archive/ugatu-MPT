@@ -179,12 +179,12 @@ class LexAuto {
     char match {
       // Если начало комментария
       case "{" =>
-        addVarToList(currentIdName)
+        addConstToList(currentNumberConst)
         changeCurrentState(AutoPos.C)
 
       // Если начало знака присваивания
       case ":" =>
-        addVarToList(currentIdName)
+        addConstToList(currentNumberConst)
         changeCurrentState(AutoPos.G)
 
       // Если цифры
