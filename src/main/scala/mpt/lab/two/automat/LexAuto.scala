@@ -57,36 +57,55 @@ class LexAuto extends ElementAdder {
    *         в которой она присутствует
    */
   def makeLexList(lines: Array[String], listLex: ListBuffer[LexElem]): Int = {
-    // Инициализация
-    init(listLex)
+    try {
+      // Инициализация
+      init(listLex)
 
-    for (lineIndex <- 0 until lines.size) {
+      lines.foreach { l =>
 
-      // Обрабатываемая строка
-      val line = lines(lineIndex) + LineEnd
+        columnIndex = 0
 
-      for (charIndex <- 0 until line.size) {
+        // Обрабатываемая строка
+        val line = lines(lineIndex) + LineEnd
 
-        // Обрабатываемый символ
-        val char = line(charIndex).toString
-        logger.debug(s"char: '$char'")
+        line.foreach { c =>
 
-        import mpt.lab.two.automat.AutoPos._
-        currentState match {
-          case H | F => hState(char)
-          case C => cState(char)
-          case G => gState(char)
-          case V => vState(char)
-          case D => dState(char)
+          // Обрабатываемый символ
+          val char = c.toString
+          logger.debug(s"char: '$char'")
+
+          import mpt.lab.two.automat.AutoPos._
+          currentState match {
+            case H | F => hState(char)
+            case C => cState(char)
+            case G => gState(char)
+            case V => vState(char)
+            case D => dState(char)
+          }
+
+          columnIndex += 1
+          fromBeginIndex += 1
         }
+
+        lineIndex += 1
       }
+
+      NoErrors
+    } catch {
+      case e: Exception =>
+        addInfoToList("Ошибка при разборе")
+        //TODO возврат индекса, вывод текущего символа
+        //currentPosition.fromBegin
+        throw new MatchError(e.getMessage)
     }
 
-    NoErrors
   }
 
   /** Сброс состояния автомата */
   private def reset() {
+    lineIndex = 0
+    columnIndex = 0
+    fromBeginIndex = 0
     currentState = AutoPos.H
   }
 

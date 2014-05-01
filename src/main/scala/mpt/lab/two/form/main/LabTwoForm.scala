@@ -85,7 +85,11 @@ object LabTwoForm extends SimpleSwingApplication {
 
     val auto = new LexAuto
     val out = ListBuffer[LexElem]()
-    auto.makeLexList(lines, out)
+    try {
+      auto.makeLexList(lines, out)
+    } catch {
+      case e: Exception => println(e.getMessage)
+    }
 
     out.map(e => Seq("0", e.lexInfo.name, e.value)).foreach(lexemModel.addRow)
 

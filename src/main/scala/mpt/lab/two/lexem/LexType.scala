@@ -20,6 +20,7 @@ object LexType {
   val KeyWord = "Ключевое слово"
   val Var = "Переменная"
   val Const = "Константа"
+  val Info = "Информация"
   val AssignmentSign = "Знак присвоения"
   val SplitterSign = "Символ-разделитель"
 }

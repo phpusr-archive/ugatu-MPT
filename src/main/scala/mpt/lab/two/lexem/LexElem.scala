@@ -27,6 +27,7 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
       case KeyWord => lexInfo.info.get
       case AssignmentSign => lexInfo.info.get
       case SplitterSign => lexInfo.info.get
+      case Info => lexInfo.info.get
     }
 
     _value.toString
@@ -74,7 +75,11 @@ object LexElem {
   }
 
   /** Создание информационной лексемы */
-  def createInfo = () => ???
+  def createInfo = (message:String, position: Position) => {
+    val posString = s"$message: line: ${position.lineIndex+1}, column: ${position.columnIndex+1}, from begin: ${position.fromBegin}"
+    val lexType = LexType(LexType.Info, Some(posString))
+    LexElem(lexType, None, None, None, position)
+  }
 
   /** Создание лексемы другого типа */
   def createKey = (key: String, position: Position) => {

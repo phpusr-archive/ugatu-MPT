@@ -25,11 +25,17 @@ trait ElementAdder {
   /** Таблица переменных */
   private val varTable = new RehashTable(1000)
 
+  // Позиция разбора
+  protected var lineIndex = 0
+  protected var columnIndex = 0
+  protected var fromBeginIndex = 0  
+
 
   ////////////////////////////////////////////////////////
 
 
-  private def currentPosition = Position(0, 0, 0) //TODO
+  /** Текущая позиция разбора файла */
+  protected def currentPosition = Position(lineIndex, columnIndex, fromBeginIndex)
 
   /** Добавление лексемы типа "слово" в таблицу лексем */
   protected def addWordToList(word: String) {
@@ -78,5 +84,12 @@ trait ElementAdder {
     val oper = LexOperators.getOperatorByName(operator)
     lexList += LexElem.createOperator(oper, currentPosition)
   }
+
+  /** Добавление информационной лексемы в таблицу лексем */
+  protected def addInfoToList(message: String) {
+    logger.debug(s"\t info: $message")
+    lexList += LexElem.createInfo(message, currentPosition)
+  }
+
 
 }
