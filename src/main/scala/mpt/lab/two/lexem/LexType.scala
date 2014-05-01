@@ -26,17 +26,15 @@ object LexType {
 
 /**
  * Ключевые слова
- *
- * TODO уменьшить доступ
  */
 object LexKeyWord {
   import mpt.lab.two.lexem.LexType._
 
-  val If = "if"
-  val Then = "then"
-  val Else = "else"
+  private val If = "if"
+  private val Then = "then"
+  private val Else = "else"
 
-  val Words = Array(If, Then, Else)
+  private val Words = Array(If, Then, Else)
 
   /** Возвращает ключевое слово по имени */
   def getKeyWordByName(name: String) = {
@@ -61,10 +59,5 @@ object LexKeyWord {
       case Assignment => LexType(AssignmentSign, Some(Assignment))
     }
   }
-
-  //////////////////////////////////////////
-
-  /** Конец строки */ //TODO убрать или использовать
-  val LexStart = LexType(SplitterSign, Some("\n"))
 
 }
