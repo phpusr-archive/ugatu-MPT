@@ -15,9 +15,16 @@ import scala.swing.event.ButtonClicked
  */
 object LabTwoForm extends SimpleSwingApplication {
 
+  /** Кнопка выхода */
   val exitButton = new Button("Exit") {
     preferredSize = new Dimension(200, preferredSize.height)
   }
+
+  /** Таблица лексем */
+  val lexemTable = new Table {
+    model = new LexTableModel
+  }
+  val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
 
   def top = new MainFrame {
     contents = new BorderPanel {
@@ -32,8 +39,15 @@ object LabTwoForm extends SimpleSwingApplication {
 
         // Таблица лексем (Вкладка 2)
         pages += new Page("Lexem table", new GridBagPanel {
-
+          val c = new Constraints
+          c.weightx = 1
+          c.weighty = 1
+          c.fill = GridBagPanel.Fill.Both
+          layout(new ScrollPane(lexemTable)) = c
         })
+
+        // Вкладка по умолчанию
+        peer.setSelectedIndex(1)
 
       }) = BorderPanel.Position.Center
 
@@ -59,4 +73,7 @@ object LabTwoForm extends SimpleSwingApplication {
     // Выход из программы
     case ButtonClicked(`exitButton`) => System.exit(0)
   }
+
+  lexemModel.addRow(List("One", "Two", "3"))
+
 }
