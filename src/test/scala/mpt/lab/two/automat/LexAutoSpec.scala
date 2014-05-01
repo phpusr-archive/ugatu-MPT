@@ -43,10 +43,8 @@ class LexAutoSpec extends FlatSpec {
 
     auto.makeLexList(Array(" "), out)
     assert(auto.currentState == AutoPos.F)
-    assert(out(4).lexInfo.name == LexType.MeaninglessSymbol)
-    assert(out(4).lexInfo.info == " ")
 
-    out.size == 4
+    out.size == 3
   }
 
   /** Проверка обработки букв */
@@ -56,7 +54,7 @@ class LexAutoSpec extends FlatSpec {
 
     "bcdfghjklmnpqrsuvwyz_ABCXYZ".foreach { e =>
       auto.makeLexList(Array(e.toString), out)
-      assert(auto.currentState == AutoPos.V)
+      assert(auto.prevState == AutoPos.V)
     }
 
     "iteoxa".foreach { e =>
@@ -77,12 +75,13 @@ class LexAutoSpec extends FlatSpec {
     auto.makeLexList(Array("{"), out)
     assert(auto.currentState == AutoPos.C)
 
-    auto.makeLexList(Array(":"), out)
-    assert(auto.currentState == AutoPos.G)
+    auto.makeLexList(Array(":="), out)
+    assert(auto.prevState == AutoPos.F)
+    assert(auto.currentState == AutoPos.F)
 
     for (i <- 0 to 9) {
       auto.makeLexList(Array(i.toString), out)
-      assert(auto.currentState == AutoPos.D)
+      assert(auto.prevState == AutoPos.D)
     }
 
     out.size == 0
@@ -159,24 +158,25 @@ class LexAutoSpec extends FlatSpec {
 
     // Добавление символов к имени ид-а
     auto.makeLexList(Array("vabcdefghijklmnopqrstuvwxyz_0123456789_ABCXYZ"), out)
-    assert(auto.currentState == AutoPos.V)
+    assert(auto.prevState == AutoPos.V)
 
     // Начало комментария
     auto.makeLexList(Array("v{"), out)
     assert(auto.currentState == AutoPos.C)
-    assert(out(0).lexInfo.name == LexType.Var)
-    assert(out(0).lexInfo.info == "v")
+    assert(out(1).lexInfo.name == LexType.Var)
+    assert(out(1).lexInfo.info == "v")
 
     // Начало присваивания
-    auto.makeLexList(Array("d:"), out)
-    assert(auto.currentState == AutoPos.G)
-    assert(out(1).lexInfo.name == LexType.Var)
-    assert(out(1).lexInfo.info == "d")
+    auto.makeLexList(Array("d:="), out)
+    assert(auto.prevState == AutoPos.F)
+    assert(auto.currentState == AutoPos.F)
+    assert(out(2).lexInfo.name == LexType.Var)
+    assert(out(2).lexInfo.info == "d")
 
-    assert(out.size == 2)
+    assert(out.size == 4)
 
     // Незначащие символы
-    var eIndex = 2
+    var eIndex = 4
     "(,).;".foreach { e =>
       auto.makeLexList(Array("w" + e.toString), out)
       assert(auto.currentState == AutoPos.F)
@@ -220,24 +220,25 @@ class LexAutoSpec extends FlatSpec {
 
     // Добавление цифр к числу
     auto.makeLexList(Array("0123456789"), out)
-    assert(auto.currentState == AutoPos.D)
+    assert(auto.prevState == AutoPos.D)
 
     // Начало комментария
     auto.makeLexList(Array("1{"), out)
     assert(auto.currentState == AutoPos.C)
-    assert(out(0).lexInfo.name == LexType.Const)
-    assert(out(0).lexInfo.info == "1")
+    assert(out(1).lexInfo.name == LexType.Const)
+    assert(out(1).lexInfo.info == "1")
 
     // Начало присваивания
-    auto.makeLexList(Array("2:"), out)
-    assert(auto.currentState == AutoPos.G)
-    assert(out(1).lexInfo.name == LexType.Const)
-    assert(out(1).lexInfo.info == "2")
+    auto.makeLexList(Array("2:="), out)
+    assert(auto.prevState == AutoPos.F)
+    assert(auto.currentState == AutoPos.F)
+    assert(out(2).lexInfo.name == LexType.Const)
+    assert(out(2).lexInfo.info == "2")
 
-    assert(out.size == 2)
+    assert(out.size == 4)
 
     // Незначащие символы
-    var eIndex = 2
+    var eIndex = 4
     "(,).;".foreach { e =>
       auto.makeLexList(Array("3" + e.toString), out)
       assert(auto.currentState == AutoPos.F)
