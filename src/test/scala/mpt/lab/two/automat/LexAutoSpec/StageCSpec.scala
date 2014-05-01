@@ -1,4 +1,4 @@
-package mpt.lab.two.automat.LexAutoTest
+package mpt.lab.two.automat.LexAutoSpec
 
 import mpt.lab.two.lexem.LexElem
 import mpt.lab.two.automat.{AutoPos, LexAuto}

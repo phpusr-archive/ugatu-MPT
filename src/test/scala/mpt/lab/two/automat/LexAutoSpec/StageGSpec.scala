@@ -1,4 +1,4 @@
-package mpt.lab.two.automat.LexAutoTest
+package mpt.lab.two.automat.LexAutoSpec
 
 import org.scalatest.FlatSpec
 import mpt.lab.two.lexem.{LexType, LexElem}
