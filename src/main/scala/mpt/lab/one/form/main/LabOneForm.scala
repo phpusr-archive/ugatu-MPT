@@ -15,7 +15,7 @@ import mpt.lab.one.idtable.rehash.RehashTable
 /**
  * Главная форма
  */
-object MainForm extends SimpleSwingApplication {
+object LabOneForm extends SimpleSwingApplication {
 
   /** Кол-во сгенерированных ид-ов */
   private val IdsCount = 10
