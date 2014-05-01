@@ -106,7 +106,7 @@ class LexAuto extends ElementAdder {
         // Если символ-разделитель
         addKeyToList(char)
         changeCurrentState(AutoPos.F)
-      } else if (isLetter(char, "iteoxa")) {
+      } else if (isLetterWithExclude(char, "iteoxa")) {
         // Если буква, за исключением (i,t,e,o,x,a)
         changeCurrentState(AutoPos.V)
         currentIdName = char

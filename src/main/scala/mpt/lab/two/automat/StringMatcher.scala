@@ -14,7 +14,7 @@ import scala.util.matching.Regex
 object StringMatcher {
 
   /** Строка состоит из переданных символов */
-  def isListened(string: String, includeChars: String) = {
+  def isListened = (string: String, includeChars: String) => {
     val splitterRegex = new Regex(s"^[$includeChars]+$$")
 
     splitterRegex.findFirstIn(string).isDefined
@@ -22,17 +22,17 @@ object StringMatcher {
 
 
   /** Строка состоит из незначащих символов */
-  def isWhitespace(string: String) = {
+  def isWhitespace = (string: String) => {
     val whitespaceRegex = new Regex("^\\s+$")
 
     whitespaceRegex.findFirstIn(string).isDefined
   }
 
   /** Строка состоит из букв */
-  def isLetter(string: String): Boolean = isLetter(string, null)
+  def isLetter = (string: String) => isLetterWithExclude(string, null)
 
   /** Строка состоит из букв и не включает $excludeChars */
-  def isLetter(string: String, excludeChars: String) = {
+  def isLetterWithExclude = (string: String, excludeChars: String) => {
     val letterRegex = new Regex("^[a-zA-Z_]+$")
     val isLetter = letterRegex.findFirstIn(string).isDefined
 
@@ -45,14 +45,14 @@ object StringMatcher {
   }
 
   /** Строка состоит из цифр */
-  def isDigit(string: String) = {
+  def isDigit = (string: String) => {
     val digitRegex = new Regex("^\\d+$")
 
     digitRegex.findFirstIn(string).isDefined
   }
 
   /** Строка состоит из любых символов кроме $excludeChars */
-  def isAnyChar(string: String, excludeChars: String) = {
+  def isAnyChar = (string: String, excludeChars: String) => {
     val anyCharRegex = new Regex("^.+$")
     val excludeRegex = new Regex(s"[$excludeChars]")
 
