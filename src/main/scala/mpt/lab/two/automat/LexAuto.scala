@@ -20,8 +20,15 @@ class LexAuto {
   /** Синтаксический анализ выполнен без ошибок */
   private val NoErrors = 0
 
+  /** Дополнитель конца строки */
+  private val LineEnd = " "
+
+  ////////////////////////////////////////////////////////
+
   /** Текущее состояние автомата */
   var currentState = AutoPos.H
+  /** Предыдущее состояние автомата (для отладки) */
+  var prevState = AutoPos.H
 
   /** Логирование */
   private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
@@ -58,17 +65,17 @@ class LexAuto {
     for (lineIndex <- 0 until lines.size) {
 
       // Обрабатываемая строка
-      val line = lines(lineIndex)
+      val line = lines(lineIndex) + LineEnd
 
       for (charIndex <- 0 until line.size) {
 
-        // Обрабатываемый символ //TODO обработка конца строки
+        // Обрабатываемый символ
         val char = line(charIndex).toString
         logger.debug(s"char: '$char'")
 
         import mpt.lab.two.automat.AutoPos._
         currentState match {
-          case H => hState(char)
+          case H | F => hState(char)
           case C => cState(char)
           case G => gState(char)
           case V => vState(char)
@@ -95,7 +102,10 @@ class LexAuto {
       case ":" => changeCurrentState(AutoPos.G)
 
       // Если незначащий символ
-      case _ => if (isListened(char, "(,);") || isWhitespace(char)) {
+      case _ => if (isWhitespace(char)) {
+        changeCurrentState(AutoPos.F)
+      } else if (isListened(char, "(,);")) {
+        // Если символ-разделитель
         addKeyToList(char)
         changeCurrentState(AutoPos.F)
       } else if (isLetter(char, "iteoxa")) {
@@ -214,6 +224,7 @@ class LexAuto {
 
   /** Меняет текущее состояние автомата */
   private def changeCurrentState(newState: AutoPos) {
+    prevState = currentState
     currentState = newState
     logger.debug(s"\t change state: $newState")
   }
