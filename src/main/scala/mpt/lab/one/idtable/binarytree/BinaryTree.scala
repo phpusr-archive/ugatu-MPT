@@ -13,8 +13,8 @@ import scala.collection.mutable.ListBuffer
 /**
  * Элемент дерева
  */
-case class Node(name: String, hash: Index, var left: Option[Node], var right: Option[Node]) extends NodeAbstract(name, hash) {
-  def this(name: String, hash: Index) = this(name, hash, None, None) //TODO
+class Node(name: String, hash: Index, var left: Option[Node], var right: Option[Node]) extends NodeAbstract(name, hash) {
+  def this(name: String, hash: Index) = this(name, hash, None, None)
 
   override def toString = s"hash: $hash, name: $name, " +
     s"L: ${if (!left.isEmpty) left.get.name else "-"} " +
@@ -64,7 +64,7 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
 
     // Добавление элемента в дерево
     if (node.isEmpty) { // Если узел пустой
-      new Some(Node(idName, hash, None, None)) //Создаем новый узел, знач-е узла берем из idName
+      new Some(new Node(idName, hash)) //Создаем новый узел, знач-е узла берем из idName
     } else if (node.get.name == idName) { // Если элемент уже есть, не добавляем его
       println(">> Already exists!") //TODO
       node
