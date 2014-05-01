@@ -1,8 +1,9 @@
-package mpt.lab.two.automat
+package mpt.lab.two.automat.LexAutoTest
 
 import org.scalatest.FlatSpec
 import mpt.lab.two.lexem.{LexType, LexElem}
 import scala.collection.mutable.ListBuffer
+import mpt.lab.two.automat.{AutoPos, LexAuto}
 
 /**
  * @author phpusr
@@ -11,12 +12,9 @@ import scala.collection.mutable.ListBuffer
  */
 
 /**
- * Тестирование LexAuto
+ * Тестирование LexAuto (Stage D)
  */
-class LexAutoSpec extends FlatSpec {
-
-
-  //------------------ State D ------------------//
+class StageDSpec extends FlatSpec {
 
   /** Проверка обработки числовых констант */
   it should "processing digit" in {
@@ -33,14 +31,16 @@ class LexAutoSpec extends FlatSpec {
     auto.makeLexList(Array("1{"), out)
     assert(auto.currentState == AutoPos.C)
     assert(out(1).lexInfo.name == LexType.Const)
-    assert(out(1).lexInfo.info == "1")
+    assert(out(1).lexInfo.info.isEmpty)
+    assert(out(1).constVal.get == 1)
 
     // Начало присваивания
     auto.makeLexList(Array("2:="), out)
     assert(auto.prevState == AutoPos.F)
     assert(auto.currentState == AutoPos.F)
     assert(out(2).lexInfo.name == LexType.Const)
-    assert(out(2).lexInfo.info == "2")
+    assert(out(2).lexInfo.info.isEmpty)
+    assert(out(2).constVal.get == 2)
 
     assert(out.size == 4)
 
@@ -49,10 +49,14 @@ class LexAutoSpec extends FlatSpec {
     "(,).;".foreach { e =>
       auto.makeLexList(Array("3" + e.toString), out)
       assert(auto.currentState == AutoPos.F)
+
       assert(out(eIndex).lexInfo.name == LexType.Const)
-      assert(out(eIndex).lexInfo.info == "3")
+      assert(out(eIndex).lexInfo.info.isEmpty)
+      assert(out(eIndex).constVal.get == 3)
+
       assert(out(eIndex+1).lexInfo.name == LexType.MeaninglessSymbol)
-      assert(out(eIndex+1).lexInfo.info == e.toString)
+      assert(out(eIndex+1).lexInfo.info.get == e.toString)
+      assert(out(eIndex+1).constVal.isEmpty)
 
       eIndex += 2
     }
@@ -61,7 +65,8 @@ class LexAutoSpec extends FlatSpec {
     " \t".foreach { e =>
       auto.makeLexList(Array("4" + e.toString), out)
       assert(out(eIndex).lexInfo.name == LexType.Const)
-      assert(out(eIndex).lexInfo.info == "4")
+      assert(out(eIndex).lexInfo.info.isEmpty)
+      assert(out(eIndex).constVal.get == 4)
 
       eIndex += 1
     }
