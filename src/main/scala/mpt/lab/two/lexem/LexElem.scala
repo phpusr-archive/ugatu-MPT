@@ -1,6 +1,6 @@
 package mpt.lab.two.lexem
 
-import mpt.lab.one.idtable.rehash.Node
+import mpt.lab.one.idtable.NodeAbstract
 
 /**
  * @author phpusr
@@ -17,7 +17,7 @@ import mpt.lab.one.idtable.rehash.Node
  * @param szInfo Проивзольная строка для информационной лексемы
  * @param pos Информация о позиции лексемы в тексте входной программы
  */
-case class LexElem(lexInfo: LexType, varInfo: Node, constVal: AnyVal, szInfo: String, pos: Position)
+case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: AnyVal, szInfo: String, pos: Position)
 
 
 /**
@@ -36,14 +36,14 @@ case class Position(lineIndex: Int, columnIndex: Int, fromBegin: Int)
 object LexElem {
 
   /** Создание лексемы типа "переменная" */
-  def createVar = (variable: String, position: Position) => {
-    val lexType = LexType(LexType.Var, variable) //TODO add to id table
-    LexElem(lexType, null, 0, null, position)
+  def createVar = (variable: String, position: Position, varInfo: Option[NodeAbstract]) => {
+    val lexType = LexType(LexType.Var, None)
+    LexElem(lexType, varInfo, 0, null, position)
   }
 
   /** Создание лексемы типа "константа" */
   def createConst = (const: String, position: Position) => {
-    val lexType = LexType(LexType.Const, const)
+    val lexType = LexType(LexType.Const, Some(const))
     //TODO convert const
     LexElem(lexType, null, 0, null, position)
   }
@@ -53,8 +53,8 @@ object LexElem {
 
   /** Создание лексемы другого типа */
   def createKey = (key: String, position: Position) => {
-    val lexType = LexType(LexType.MeaninglessSymbol, key)
-    LexElem(lexType, null, 0, null, position)
+    val lexType = LexType(LexType.MeaninglessSymbol, Some(key))
+    LexElem(lexType, None, 0, null, position)
   }
 
 }

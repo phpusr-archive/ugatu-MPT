@@ -5,6 +5,7 @@ import mpt.lab.two.automat.AutoPos.AutoPos
 import scala.util.matching.Regex
 import mpt.lab.two.lexem.{Position, LexElem}
 import org.dyndns.phpusr.log.Logger
+import mpt.lab.one.idtable.rehash.RehashTable
 
 /**
  * @author phpusr
@@ -41,6 +42,9 @@ class LexAuto {
 
   /** Текущая числовая константа */
   private var currentNumberConst = ""
+  
+  /** Таблица переменных */
+  private val varTable = new RehashTable(1000)
 
   ////////////////////////////////////////////////////////
 
@@ -284,7 +288,9 @@ class LexAuto {
   //TODO наверное стоит переименовать в addIdToList и сделать проверку на ключевое слово
   private def addVarToList(id: String) {
     logger.debug(s"\t add id: '$id'")
-    lexList += LexElem.createVar(id, currentPosition)
+    
+    val varInfo = varTable.add(id)
+    lexList += LexElem.createVar(id, currentPosition, varInfo)
   }
 
   /** Добавление лексемы типа "переменная" и типа "разделитель" в таблицу лексем */

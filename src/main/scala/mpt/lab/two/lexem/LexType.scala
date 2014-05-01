@@ -6,7 +6,7 @@ package mpt.lab.two.lexem
  *         Time: 14:31
  */
 
-case class LexType(name: String, info: String)
+case class LexType(name: String, info: Option[String])
 
 /**
  * Типы лексем
@@ -24,8 +24,8 @@ object LexType {
   val MeaninglessSymbol = "Незначащий символ"
 
   // TODO continue
-  val If = LexType(KeyWord, "if")
+  val If = LexType(KeyWord, Some("if"))
 
   /** Конец строки */
-  val LexStart = LexType(MeaninglessSymbol, "\n")
+  val LexStart = LexType(MeaninglessSymbol, Some("\n"))
 }
