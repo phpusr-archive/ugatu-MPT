@@ -3,9 +3,8 @@ package mpt.lab.two.automat
 import scala.collection.mutable.ListBuffer
 import mpt.lab.two.automat.AutoPos.AutoPos
 import scala.util.matching.Regex
-import mpt.lab.two.lexem.{Position, LexElem}
+import mpt.lab.two.lexem.LexElem
 import org.dyndns.phpusr.log.Logger
-import mpt.lab.one.idtable.rehash.RehashTable
 
 /**
  * @author phpusr
@@ -16,7 +15,7 @@ import mpt.lab.one.idtable.rehash.RehashTable
 /**
  * Класс - моделирующий работу КА, на основе которого построен лексический распознаватель
  */
-class LexAuto {
+class LexAuto extends ElementAdder {
 
   /** Синтаксический анализ выполнен без ошибок */
   private val NoErrors = 0
@@ -33,20 +32,16 @@ class LexAuto {
 
   /** Логирование */
   private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
-  
-  /** Таблица найденных лексем */
-  private var lexList: ListBuffer[LexElem] = null
 
   /** Текущее имя идентификатора */
   private var currentIdName = ""
 
   /** Текущая числовая константа */
   private var currentNumberConst = ""
-  
-  /** Таблица переменных */
-  private val varTable = new RehashTable(1000)
+
 
   ////////////////////////////////////////////////////////
+
 
   /**  Инициализация */
   private def init(listLex: ListBuffer[LexElem]) {
@@ -282,42 +277,4 @@ class LexAuto {
     isAnyChar && isNotExclude
   }
 
-  private def currentPosition = Position(0, 0, 0) //TODO
-
-  /** Добавление лексемы типа "переменная" в таблицу лексем */
-  //TODO наверное стоит переименовать в addIdToList и сделать проверку на ключевое слово
-  private def addVarToList(id: String) {
-    logger.debug(s"\t add id: '$id'")
-    
-    val varInfo = varTable.add(id)
-    lexList += LexElem.createVar(id, currentPosition, varInfo)
-  }
-
-  /** Добавление лексемы типа "переменная" и типа "разделитель" в таблицу лексем */
-  private def addVarKeyToList(id: String, key: String) = {
-    addVarToList(id)
-    addKeyToList(key)
-  }
-
-  /** Добавление лексемы типа "константа" в таблицу лексем */
-  private def addConstToList(const: String) {
-    logger.debug(s"\t add const: '$const'")
-    lexList += LexElem.createConst(const, currentPosition)
-  }
-
-  /** Добавление лексемы типа "константа" и типа "разделитель" в таблицу лексем */
-  private def addConstKeyToList(const: String, key: String) {
-    addConstToList(const)
-    addKeyToList(key)
-  }
-
-  /** Добавление лексемы типа "ключевое слово" или "разделитель" в таблицу лексем */
-  private def addKeyToList(key: String) {
-    logger.debug(s"\t add key: '$key'")
-    lexList += LexElem.createKey(key, currentPosition)
-  }
-
-  /** Добавление лексемы типа "ключевое слово" и "разделитель" в таблицу лексем подряд */
-  private def add2KeysToList() = ???
-  
 }
