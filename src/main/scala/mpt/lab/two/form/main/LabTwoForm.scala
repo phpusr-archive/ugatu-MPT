@@ -43,9 +43,11 @@ object LabTwoForm extends SimpleSwingApplication {
     font = new Font("Arial", Font.PLAIN, 12)
   }
 
-  /** Таблица лексем */ //TODO размеры столбцов
+  /** Таблица лексем */
   private val lexemTable = new Table {
     model = new LexTableModel
+    peer.getColumnModel.getColumn(0).setPreferredWidth(10)
+    peer.getColumnModel.getColumn(2).setPreferredWidth(300)
   }
   private val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
 

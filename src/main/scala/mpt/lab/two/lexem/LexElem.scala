@@ -79,7 +79,7 @@ object LexElem {
 
   /** Создание информационной лексемы */
   def createInfo = (message:String, position: Position) => {
-    val posString = s"$message: line: $position"
+    val posString = s"$message: $position"
     val lexType = LexType(LexType.Info, Some(posString))
     LexElem(lexType, None, None, None, position)
   }
