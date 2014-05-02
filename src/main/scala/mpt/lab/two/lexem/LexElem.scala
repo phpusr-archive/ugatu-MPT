@@ -39,12 +39,12 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
 /**
  * Информация о позиции лексемы в тексте входной программы
  *
- * @param lineIndex Номер строки, где встретилась лексема
- * @param columnIndex Позиция лексемы в строке
+ * @param line Номер строки, где встретилась лексема
+ * @param column Позиция лексемы в строке
  * @param fromBegin Позиция лексемы относительно начала входного файла
  */
-case class Position(lineIndex: Int, columnIndex: Int, fromBegin: Int) {
-  override def toString = s"line: ${lineIndex+1}, column: ${columnIndex+1}, from begin: ${fromBegin+1}"
+case class Position(line: Int, column: Int, fromBegin: Int) {
+  override def toString = s"line: ${line+1}, column: ${column+1}, from begin: ${fromBegin+1}"
 }
 
 
