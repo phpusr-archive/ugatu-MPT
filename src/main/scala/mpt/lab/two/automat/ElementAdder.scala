@@ -85,6 +85,12 @@ trait ElementAdder {
     lexList += LexElem.createOperator(oper, currentPosition)
   }
 
+  /** Добавление лексемы типа "оператор" и "разделитель" в таблицу лексем */
+  protected def addOperatorKeyToList(operator: String, key: String) {
+    addOperatorToList(operator)
+    addKeyToList(key)
+  }
+
   /** Добавление информационной лексемы в таблицу лексем */
   protected def addInfoToList(message: String) {
     logger.debug(s"\t info: $message")

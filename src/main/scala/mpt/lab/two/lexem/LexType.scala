@@ -70,6 +70,10 @@ object LexOperators {
     name match {
       case Assignment => LexType(LexType.Assignment, Some(Assignment))
       case Equals => LexType(LexType.Equals, Some(Equals))
+      case L => LexType(LexType.Equals, Some(L))
+      case LE => LexType(LexType.Equals, Some(LE))
+      case G => LexType(LexType.Equals, Some(G))
+      case GE => LexType(LexType.Equals, Some(GE))
     }
   }
 
