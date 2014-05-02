@@ -9,6 +9,7 @@ import mpt.lab.two.lexem.LexElem
 import scala.collection.mutable.ListBuffer
 import java.awt.Font
 import scala.swing.Font
+import java.io.File
 
 /**
  * @author phpusr
@@ -23,14 +24,15 @@ object LabTwoForm extends SimpleSwingApplication {
 
   /** Путь к файлу с данными */
   private val filePathTextField = new TextField {
+    editable = false
     preferredSize = defaultSize()
   }
   /** Кнопка выбора файла */
   private val browseFileButton = new Button("Browse") {
     preferredSize = defaultSize()
   }
-  /** Кнопка загрузки файла */
-  private val loadFileButton = new Button("Load") {
+  /** Кнопка обработки программы */
+  private val processingButton = new Button("Processing") {
     preferredSize = defaultSize()
   }
   /** Текстовое поле просмотра содержимого файла */
@@ -83,7 +85,7 @@ object LabTwoForm extends SimpleSwingApplication {
 
           c.gridx = 1
           c.gridy = 1
-          layout(loadFileButton) = c
+          layout(processingButton) = c
 
           c.gridx = 0
           c.gridy = 2
@@ -122,18 +124,31 @@ object LabTwoForm extends SimpleSwingApplication {
   }
 
   // Обработчики событий формы
+  listenTo(browseFileButton, processingButton)
   listenTo(exitButton)
 
+  /** Диалог выбора файла */
+  private val fileChooser = new FileChooser(new File("data"))
+
   reactions += {
+    // Выбор файла
+    case ButtonClicked(`browseFileButton`) =>
+      val result = fileChooser.showDialog(null, "Select file")
+      if (result == FileChooser.Result.Approve) {
+        fileContentTextArea.text = Source.fromFile(fileChooser.selectedFile).mkString
+        filePathTextField.text = fileChooser.selectedFile.getAbsolutePath
+      }
+
+    // Обработка текста программы
+    case ButtonClicked(`processingButton`) => processing()
 
     // Выход из программы
     case ButtonClicked(`exitButton`) => System.exit(0)
   }
 
-  //test()
-
-  def test() {
-    val lines = Source.fromFile("data/TestProg.txt").getLines().toArray
+  /** Обработка текста программы */
+  private def processing() {
+    val lines = fileContentTextArea.text.split("\n")
 
     val auto = new LexAuto
     val out = ListBuffer[LexElem]()
@@ -143,6 +158,7 @@ object LabTwoForm extends SimpleSwingApplication {
       case e: Exception => println(e.getMessage)
     }
 
+    //TODO номера и очистка
     out.map(e => Seq("0", e.lexInfo.name, e.value)).foreach(lexemModel.addRow)
 
   }
