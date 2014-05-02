@@ -169,7 +169,16 @@ object LabTwoForm extends SimpleSwingApplication {
 
     // Переключение на вкладку с таблицей
     tabbedPane.setSelectedIndex(1)
-
   }
+
+  // !!! Тестирование
+  val test = new Thread(new Runnable {
+    override def run() {
+      fileContentTextArea.text = Source.fromFile("data/TestProg.txt").mkString
+      Thread.sleep(1000)
+      processing()
+    }
+  })
+  test.start()
 
 }
