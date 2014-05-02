@@ -26,6 +26,7 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
       case Const => constVal.get
       case KeyWord => lexInfo.info.get
       case Assignment => lexInfo.info.get
+      case Equals => lexInfo.info.get
       case Splitter => lexInfo.info.get
       case Info => lexInfo.info.get
     }
