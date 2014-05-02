@@ -43,12 +43,14 @@ object LabTwoForm extends SimpleSwingApplication {
     font = new Font("Arial", Font.PLAIN, 12)
   }
 
-  /** Таблица лексем */
+  /** Таблица лексем */ //TODO размеры столбцов
   private val lexemTable = new Table {
     model = new LexTableModel
   }
   private val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
 
+  /** Лейбл статуса разбора */
+  private val parsingStatusLabel = new Label("Test")
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
     preferredSize = new Dimension(200, preferredSize.height)
@@ -116,6 +118,8 @@ object LabTwoForm extends SimpleSwingApplication {
         c.insets = new Insets(5, 5, 5, 5)
 
         c.weightx = 1
+        layout(parsingStatusLabel) = c
+
         c.anchor = GridBagPanel.Anchor.East
         layout(exitButton) = c
       }) = BorderPanel.Position.South
@@ -152,15 +156,16 @@ object LabTwoForm extends SimpleSwingApplication {
     // Очистка таблицы
     lexemModel.clear()
 
-    val lines = fileContentTextArea.text.split("\n")
-
+    // Разбор текста
     val auto = new LexAuto
+    val lines = fileContentTextArea.text.split("\n")
     val out = ListBuffer[LexElem]()
-    try {
-      auto.makeLexList(lines, out)
-    } catch {
-      case e: Exception => println(e.getMessage)
-    }
+    val statusOrPos = auto.makeLexList(lines, out)
+
+    // Установка статуса разбора текста
+    parsingStatusLabel.text = if (statusOrPos == LexAuto.NoErrors) {
+      "Разбор выполнен без ошибок"
+    } else "В ходе разбора обнаружены ошибки"
 
     // Добавление лексем в таблицу
     out.zipWithIndex.map {
