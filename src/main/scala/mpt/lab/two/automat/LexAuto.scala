@@ -228,7 +228,7 @@ class LexAuto extends ElementAdder {
         // Если незначащий символ
         addConstToList(currentNumberConst)
         changeCurrentState(AutoPos.F)
-      } else if (isListened(char, "(,).;")) {
+      } else if (isListened(char, "(,);")) {
         // Если символ-разделитель
         addConstKeyToList(currentNumberConst, char)
         changeCurrentState(AutoPos.F)
@@ -261,7 +261,7 @@ class LexAuto extends ElementAdder {
         // Если незначащий символ
         addConstToList(currentNumberConst, isReal)
         changeCurrentState(AutoPos.F)
-      } else if (isListened(char, "(,).;")) {
+      } else if (isListened(char, "(,);")) {
         // Если символ-разделитель
         addConstKeyToList(currentNumberConst, char, isReal)
         changeCurrentState(AutoPos.F)
