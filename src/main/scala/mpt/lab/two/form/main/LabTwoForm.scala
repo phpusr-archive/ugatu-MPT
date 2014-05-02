@@ -7,6 +7,8 @@ import scala.io.Source
 import mpt.lab.two.automat.LexAuto
 import mpt.lab.two.lexem.LexElem
 import scala.collection.mutable.ListBuffer
+import java.awt.Font
+import scala.swing.Font
 
 /**
  * @author phpusr
@@ -19,16 +21,46 @@ import scala.collection.mutable.ListBuffer
  */
 object LabTwoForm extends SimpleSwingApplication {
 
-  /** Кнопка выхода */
-  val exitButton = new Button("Exit") {
-    preferredSize = new Dimension(200, preferredSize.height)
+  /** Путь к файлу с данными */
+  private val filePathTextField = new TextField {
+    preferredSize = defaultSize()
+  }
+  /** Кнопка выбора файла */
+  private val browseFileButton = new Button("Browse") {
+    preferredSize = defaultSize()
+  }
+  /** Кнопка загрузки файла */
+  private val loadFileButton = new Button("Load") {
+    preferredSize = defaultSize()
+  }
+  /** Текстовое поле просмотра содержимого файла */
+  private val fileContentTextArea = new TextArea(20, 60) {
+    border = Swing.EtchedBorder
+    lineWrap = true
+    font = new Font("Arial", Font.PLAIN, 12)
   }
 
   /** Таблица лексем */
-  val lexemTable = new Table {
+  private val lexemTable = new Table {
     model = new LexTableModel
   }
-  val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
+  private val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
+
+  /** Кнопка выхода */
+  private val exitButton = new Button("Exit") {
+    preferredSize = new Dimension(200, preferredSize.height)
+  }
+
+
+  //////////////////////////////////////////////////////////////
+
+
+  // Генерация компонентов по умолчанию
+  private def defaultScrollPane = (c: Component) => new ScrollPane() {
+    viewportView = c
+    verticalScrollBarPolicy = ScrollPane.BarPolicy.AsNeeded
+  }
+  private def defaultSize = () => new Dimension(130, 25)
 
   def top = new MainFrame {
     contents = new BorderPanel {
@@ -37,9 +69,28 @@ object LabTwoForm extends SimpleSwingApplication {
 
         // Источник (Вкладка 1)
         pages += new Page("Source", new GridBagPanel {
-          //TODO доделать форму
+          border = Swing.TitledBorder(Swing.EtchedBorder, "Source data")
+
           val c = new Constraints
-          layout(new Button("Test")) = c
+          c.insets = new Insets(5, 5, 5, 5)
+
+          c.weightx = 1
+          c.fill = GridBagPanel.Fill.Horizontal
+          layout(filePathTextField) = c
+
+          c.weightx = 0
+          layout(browseFileButton) = c
+
+          c.gridx = 1
+          c.gridy = 1
+          layout(loadFileButton) = c
+
+          c.gridx = 0
+          c.gridy = 2
+          c.gridwidth = 2
+          c.weighty = 1
+          c.fill = GridBagPanel.Fill.Both
+          layout(defaultScrollPane(fileContentTextArea)) = c
         })
 
         // Таблица лексем (Вкладка 2)
@@ -52,20 +103,20 @@ object LabTwoForm extends SimpleSwingApplication {
         })
 
         // Вкладка по умолчанию
-        peer.setSelectedIndex(1)
+        //peer.setSelectedIndex(1)
 
       }) = BorderPanel.Position.Center
 
       // Нижняя панель
       layout(new GridBagPanel {
         val c = new Constraints
+        c.insets = new Insets(5, 5, 5, 5)
+
         c.weightx = 1
-        c.anchor = GridBagPanel.Anchor.West
+        c.anchor = GridBagPanel.Anchor.East
         layout(exitButton) = c
       }) = BorderPanel.Position.South
     }
-
-    size = new Dimension(800, 600) //TODO потом убрать
 
     centerOnScreen()
   }
@@ -79,7 +130,7 @@ object LabTwoForm extends SimpleSwingApplication {
     case ButtonClicked(`exitButton`) => System.exit(0)
   }
 
-  test()
+  //test()
 
   def test() {
     val lines = Source.fromFile("data/TestProg.txt").getLines().toArray
