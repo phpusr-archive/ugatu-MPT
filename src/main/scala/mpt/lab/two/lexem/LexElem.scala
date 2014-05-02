@@ -72,7 +72,6 @@ object LexElem {
   }
 
   /** Создание лексемы типа "оператор" */
-  //TODO операторы сравнения
   def createOperator = (lexType: LexType, position: Position) => {
     LexElem(lexType, None, None, None, position)
   }
