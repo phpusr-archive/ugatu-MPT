@@ -85,6 +85,7 @@ class LexAuto extends ElementAdder {
             case D => dState(char)
             case E => eState(char)
             case L => lState(char)
+            case GR => grState(char)
             case P => pState(char)
           }
 
@@ -304,6 +305,25 @@ class LexAuto extends ElementAdder {
       // Если незначащий символ
       case _ => if (isWhitespace(char)) {
         addOperatorToList(LexOperators.L)
+        changeCurrentState(AutoPos.F)
+      } else {
+        // Что-то еще
+        notSupportCase(char)
+      }
+    }
+  }
+
+  /** Обработка оператора сравнения (> >=) */
+  private def grState(char: String) {
+    char match {
+      // Конец оператора сравнения (>=)
+      case "=" =>
+        addOperatorToList(LexOperators.GE)
+        changeCurrentState(AutoPos.F)
+
+      // Если незначащий символ
+      case _ => if (isWhitespace(char)) {
+        addOperatorToList(LexOperators.G)
         changeCurrentState(AutoPos.F)
       } else {
         // Что-то еще
