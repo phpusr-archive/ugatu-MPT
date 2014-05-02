@@ -119,12 +119,18 @@ class LexAuto extends ElementAdder {
       // Если начало знака присваивания
       case ":" => changeCurrentState(AutoPos.G)
 
+      // Если оператор сравнения
+      case "=" => changeCurrentState(AutoPos.E)
+      case "<" => changeCurrentState(AutoPos.L)
+      case ">" => changeCurrentState(AutoPos.GR)
+
+      // Если символ-разделитель
+      case "(" | "," | ")" | ";" =>
+        addKeyToList(char)
+        changeCurrentState(AutoPos.F)
+
       // Если незначащий символ
       case _ => if (isWhitespace(char)) {
-        changeCurrentState(AutoPos.F)
-      } else if (isListened(char, "(,);")) {
-        // Если символ-разделитель
-        addKeyToList(char)
         changeCurrentState(AutoPos.F)
       } else if (isLetter(char)) {
         // Если буква, за исключением (i,t,e,o,x,a)
@@ -269,6 +275,13 @@ class LexAuto extends ElementAdder {
         // Что-то еще
         notSupportCase(char)
       }
+    }
+  }
+
+  /** Обработка оператора сравнения */
+  private def eState(char: String) {
+    char match {
+      case "=" => ???
     }
   }
 
