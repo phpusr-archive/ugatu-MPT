@@ -1,0 +1,9 @@
+c := 10.1, b := 10;
+
+if (a == b) then 0 else 1;
+
+if (a < b) then 0 else 1;
+if (a <= b) then 0 else 1;
+
+if (a > b) then 0 else 1;
+if (a >= b) then 0 else 1;
