@@ -54,7 +54,7 @@ class StageDSpec extends FlatSpec {
       assert(out(eIndex).lexInfo.info.isEmpty)
       assert(out(eIndex).constVal.get == 3)
 
-      assert(out(eIndex+1).lexInfo.name == LexType.SplitterSign)
+      assert(out(eIndex+1).lexInfo.name == LexType.Splitter)
       assert(out(eIndex+1).lexInfo.info.get == e.toString)
       assert(out(eIndex+1).constVal.isEmpty)
 

@@ -31,7 +31,7 @@ class StageESpec extends FlatSpec {
 
     auto.makeLexList(Array("=="), out)
     assert(auto.currentState == AutoPos.F)
-    assert(out(eIndex).lexInfo.name == LexType.EqualsSign)
+    assert(out(eIndex).lexInfo.name == LexType.Equals)
     assert(out(eIndex).lexInfo.info.get == "==")
 
     out.size == eIndex

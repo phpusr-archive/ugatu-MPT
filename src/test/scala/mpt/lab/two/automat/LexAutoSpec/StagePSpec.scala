@@ -57,7 +57,7 @@ class StagePSpec extends FlatSpec {
       value = out(eIndex).constVal.get.asInstanceOf[Float]
       assert(Math.abs(value - 3.1) < 0.001)
 
-      assert(out(eIndex+1).lexInfo.name == LexType.SplitterSign)
+      assert(out(eIndex+1).lexInfo.name == LexType.Splitter)
       assert(out(eIndex+1).lexInfo.info.get == e.toString)
       assert(out(eIndex+1).constVal.isEmpty)
 

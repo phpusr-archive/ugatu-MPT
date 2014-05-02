@@ -25,8 +25,8 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
       case Var => varInfo.get.name
       case Const => constVal.get
       case KeyWord => lexInfo.info.get
-      case AssignmentSign => lexInfo.info.get
-      case SplitterSign => lexInfo.info.get
+      case Assignment => lexInfo.info.get
+      case Splitter => lexInfo.info.get
       case Info => lexInfo.info.get
     }
 
@@ -85,7 +85,7 @@ object LexElem {
 
   /** Создание лексемы-разделителя */
   def createKey = (key: String, position: Position) => {
-    val lexType = LexType(LexType.SplitterSign, Some(key))
+    val lexType = LexType(LexType.Splitter, Some(key))
     LexElem(lexType, None, None, None, position)
   }
 

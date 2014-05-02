@@ -25,19 +25,19 @@ class StageHSpec extends FlatSpec {
 
     auto.makeLexList(Array("("), out)
     assert(auto.currentState == AutoPos.F)
-    assert(out(0).lexInfo.name == LexType.SplitterSign)
+    assert(out(0).lexInfo.name == LexType.Splitter)
     assert(out(0).lexInfo.info.get == "(")
 
     auto.makeLexList(Array(","), out)
-    assert(out(1).lexInfo.name == LexType.SplitterSign)
+    assert(out(1).lexInfo.name == LexType.Splitter)
     assert(out(1).lexInfo.info.get == ",")
 
     auto.makeLexList(Array(")"), out)
-    assert(out(2).lexInfo.name == LexType.SplitterSign)
+    assert(out(2).lexInfo.name == LexType.Splitter)
     assert(out(2).lexInfo.info.get == ")")
 
     auto.makeLexList(Array(";"), out)
-    assert(out(3).lexInfo.name == LexType.SplitterSign)
+    assert(out(3).lexInfo.name == LexType.Splitter)
     assert(out(3).lexInfo.info.get == ";")
 
     auto.makeLexList(Array(" "), out)

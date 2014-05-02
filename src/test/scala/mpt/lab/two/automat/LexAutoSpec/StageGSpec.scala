@@ -31,7 +31,7 @@ class StageGSpec extends FlatSpec {
 
     auto.makeLexList(Array(":="), out)
     assert(auto.currentState == AutoPos.F)
-    assert(out(eIndex).lexInfo.name == LexType.AssignmentSign)
+    assert(out(eIndex).lexInfo.name == LexType.Assignment)
     assert(out(eIndex).lexInfo.info.get == ":=")
 
     out.size == eIndex
