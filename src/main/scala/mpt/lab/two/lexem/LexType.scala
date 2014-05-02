@@ -21,8 +21,10 @@ object LexType {
   val Var = "Переменная"
   val Const = "Константа"
   val Info = "Информация"
-  val AssignmentSign = "Знак присвоения"
+  //TODO remove word sign
+  val AssignmentSign = "Оператор присвоения"
   val SplitterSign = "Символ-разделитель"
+  val EqualsSign = "Оператор сравнения"
 }
 
 /**
@@ -57,13 +59,20 @@ object LexKeyWord {
 object LexOperators {
   import mpt.lab.two.lexem.LexType._
 
-  /** Знак присвоения */
+  /** Присвоения */
   val Assignment = ":="
+  // Сравнения
+  val Equals = "=="
+  val G = ">"
+  val GE = ">="
+  val L = "<"
+  val LE = "<="
 
   /** Возвращает оператор по имени */
   def getOperatorByName(name: String) = {
     name match {
       case Assignment => LexType(AssignmentSign, Some(Assignment))
+      case Equals => LexType(EqualsSign, Some(Equals))
     }
   }
 

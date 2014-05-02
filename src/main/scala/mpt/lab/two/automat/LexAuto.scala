@@ -83,6 +83,7 @@ class LexAuto extends ElementAdder {
             case G => gState(char)
             case V => vState(char)
             case D => dState(char)
+            case E => eState(char)
             case P => pState(char)
           }
 
@@ -281,7 +282,13 @@ class LexAuto extends ElementAdder {
   /** Обработка оператора сравнения */
   private def eState(char: String) {
     char match {
-      case "=" => ???
+      // Конец оператора сравнения
+      case "=" =>
+        addOperatorToList(LexOperators.Equals)
+        changeCurrentState(AutoPos.F)
+
+      // Что-то еще
+      case _ => notSupportCase(char)
     }
   }
 
