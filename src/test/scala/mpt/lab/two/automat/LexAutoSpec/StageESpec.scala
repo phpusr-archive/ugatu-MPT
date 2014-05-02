@@ -18,7 +18,7 @@ class StageESpec extends FlatSpec {
 
   /** Проверка обработки знака присваивания */
   it should "processing :=" in {
-    println("\n>> State G")
+    println("\n>> State E")
 
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto

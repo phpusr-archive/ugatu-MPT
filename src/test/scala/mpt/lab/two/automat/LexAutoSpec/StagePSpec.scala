@@ -18,7 +18,7 @@ class StagePSpec extends FlatSpec {
 
   /** Проверка обработки числовых констант */
   it should "processing digit" in {
-    println("\n>> State D")
+    println("\n>> State P")
 
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto
