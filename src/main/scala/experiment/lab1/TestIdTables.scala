@@ -6,7 +6,7 @@ import mpt.lab.one.idtable.binarytree.BinaryTree
 /**
  * Тестирование работы таблиц ид-ов
  */
-object Test extends App {
+object TestIdTables extends App {
 
   val list = List("abc", "grh", "bmw", "kldk", "grh")
 
