@@ -52,7 +52,7 @@ object LabTwoForm extends SimpleSwingApplication {
   private val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
 
   /** Лейбл статуса разбора */
-  private val parsingStatusLabel = new Label("Test")
+  private val parsingStatusLabel = new Label
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
     preferredSize = new Dimension(200, preferredSize.height)
@@ -63,6 +63,17 @@ object LabTwoForm extends SimpleSwingApplication {
 
   //////////////////////////////////////////////////////////////
 
+  // !!! Тестирование
+  private val test = new Thread(new Runnable {
+    override def run() {
+      fileContentTextArea.text = Source.fromFile("data/TestProg.txt").mkString
+      Thread.sleep(1000)
+      processing()
+    }
+  })
+  if (true) test.start()
+
+  //////////////////////////////////////////////////////////////
 
   // Генерация компонентов по умолчанию
   private def defaultScrollPane = (c: Component) => new ScrollPane() {
@@ -167,7 +178,7 @@ object LabTwoForm extends SimpleSwingApplication {
     // Установка статуса разбора текста
     parsingStatusLabel.text = if (statusOrPos == LexAuto.NoErrors) {
       "Разбор выполнен без ошибок"
-    } else "В ходе разбора обнаружены ошибки"
+    } else "В ходе разбора обнаружена ошибка"
 
     // Добавление лексем в таблицу
     out.zipWithIndex.map {
@@ -177,15 +188,5 @@ object LabTwoForm extends SimpleSwingApplication {
     // Переключение на вкладку с таблицей
     tabbedPane.setSelectedIndex(1)
   }
-
-  // !!! Тестирование
-  val test = new Thread(new Runnable {
-    override def run() {
-      fileContentTextArea.text = Source.fromFile("data/TestProg.txt").mkString
-      Thread.sleep(1000)
-      processing()
-    }
-  })
-  test.start()
 
 }
