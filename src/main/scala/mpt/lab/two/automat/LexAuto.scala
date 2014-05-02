@@ -57,21 +57,21 @@ class LexAuto extends ElementAdder {
    *         в которой она присутствует
    */
   def makeLexList(lines: Array[String], listLex: ListBuffer[LexElem]): Int = {
+    var char = ""
+
     try {
       // Инициализация
       init(listLex)
 
       lines.foreach { l =>
-
         columnIndex = 0
 
         // Обрабатываемая строка
         val line = lines(lineIndex) + LineEnd
 
         line.foreach { c =>
-
           // Обрабатываемый символ
-          val char = c.toString
+          char = c.toString
           logger.debug(s"char: '$char'")
 
           import mpt.lab.two.automat.AutoPos._
@@ -93,8 +93,8 @@ class LexAuto extends ElementAdder {
       NoErrors
     } catch {
       case e: Exception =>
-        addInfoToList("Ошибка при разборе")
-        //TODO возврат индекса, вывод текущего символа
+        addInfoToList(s"Ошибка при разборе '$char'")
+        //TODO возврат индекса
         //currentPosition.fromBegin
         throw new MatchError(e.getMessage)
     }
