@@ -20,6 +20,7 @@ object TestAutomat extends App {
 
   val auto = new LexAuto
   val out = ListBuffer[LexElem]()
-  auto.makeLexList(lines, out)
+  val res = auto.makeLexList(lines, out)
+  println("result: " + res)
 
 }
