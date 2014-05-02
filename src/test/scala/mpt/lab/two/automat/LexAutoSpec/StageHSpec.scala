@@ -28,22 +28,18 @@ class StageHSpec extends FlatSpec {
     assert(out(0).lexInfo.name == LexType.Splitter)
     assert(out(0).lexInfo.info.get == "(")
 
-    auto.makeLexList(Array(","), out)
-    assert(out(1).lexInfo.name == LexType.Splitter)
-    assert(out(1).lexInfo.info.get == ",")
-
     auto.makeLexList(Array(")"), out)
-    assert(out(2).lexInfo.name == LexType.Splitter)
-    assert(out(2).lexInfo.info.get == ")")
+    assert(out(1).lexInfo.name == LexType.Splitter)
+    assert(out(1).lexInfo.info.get == ")")
 
     auto.makeLexList(Array(";"), out)
-    assert(out(3).lexInfo.name == LexType.Splitter)
-    assert(out(3).lexInfo.info.get == ";")
+    assert(out(2).lexInfo.name == LexType.Splitter)
+    assert(out(2).lexInfo.info.get == ";")
 
     auto.makeLexList(Array(" "), out)
     assert(auto.currentState == AutoPos.F)
 
-    out.size == 3
+    out.size == 2
   }
 
   /** Проверка обработки букв */
@@ -85,7 +81,7 @@ class StageHSpec extends FlatSpec {
     val out = ListBuffer[LexElem]()
     val auto = new LexAuto
 
-    "`~!@#$%^&*-=+\\/".foreach { e =>
+    ",`~!@#$%^&*-=+\\/".foreach { e =>
       auto.makeLexList(Array(e.toString), out) != LexAuto.NoErrors
     }
   }

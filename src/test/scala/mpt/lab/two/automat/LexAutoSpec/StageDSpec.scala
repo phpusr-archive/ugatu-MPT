@@ -46,7 +46,7 @@ class StageDSpec extends FlatSpec {
 
     // Незначащие символы
     var eIndex = 4
-    "(,);".foreach { e =>
+    "();".foreach { e =>
       auto.makeLexList(Array("3" + e.toString), out)
       assert(auto.currentState == AutoPos.F)
 
@@ -73,7 +73,7 @@ class StageDSpec extends FlatSpec {
 
     // Не поддерживаемые символы
     val outSize = out.size
-    "!№%?*".foreach { e =>
+    ",!№%?*".foreach { e =>
       auto.makeLexList(Array("5" + e.toString), out) != LexAuto.NoErrors
     }
   }

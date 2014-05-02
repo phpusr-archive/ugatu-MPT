@@ -128,7 +128,7 @@ class LexAuto extends ElementAdder {
       case ">" => changeCurrentState(AutoPos.GR)
 
       // Если символ-разделитель
-      case "(" | "," | ")" | ";" =>
+      case "(" | ")" | ";" =>
         addKeyToList(char)
         changeCurrentState(AutoPos.F)
 
@@ -136,7 +136,6 @@ class LexAuto extends ElementAdder {
       case _ => if (isWhitespace(char)) {
         changeCurrentState(AutoPos.F)
       } else if (isLetter(char)) {
-        // Если буква, за исключением (i,t,e,o,x,a)
         changeCurrentState(AutoPos.V)
         currentIdName = char
       } else if (isDigit(char)) {
@@ -200,7 +199,7 @@ class LexAuto extends ElementAdder {
         // Если незначащий символ
         addWordToList(currentIdName)
         changeCurrentState(AutoPos.F)
-      } else if (isListened(char, "(,).;")) {
+      } else if (isListened(char, "().;")) {
         // Если символ-разделитель
         addWordKeyToList(currentIdName, char)
         changeCurrentState(AutoPos.F)
@@ -237,7 +236,7 @@ class LexAuto extends ElementAdder {
         // Если незначащий символ
         addConstToList(currentNumberConst)
         changeCurrentState(AutoPos.F)
-      } else if (isListened(char, "(,);")) {
+      } else if (isListened(char, "();")) {
         // Если символ-разделитель
         addConstKeyToList(currentNumberConst, char)
         changeCurrentState(AutoPos.F)
@@ -270,7 +269,7 @@ class LexAuto extends ElementAdder {
         // Если незначащий символ
         addConstToList(currentNumberConst, isReal)
         changeCurrentState(AutoPos.F)
-      } else if (isListened(char, "(,);")) {
+      } else if (isListened(char, "();")) {
         // Если символ-разделитель
         addConstKeyToList(currentNumberConst, char, isReal)
         changeCurrentState(AutoPos.F)

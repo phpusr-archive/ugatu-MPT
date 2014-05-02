@@ -46,7 +46,7 @@ class StateVSpec extends FlatSpec {
 
     // Незначащие символы
     var eIndex = 4
-    "(,).;".foreach { e =>
+    "().;".foreach { e =>
       auto.makeLexList(Array("w" + e.toString), out)
       assert(auto.currentState == AutoPos.F)
 
@@ -72,7 +72,7 @@ class StateVSpec extends FlatSpec {
     }
 
     // Не поддерживаемые символы
-    "!№%?*".foreach { e =>
+    ",!№%?*".foreach { e =>
       auto.makeLexList(Array("s" + e.toString), out) != LexAuto.NoErrors
     }
   }
