@@ -11,13 +11,15 @@ import mpt.lab.two.automat.StringMatcher._
  *         Time: 15:27
  */
 
+object LexAuto {
+  /** Синтаксический анализ выполнен без ошибок */
+  val NoErrors = -1
+}
+
 /**
  * Класс - моделирующий работу КА, на основе которого построен лексический распознаватель
  */
 class LexAuto extends ElementAdder {
-
-  /** Синтаксический анализ выполнен без ошибок */
-  private val NoErrors = 0
 
   /** Дополнитель конца строки */
   private val LineEnd = " "
@@ -90,13 +92,11 @@ class LexAuto extends ElementAdder {
         lineIndex += 1
       }
 
-      NoErrors
+      LexAuto.NoErrors
     } catch {
-      case e: Exception =>
+      case e: MatchError =>
         addInfoToList(s"Ошибка при разборе '$char'")
-        //TODO возврат индекса
-        //currentPosition.fromBegin
-        throw new MatchError(e.getMessage)
+        currentPosition.fromBegin
     }
 
   }
