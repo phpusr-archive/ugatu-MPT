@@ -89,7 +89,8 @@ object LabTwoForm extends SimpleSwingApplication {
         tabbedPane = peer
 
         // Источник (Вкладка 1)
-        pages += new Page("Source", new GridBagPanel {
+        val NameTabSource = "Source"
+        pages += new Page(NameTabSource, new GridBagPanel {
           border = Swing.TitledBorder(Swing.EtchedBorder, "Source data")
 
           val c = new Constraints
@@ -112,16 +113,17 @@ object LabTwoForm extends SimpleSwingApplication {
           c.weighty = 1
           c.fill = GridBagPanel.Fill.Both
           layout(defaultScrollPane(fileContentTextArea)) = c
-        })
+        }, NameTabSource)
 
         // Таблица лексем (Вкладка 2)
-        pages += new Page("Lexem table", new GridBagPanel {
+        private val NameTabLexem = "Lexem table"
+        pages += new Page(NameTabLexem, new GridBagPanel {
           val c = new Constraints
           c.weightx = 1
           c.weighty = 1
           c.fill = GridBagPanel.Fill.Both
           layout(new ScrollPane(lexemTable)) = c
-        })
+        }, NameTabLexem)
 
       }) = BorderPanel.Position.Center
 
