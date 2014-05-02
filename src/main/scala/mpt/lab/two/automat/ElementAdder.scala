@@ -58,14 +58,14 @@ trait ElementAdder {
   }
 
   /** Добавление лексемы типа "константа" в таблицу лексем */
-  protected def addConstToList(const: String) {
+  protected def addConstToList(const: String, isReal: Boolean = false) {
     logger.debug(s"\t add const: '$const'")
-    lexList += LexElem.createConst(const, currentPosition)
+    lexList += LexElem.createConst(const, currentPosition, isReal)
   }
 
   /** Добавление лексемы типа "константа" и типа "разделитель" в таблицу лексем */
-  protected def addConstKeyToList(const: String, key: String) {
-    addConstToList(const)
+  protected def addConstKeyToList(const: String, key: String, isReal: Boolean = false) {
+    addConstToList(const, isReal)
     addKeyToList(key)
   }
 

@@ -64,10 +64,9 @@ object LexElem {
   }
 
   /** Создание лексемы типа "константа" */
-  def createConst = (const: String, position: Position) => {
+  def createConst = (const: String, position: Position, isReal: Boolean) => {
     val lexType = LexType(LexType.Const, None)
-    //TODO вещественные числа
-    val number = const.toInt
+    val number: AnyVal = if (isReal) const.toFloat else const.toInt
     LexElem(lexType, None, Some(number), None, position)
   }
 

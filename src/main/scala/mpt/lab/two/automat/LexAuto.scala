@@ -83,6 +83,7 @@ class LexAuto extends ElementAdder {
             case G => gState(char)
             case V => vState(char)
             case D => dState(char)
+            case P => pState(char)
           }
 
           columnIndex += 1
@@ -214,6 +215,11 @@ class LexAuto extends ElementAdder {
         addConstToList(currentNumberConst)
         changeCurrentState(AutoPos.G)
 
+      // Если разделитель вещественного числа
+      case "." =>
+        changeCurrentState(AutoPos.P)
+        currentNumberConst += char
+
       // Если цифры
       case _ => if (isDigit(char)) {
         currentNumberConst += char
@@ -225,6 +231,39 @@ class LexAuto extends ElementAdder {
       } else if (isListened(char, "(,).;")) {
         // Если символ-разделитель
         addConstKeyToList(currentNumberConst, char)
+        changeCurrentState(AutoPos.F)
+      } else {
+        // Что-то еще
+        notSupportCase(char)
+      }
+    }
+  }
+
+  /** Обработка вещественных чисел */
+  private def pState(char: String) {
+    val isReal = true
+    char match {
+      // Если начало комментария
+      case "{" =>
+        addConstToList(currentNumberConst, isReal)
+        changeCurrentState(AutoPos.C)
+
+      // Если начало знака присваивания
+      case ":" =>
+        addConstToList(currentNumberConst, isReal)
+        changeCurrentState(AutoPos.G)
+
+      // Если цифры
+      case _ => if (isDigit(char)) {
+        currentNumberConst += char
+        logger.debug(s"\t new digit: $currentNumberConst")
+      } else if (isWhitespace(char)) {
+        // Если незначащий символ
+        addConstToList(currentNumberConst, isReal)
+        changeCurrentState(AutoPos.F)
+      } else if (isListened(char, "(,).;")) {
+        // Если символ-разделитель
+        addConstKeyToList(currentNumberConst, char, isReal)
         changeCurrentState(AutoPos.F)
       } else {
         // Что-то еще
