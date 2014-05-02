@@ -20,10 +20,14 @@ class LexTableModel extends AbstractTableModel {
   /** Данные таблицы */
   private val data = new ArrayBuffer[Seq[String]]
 
+  /** Добавление строки */
   def addRow(rowData: Seq[String]) {
     data += rowData
     fireTableRowsInserted(data.size - 1, data.size - 1)
   }
+
+  /** Очистка модели */
+  def clear() = data.clear()
 
   override def getColumnCount = columnNames.size
 

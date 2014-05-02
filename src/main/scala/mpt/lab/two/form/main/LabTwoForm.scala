@@ -148,6 +148,9 @@ object LabTwoForm extends SimpleSwingApplication {
 
   /** Обработка текста программы */
   private def processing() {
+    // Очистка таблицы
+    lexemModel.clear()
+
     val lines = fileContentTextArea.text.split("\n")
 
     val auto = new LexAuto
@@ -158,8 +161,10 @@ object LabTwoForm extends SimpleSwingApplication {
       case e: Exception => println(e.getMessage)
     }
 
-    //TODO номера и очистка
-    out.map(e => Seq("0", e.lexInfo.name, e.value)).foreach(lexemModel.addRow)
+    // Добавление лексем в таблицу
+    out.zipWithIndex.map {
+      case (e, index) => Seq(s"${index+1}", e.lexInfo.name, e.value)
+    }.foreach(lexemModel.addRow)
 
   }
 
