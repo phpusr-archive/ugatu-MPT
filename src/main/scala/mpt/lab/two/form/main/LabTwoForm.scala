@@ -10,6 +10,7 @@ import scala.collection.mutable.ListBuffer
 import java.awt.Font
 import scala.swing.Font
 import java.io.File
+import javax.swing.JTabbedPane
 
 /**
  * @author phpusr
@@ -53,6 +54,8 @@ object LabTwoForm extends SimpleSwingApplication {
     preferredSize = new Dimension(200, preferredSize.height)
   }
 
+  /** Компонент с вкладками */
+  private var tabbedPane: JTabbedPane = null
 
   //////////////////////////////////////////////////////////////
 
@@ -68,6 +71,7 @@ object LabTwoForm extends SimpleSwingApplication {
     contents = new BorderPanel {
       // Центральная панель
       layout(new TabbedPane {
+        tabbedPane = peer
 
         // Источник (Вкладка 1)
         pages += new Page("Source", new GridBagPanel {
@@ -103,9 +107,6 @@ object LabTwoForm extends SimpleSwingApplication {
           c.fill = GridBagPanel.Fill.Both
           layout(new ScrollPane(lexemTable)) = c
         })
-
-        // Вкладка по умолчанию
-        //peer.setSelectedIndex(1)
 
       }) = BorderPanel.Position.Center
 
@@ -165,6 +166,9 @@ object LabTwoForm extends SimpleSwingApplication {
     out.zipWithIndex.map {
       case (e, index) => Seq(s"${index+1}", e.lexInfo.name, e.value)
     }.foreach(lexemModel.addRow)
+
+    // Переключение на вкладку с таблицей
+    tabbedPane.setSelectedIndex(1)
 
   }
 
