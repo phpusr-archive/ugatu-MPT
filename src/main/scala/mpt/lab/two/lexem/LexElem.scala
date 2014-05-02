@@ -42,7 +42,9 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
  * @param columnIndex Позиция лексемы в строке
  * @param fromBegin Позиция лексемы относительно начала входного файла
  */
-case class Position(lineIndex: Int, columnIndex: Int, fromBegin: Int)
+case class Position(lineIndex: Int, columnIndex: Int, fromBegin: Int) {
+  override def toString = s"line: ${lineIndex+1}, column: ${columnIndex+1}, from begin: ${fromBegin+1}"
+}
 
 
 /**
@@ -77,7 +79,7 @@ object LexElem {
 
   /** Создание информационной лексемы */
   def createInfo = (message:String, position: Position) => {
-    val posString = s"$message: line: ${position.lineIndex+1}, column: ${position.columnIndex+1}, from begin: ${position.fromBegin}"
+    val posString = s"$message: line: $position"
     val lexType = LexType(LexType.Info, Some(posString))
     LexElem(lexType, None, None, None, position)
   }
