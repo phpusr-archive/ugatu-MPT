@@ -74,12 +74,8 @@ class StageDSpec extends FlatSpec {
     // Не поддерживаемые символы
     val outSize = out.size
     "!№%?*".foreach { e =>
-      intercept[MatchError] {
-        auto.makeLexList(Array("5" + e.toString), out)
-      }
+      auto.makeLexList(Array("5" + e.toString), out) != LexAuto.NoErrors
     }
-
-    assert(out.size == outSize)
   }
 
 }

@@ -72,14 +72,9 @@ class StateVSpec extends FlatSpec {
     }
 
     // Не поддерживаемые символы
-    val outSize = out.size
     "!№%?*".foreach { e =>
-      intercept[MatchError] {
-        auto.makeLexList(Array("s" + e.toString), out)
-      }
+      auto.makeLexList(Array("s" + e.toString), out) != LexAuto.NoErrors
     }
-
-    assert(out.size == outSize)
   }
 
 }

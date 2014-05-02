@@ -86,12 +86,8 @@ class StageHSpec extends FlatSpec {
     val auto = new LexAuto
 
     "`~!@#$%^&*-=+\\/".foreach { e =>
-      intercept[MatchError] {
-        auto.makeLexList(Array(e.toString), out)
-      }
+      auto.makeLexList(Array(e.toString), out) != LexAuto.NoErrors
     }
-
-    out.size == 0
   }
 
 }

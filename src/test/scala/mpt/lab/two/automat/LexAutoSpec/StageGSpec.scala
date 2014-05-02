@@ -24,20 +24,17 @@ class StageGSpec extends FlatSpec {
     val auto = new LexAuto
 
     "abc2434(3@4#.:".foreach { e =>
-      intercept[MatchError] {
-        auto.makeLexList(Array(":" + e.toString), out)
-      }
+      auto.makeLexList(Array(":" + e.toString), out) != LexAuto.NoErrors
     }
 
-    out.size == 0
+    val eIndex = out.size
 
     auto.makeLexList(Array(":="), out)
     assert(auto.currentState == AutoPos.F)
-    assert(out(0).lexInfo.name == LexType.AssignmentSign)
-    assert(out(0).lexInfo.info.get == ":=")
+    assert(out(eIndex).lexInfo.name == LexType.AssignmentSign)
+    assert(out(eIndex).lexInfo.info.get == ":=")
 
-    out.size == 1
-
+    out.size == eIndex
   }
 
 }
