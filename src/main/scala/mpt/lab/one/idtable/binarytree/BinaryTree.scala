@@ -84,7 +84,6 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   override def find(idName: String): Option[Node] = {
     // Инкремент счетчика кол-ва поисков
     findStat.newElement()
-
     // Рекурсивный поиск элемента
     findRec(idName, root)
   }
