@@ -54,37 +54,37 @@ case class Position(line: Int, column: Int, fromBegin: Int) {
 object LexElem {
 
   /** Создание лексемы типа "переменная" */
-  def createVar = (variable: String, position: Position, varInfo: Option[NodeAbstract]) => {
+  val createVar = (variable: String, position: Position, varInfo: Option[NodeAbstract]) => {
     val lexType = LexType(LexType.Var, None)
     LexElem(lexType, varInfo, None, None, position)
   }
 
   /** Создание лексемы типа "ключевое слово" */
-  def createKeyWord = (lexType: LexType, position: Position) => {
+  val createKeyWord = (lexType: LexType, position: Position) => {
     LexElem(lexType, None, None, None, position)
   }
 
   /** Создание лексемы типа "константа" */
-  def createConst = (const: String, position: Position, isReal: Boolean) => {
+  val createConst = (const: String, position: Position, isReal: Boolean) => {
     val lexType = LexType(LexType.Const, None)
     val number: AnyVal = if (isReal) const.toFloat else const.toInt
     LexElem(lexType, None, Some(number), None, position)
   }
 
   /** Создание лексемы типа "оператор" */
-  def createOperator = (lexType: LexType, position: Position) => {
+  val createOperator = (lexType: LexType, position: Position) => {
     LexElem(lexType, None, None, None, position)
   }
 
   /** Создание информационной лексемы */
-  def createInfo = (message:String, position: Position) => {
+  val createInfo = (message:String, position: Position) => {
     val posString = s"$message: $position"
     val lexType = LexType(LexType.Info, Some(posString))
     LexElem(lexType, None, None, None, position)
   }
 
   /** Создание лексемы-разделителя */
-  def createKey = (key: String, position: Position) => {
+  val createKey = (key: String, position: Position) => {
     val lexType = LexType(LexType.Splitter, Some(key))
     LexElem(lexType, None, None, None, position)
   }
