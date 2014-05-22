@@ -2,7 +2,7 @@ package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
 import mpt.lab.three.TSymbKind.TSymbKind
-import mpt.lab.two.lexem.{Position, LexElem}
+import mpt.lab.two.lexem.{LexType, Position, LexElem}
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -40,6 +40,8 @@ object SyntSymb {
 
   val RuleLength = ???
 
+  val LexStart: LexType = ???
+
   /** Сдвиг-свертка */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
     var iCnt = listLex.size - 1
@@ -48,12 +50,49 @@ object SyntSymb {
     symbStack.push(lexStop)
     var i = 0
 
+    var cRule: Char = ???
+    var result: TSymbol = null
+
     while (i <= iCnt) {
       val lexTCur = symbStack.topLexem.get.lexInfo
+      val lexCurFromList = listLex(i)
 
-      //TODO continue
+      if (lexTCur == LexStart && lexCurFromList.lexInfo == LexStart) {
+        // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
+        cRule = Matrix.GrammMatrix(lexTCur)(lexCurFromList.lexInfo)
+      }
+
+      cRule = correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
+
+      cRule match {
+        case '<' | '=' => // Надо выполнить сдвиг (перенос)
+          symbStack.push(lexCurFromList)
+          i += 1
+        case '>' => // Надо выполнить свертку
+          if (symbStack.makeTopSymb.isEmpty) {
+          // Если не удалось выполнить свертку
+          result = TSymbol.createLex(lexCurFromList)
+          // TODO прерываем алгоритм
+        } else {
+          // Отношение не установлено - ошибка разбора
+          result = TSymbol.createLex(lexCurFromList)
+          // TODO прерываем алгоритм
+        }
+      }
     }
+
+    if (result == null) {
+      if (symbStack.count == 2) {
+        result = symbStack.getSymbol(1)
+      } else {
+        result = TSymbol.createLex(listLex(iCnt))
+      }
+    }
+
+    result
   }
+
+  private def correctRule(cRule: Char, lexTCur: LexType, lex: LexType, symbStack: TSymbStack): Char = ???
 
 }
 
@@ -218,7 +257,8 @@ class TSymbStack {
     symbol
   }
 
-
+  /** Кол-во элементов в стеке */
+  def count = items.size
 
 }
 
