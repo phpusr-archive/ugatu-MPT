@@ -2,7 +2,7 @@ package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
 import mpt.lab.three.TSymbKind.TSymbKind
-import mpt.lab.two.lexem.LexType
+import mpt.lab.two.lexem.LexElem
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -22,7 +22,7 @@ object TSymbKind extends Enumeration {
 }
 
 object Types {
-  type TLexem = LexType
+  type TLexem = LexElem
 }
 
 /**
@@ -41,7 +41,9 @@ object SyntSymb {
   val RuleLength = ???
 
   /** Сдвиг-свертка */
-  def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = ???
+  def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
+    ???
+  }
 
 }
 
@@ -73,7 +75,7 @@ class TSymbol {
     if (symbType == TSymbKind.SymbSynt) {
       makeSymbolStr(iRuleNum)
     } else {
-      lexem.info.get
+      lexem.lexInfo.info.get
     }
   }
 
@@ -167,12 +169,12 @@ class TSymbStack {
         addToRule(s.symbolStr, symCur)
       } else {
         if (symCur == null) {
-          addToRule(s.lexem.name, s)
+          addToRule(s.lexem.lexInfo.name, s)
         } else {
-          val rowIndex = s.lexem.name.toInt //TODO
-          val columnIndex = symCur.lexem.name.toInt //TODO
+          val rowIndex = s.lexem.lexInfo.name.toInt //TODO
+          val columnIndex = symCur.lexem.lexInfo.name.toInt //TODO
           if (Matrix.GrammMatrix(rowIndex)(columnIndex) == Matrix.Equals) {
-            addToRule(s.lexem.name, s)
+            addToRule(s.lexem.lexInfo.name, s)
           } else {
             //TODO прерываем цикл
           }
