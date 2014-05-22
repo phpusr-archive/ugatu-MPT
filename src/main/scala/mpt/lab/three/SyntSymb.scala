@@ -2,7 +2,7 @@ package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
 import mpt.lab.three.TSymbKind.TSymbKind
-import mpt.lab.two.lexem.LexElem
+import mpt.lab.two.lexem.{Position, LexElem}
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -42,7 +42,17 @@ object SyntSymb {
 
   /** Сдвиг-свертка */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
-    ???
+    var iCnt = listLex.size - 1
+    val lexStop = LexElem.createInfo("Начало строки", new Position(0, 0, 0))
+
+    symbStack.push(lexStop)
+    var i = 0
+
+    while (i <= iCnt) {
+      val lexTCur = symbStack.topLexem.get.lexInfo
+
+      //TODO continue
+    }
   }
 
 }
@@ -117,7 +127,10 @@ object TSymbol {
  */
 class TSymbStack {
 
-  private val items = ListBuffer[TSymbol]()
+  private val items = ListBuffer[TSymbol]() //TODO возмоно это не список символов
+
+  private val symbols: ListBuffer[TSymbol] = ??? //TODO
+
 
   /** Очистка стека */
   def clear() = items.clear()
@@ -134,7 +147,12 @@ class TSymbStack {
   }
 
   /** Самая верхняя лексема в стеке */
-  def topLexem = items.reverse.find(_.symbType == TSymbKind.SymbLex)
+  def topLexem = {
+    val find = symbols.reverse.find(_.symbType == TSymbKind.SymbLex)
+    if (find.isDefined) {
+      Some(find.get.lexem)
+    } else None
+  }
 
   /** Удаление элемента из стека */
   def delete(index: Int) = items.remove(index)
@@ -150,8 +168,6 @@ class TSymbStack {
 
     /** Текущий символ */
     var symCur: TSymbol = null
-
-    val symbols: Array[TSymbol] = ??? //TODO
 
     val addToRule = (sStr: String, sym: TSymbol) => {
       symCur = sym
