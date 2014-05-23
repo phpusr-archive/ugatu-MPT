@@ -11,7 +11,7 @@ object Matrix {
 
   val Equals = "="
 
-  val GrammMatrix: Array[Array[String]] = ???
+  val GrammMatrix: Array[Array[Char]] = ???
 
   val GrammRules: Array[String] = ???
 

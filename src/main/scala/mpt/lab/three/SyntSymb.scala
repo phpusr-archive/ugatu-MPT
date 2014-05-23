@@ -97,11 +97,3 @@ object SyntSymb {
   private def correctRule(cRule: Char, lexTCur: LexType, lex: LexType, symbStack: TSymbStack): Char = cRule
 
 }
-
-
-/** Массив символов, состовляющих правило грамматики */
-class TSymbArray {
-  val data = new Array[TSymbol](SyntSymb.RuleLength)
-}
-
-
