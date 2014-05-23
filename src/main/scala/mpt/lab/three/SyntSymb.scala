@@ -1,7 +1,6 @@
 package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
-import mpt.lab.three.TSymbKind.TSymbKind
 import mpt.lab.two.lexem.{LexType, Position, LexElem}
 
 /**
@@ -10,25 +9,9 @@ import mpt.lab.two.lexem.{LexType, Position, LexElem}
  *         Time: 11:58
  */
 
-/**
- * Типы символов: терминальные (лексемы) и нетерминальные
- */
-object TSymbKind extends Enumeration {
-  type TSymbKind = Value
-
-  val SymbLex = Value
-  val SymbSynt = Value
-}
-
 object Types {
   type TLexem = LexElem
 }
-
-/**
- * Структура данных для символа грамматики
- */
-case class TSymbInfo(lexOne: TLexem, lexList: List[TSymbol], symbType: TSymbKind)
-
 
 
 /**

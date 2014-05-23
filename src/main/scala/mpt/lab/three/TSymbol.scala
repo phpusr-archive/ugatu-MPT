@@ -1,6 +1,7 @@
 package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
+import mpt.lab.three.TSymbKind.TSymbKind
 
 /**
  * @author phpusr
@@ -9,14 +10,18 @@ import mpt.lab.three.Types.TLexem
  */
 
 /**
- * Предварительное описание класса "Символ"
+ * Описание всех данных, связанных с понятием "символ грамматики"
  */
 class TSymbol {
 
   /** Информация о символе */
   private var symbInfo: TSymbInfo = null
 
-  /** Номер правила, которым создан символ */
+  /**
+   * Номер правила, которым создан символ
+   * Для терминальных символов = 0,
+   * для нетерминальных символов он может быть от 1 до 13
+   */
   private var iRuleNum: Int = 0
 
   /** Получение символа из правила по номеру символа */
@@ -63,5 +68,20 @@ object TSymbol {
     }
   }
 
+}
+
+/**
+ * Структура данных для символа грамматики
+ */
+case class TSymbInfo(lexOne: TLexem, lexList: List[TSymbol], symbType: TSymbKind)
+
+/**
+ * Типы символов: терминальные (лексемы) и нетерминальные
+ */
+object TSymbKind extends Enumeration {
+  type TSymbKind = Value
+
+  val SymbLex = Value
+  val SymbSynt = Value
 }
 
