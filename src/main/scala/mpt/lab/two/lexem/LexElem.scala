@@ -33,6 +33,26 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
 
     _value.toString
   }
+
+  /** Индекс для получения значения в матрице операторного предшествования */
+  def index = {
+    if (lexInfo.name == LexType.Var) 4
+    else {
+      value match {
+        case ";" => 0
+        case "if" => 1
+        case "then" => 2
+        case "else" => 3
+        case ":=" => 5
+        case "<" => 6
+        case ">" => 7
+        case "==" => 8
+        case "(" => 9
+        case ")" => 10
+        case "\n" => 11
+      }
+    }
+  }
 }
 
 
