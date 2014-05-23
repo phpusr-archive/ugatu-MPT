@@ -54,14 +54,14 @@ object SyntSymb {
 
     var i = 0
     while (i <= iCnt && !break) {
-      val lexTCur = symbStack.topLexem.get.lexInfo
+      val lexTCur = symbStack.topLexem.get
       val lexCurFromList = listLex(i)
 
       if (lexTCur == LexStart && lexCurFromList.lexInfo == LexStart) {
         break = true
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
-        var cRule = Matrix.GrammMatrix(lexTCur)(lexCurFromList.lexInfo)
+        var cRule = Matrix.GrammMatrix(lexTCur.index)(lexCurFromList.index)
         cRule = correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
 
         cRule match {
@@ -94,6 +94,6 @@ object SyntSymb {
   }
 
   /** Корректировка отношения */
-  private def correctRule(cRule: Char, lexTCur: LexType, lex: LexType, symbStack: TSymbStack): Char = cRule
+  private def correctRule(cRule: Char, lexTCur: TLexem, lex: LexType, symbStack: TSymbStack): Char = cRule
 
 }
