@@ -36,7 +36,7 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
 
   /** Индекс для получения значения в матрице операторного предшествования */
   def index = {
-    if (lexInfo.name == LexType.Var) 4
+    if (lexInfo.name == LexType.Var || lexInfo.name == LexType.Const) 4
     else {
       value match {
         case ";" => 0
