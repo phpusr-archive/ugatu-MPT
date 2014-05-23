@@ -6,8 +6,11 @@ package mpt.lab.three
  *         Time: 16:07
  */
 
-//TODO
-object Matrix {
+/**
+ * Модуль описания матрицы предшествования и
+ * правил грамматики
+ */
+object SyntRule {
 
   val Equals = "="
 

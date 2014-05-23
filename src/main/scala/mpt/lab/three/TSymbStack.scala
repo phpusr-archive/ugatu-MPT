@@ -76,7 +76,7 @@ class TSymbStack {
         } else {
           val rowIndex = s.lexem.lexInfo.name.toInt //TODO
           val columnIndex = symCur.lexem.lexInfo.name.toInt //TODO
-          if (Matrix.GrammMatrix(rowIndex)(columnIndex) == Matrix.Equals) {
+          if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Equals) {
             addToRule(s.lexem.lexInfo.name, s)
           } else {
             //TODO прерываем цикл
@@ -93,7 +93,7 @@ class TSymbStack {
 
     // Если выбран хотя бы один символ из стека
     if (iSymbN != 0) {
-      val find = Matrix.GrammRules.find(_ == sRuleStr)
+      val find = SyntRule.GrammRules.find(_ == sRuleStr)
       if (find.isDefined) {
         symbol = Some(TSymbol.createSymb(i, iSymbN, symbArr))
         items += symbol.get

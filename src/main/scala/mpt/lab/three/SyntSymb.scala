@@ -61,7 +61,7 @@ object SyntSymb {
         break = true
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
-        var cRule = Matrix.GrammMatrix(lexTCur.index)(lexCurFromList.index)
+        var cRule = SyntRule.GrammMatrix(lexTCur.index)(lexCurFromList.index)
         cRule = correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
 
         cRule match {
