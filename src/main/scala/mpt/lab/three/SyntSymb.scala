@@ -26,7 +26,7 @@ object SyntSymb {
 
   /** Сдвиг-свертка */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
-    val lexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0))
+    val lexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0)) //TODO почему stop, а не start
     symbStack.push(lexStop)
 
     val iCnt = listLex.size - 1
@@ -40,7 +40,7 @@ object SyntSymb {
       val lexTCur = symbStack.topLexem.get
       val lexCurFromList = listLex(i)
 
-      if (lexTCur == LexStart && lexCurFromList.lexInfo == LexStart) {
+      if (lexTCur == LexStart && lexCurFromList.lexInfo == LexStart) { //TODO несоответствие типов
         break = true
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
@@ -53,7 +53,7 @@ object SyntSymb {
             i += 1
           case '>' => // Надо выполнить свертку
             if (symbStack.makeTopSymb.isEmpty) {
-              // Если не удалось выполнить свертку
+              // Если не удалось выполнить свертку //TODO возможно неверный коммент
               result = TSymbol.createLex(lexCurFromList)
               break = true
             } else {
