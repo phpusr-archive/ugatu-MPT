@@ -62,7 +62,7 @@ object SyntSymb {
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
         var cRule = SyntRule.GrammMatrix(lexTCur.index)(lexCurFromList.index)
-        cRule = correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
+        cRule = SyntRule.correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
 
         cRule match {
           case '<' | '=' => // Надо выполнить сдвиг (перенос)
@@ -92,8 +92,5 @@ object SyntSymb {
 
     result
   }
-
-  /** Корректировка отношения */
-  private def correctRule(cRule: Char, lexTCur: TLexem, lex: LexType, symbStack: TSymbStack): Char = cRule
 
 }
