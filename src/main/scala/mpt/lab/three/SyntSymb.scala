@@ -44,8 +44,8 @@ object SyntSymb {
 
   /** Сдвиг-свертка */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
-    var iCnt = listLex.size - 1
-    val lexStop = LexElem.createInfo("Начало строки", new Position(0, 0, 0))
+    val iCnt = listLex.size - 1
+    val lexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0))
 
     symbStack.push(lexStop)
     var i = 0
@@ -58,10 +58,11 @@ object SyntSymb {
       val lexCurFromList = listLex(i)
 
       if (lexTCur == LexStart && lexCurFromList.lexInfo == LexStart) {
-        // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
-        cRule = Matrix.GrammMatrix(lexTCur)(lexCurFromList.lexInfo)
+        // TODO прерываем алгоритм break
       }
 
+      // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
+      cRule = Matrix.GrammMatrix(lexTCur)(lexCurFromList.lexInfo)
       cRule = correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
 
       cRule match {
@@ -72,11 +73,11 @@ object SyntSymb {
           if (symbStack.makeTopSymb.isEmpty) {
           // Если не удалось выполнить свертку
           result = TSymbol.createLex(lexCurFromList)
-          // TODO прерываем алгоритм
+          // TODO прерываем алгоритм break
         } else {
           // Отношение не установлено - ошибка разбора
           result = TSymbol.createLex(lexCurFromList)
-          // TODO прерываем алгоритм
+          // TODO прерываем алгоритм break
         }
       }
     }
@@ -92,7 +93,8 @@ object SyntSymb {
     result
   }
 
-  private def correctRule(cRule: Char, lexTCur: LexType, lex: LexType, symbStack: TSymbStack): Char = ???
+  /** Корректировка отношения */
+  private def correctRule(cRule: Char, lexTCur: LexType, lex: LexType, symbStack: TSymbStack): Char = cRule
 
 }
 
