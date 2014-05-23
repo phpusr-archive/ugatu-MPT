@@ -24,4 +24,7 @@ object SyntRule {
   /** Корректировка отношения */
   def correctRule(cRule: Char, lexTCur: TLexem, lex: LexType, symbStack: TSymbStack): Char = cRule
 
+  /** Наименование нетерминального символа в правилах остновной грамматики */
+  def makeSymbolStr(ruleNum: Int): String = "E" //TODO вынести в константы
+
 }

@@ -28,13 +28,11 @@ class TSymbol {
   /** Формирование строкового представления символа */
   def symbolStr: String = {
     if (symbType == TSymbKind.SymbSynt) {
-      makeSymbolStr(iRuleNum)
+      SyntRule.makeSymbolStr(iRuleNum)
     } else {
       lexem.lexInfo.info.get
     }
   }
-
-  def makeSymbolStr(ruleNum: Int): String = ???
 
   /** Тип символа */
   def symbType = symbInfo.symbType
