@@ -44,7 +44,7 @@ object SyntRule {
 
   /** Правила грамматики */
   val GrammRules: Array[Array[String]] = Array(
-    Array(E), // 1
+    Array(E, ";"), // 1
     Array("if", E, "then", E, "else", E), // 2
     Array("if", E, "then", E), // 3
     Array("a", ":=", E), // 4

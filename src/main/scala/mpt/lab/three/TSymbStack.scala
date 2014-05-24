@@ -77,12 +77,12 @@ class TSymbStack {
         addToRule(s.symbolStr, symCur)
       } else {
         if (symCur == null) {
-          addToRule(s.lexem.value, s) //TODO правильные значения
+          addToRule(s.lexem.valueWithReplace, s) //TODO правильные значения
         } else {
           val rowIndex = s.lexem.index
           val columnIndex = symCur.lexem.index
           if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Basis) {
-            addToRule(s.lexem.value, s) //TODO правильные значения
+            addToRule(s.lexem.valueWithReplace, s) //TODO правильные значения
           } else {
             break = true
           }
@@ -98,11 +98,11 @@ class TSymbStack {
 
     // Если выбран хотя бы один символ из стека
     if (symbArr.size > 0) {
-      val sRuleStr = sRuleList.mkString("|")
+      val sRuleStr = sRuleList.reverse.mkString("|")
       logger.debug("\tsRule: " + sRuleStr)
       val find = SyntRule.GrammRules.find(_.mkString("|") == sRuleStr)
       if (find.isDefined) {
-        symbol = Some(TSymbol.createSymb(i, symbArr.size, symbArr))
+        symbol = Some(TSymbol.createSymb(i, symbArr.size, symbArr)) //TODO вместо i д.б. № правила замены
         items += symbol.get
       } else {
         symbArr.clear()
