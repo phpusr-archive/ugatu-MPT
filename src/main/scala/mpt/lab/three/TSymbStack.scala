@@ -76,7 +76,7 @@ class TSymbStack {
         } else {
           val rowIndex = s.lexem.lexInfo.name.toInt //TODO
           val columnIndex = symCur.lexem.lexInfo.name.toInt //TODO
-          if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Equals) {
+          if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Basis) {
             addToRule(s.lexem.lexInfo.name, s)
           } else {
             //TODO прерываем цикл

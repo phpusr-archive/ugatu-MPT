@@ -15,7 +15,14 @@ import mpt.lab.three.Types.TLexem
  */
 object SyntRule {
 
-  val Equals = "="
+  /** Состовляет основу */
+  val Basis = '='
+  /** Предшуствует */
+  val Preceded = '<'
+  /** Следует */
+  val Follow = '>'
+  /** Не сопоставимы */
+  val Empty = ' '
 
   /** Матрица операторного предшествования */
   val GrammMatrix: Array[Array[Char]] = Array(
