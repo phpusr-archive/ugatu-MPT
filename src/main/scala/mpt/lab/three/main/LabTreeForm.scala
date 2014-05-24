@@ -188,6 +188,7 @@ object LabTreeForm extends SimpleSwingApplication {
   private def processing() {
     // Очистка таблицы
     lexemModel.clear()
+    //TODO очистка дерева
 
     // Разбор текста
     val auto = new LexAuto
