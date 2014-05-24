@@ -4,7 +4,8 @@ import mpt.lab.two.automat.LexAuto
 import scala.collection.mutable.ListBuffer
 import mpt.lab.two.lexem.LexElem
 import scala.io.Source
-import mpt.lab.three.{TSymbStack, SyntSymb}
+import mpt.lab.three.syntax.SyntSymb
+import mpt.lab.three.symbol.TSymbStack
 
 /**
  * @author phpusr

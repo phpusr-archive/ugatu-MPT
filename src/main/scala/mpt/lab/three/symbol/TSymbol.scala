@@ -1,8 +1,9 @@
-package mpt.lab.three
+package mpt.lab.three.symbol
 
-import mpt.lab.three.Types.TLexem
-import mpt.lab.three.TSymbKind.TSymbKind
+import mpt.lab.three.syntax.{SyntRule, Types}
+import Types.TLexem
 import scala.collection.mutable.ListBuffer
+import mpt.lab.three.symbol.TSymbKind.TSymbKind
 
 /**
  * @author phpusr

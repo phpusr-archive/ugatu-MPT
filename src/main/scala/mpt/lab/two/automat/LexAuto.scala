@@ -4,7 +4,7 @@ import scala.collection.mutable.ListBuffer
 import mpt.lab.two.lexem.{LexOperators, LexElem}
 import org.dyndns.phpusr.log.Logger
 import mpt.lab.two.automat.StringMatcher._
-import mpt.lab.three.SyntSymb
+import mpt.lab.three.syntax.SyntSymb
 
 /**
  * @author phpusr

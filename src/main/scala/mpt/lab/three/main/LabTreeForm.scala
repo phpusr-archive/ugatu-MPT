@@ -13,7 +13,8 @@ import java.io.File
 import javax.swing.JTabbedPane
 import mpt.lab.two.form.main.LexTableModel
 import scalaswingcontrib.tree.{TreeModel, Tree}
-import mpt.lab.three.{TSymbStack, SyntSymb, TSymbol}
+import mpt.lab.three.syntax.SyntSymb
+import mpt.lab.three.symbol.{TSymbStack, TSymbol}
 
 /**
  * @author phpusr

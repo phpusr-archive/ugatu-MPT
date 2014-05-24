@@ -1,8 +1,9 @@
-package mpt.lab.three
+package mpt.lab.three.syntax
 
-import mpt.lab.three.Types.TLexem
 import mpt.lab.two.lexem.{Position, LexElem}
 import org.dyndns.phpusr.log.Logger
+import mpt.lab.three.syntax.Types.TLexem
+import mpt.lab.three.symbol.{TSymbol, TSymbStack}
 
 /**
  * @author phpusr

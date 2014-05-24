@@ -1,7 +1,8 @@
-package mpt.lab.three
+package mpt.lab.three.syntax
 
 import mpt.lab.two.lexem.LexType
-import mpt.lab.three.Types.TLexem
+import mpt.lab.three.symbol.TSymbStack
+import mpt.lab.three.syntax.Types.TLexem
 
 /**
  * @author phpusr

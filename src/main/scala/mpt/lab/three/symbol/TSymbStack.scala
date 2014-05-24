@@ -1,7 +1,8 @@
-package mpt.lab.three
+package mpt.lab.three.symbol
 
 import scala.collection.mutable.ListBuffer
-import mpt.lab.three.Types.TLexem
+import mpt.lab.three.syntax.{SyntSymb, SyntRule, Types}
+import Types.TLexem
 import org.dyndns.phpusr.log.Logger
 
 /**

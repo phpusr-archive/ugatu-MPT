@@ -1,7 +1,7 @@
 package mpt.lab.two.lexem
 
 import mpt.lab.one.idtable.NodeAbstract
-import mpt.lab.three.{SyntRule, SyntSymb}
+import mpt.lab.three.syntax.{SyntSymb, SyntRule}
 
 /**
  * @author phpusr
