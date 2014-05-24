@@ -12,6 +12,8 @@ import scala.swing.Font
 import java.io.File
 import javax.swing.JTabbedPane
 import mpt.lab.two.form.main.LexTableModel
+import scalaswingcontrib.tree.{TreeModel, Tree}
+import mpt.lab.three.{TSymbStack, SyntSymb, TSymbol}
 
 /**
  * @author phpusr
@@ -62,12 +64,17 @@ object LabTreeForm extends SimpleSwingApplication {
   /** Компонент с вкладками */
   private var tabbedPane: JTabbedPane = null
 
+  /** Синтаксическое дерево */
+  val syntaxTree = new Tree[TSymbol] {
+    renderer = Tree.Renderer(_.symbolStr)
+  }
+
   //////////////////////////////////////////////////////////////
 
   // !!! Тестирование
   private val test = new Thread(new Runnable {
     override def run() {
-      fileContentTextArea.text = Source.fromFile("data/TestProg.txt").mkString
+      fileContentTextArea.text = Source.fromFile("data/TestSynt.txt").mkString
       Thread.sleep(1000)
       processing()
     }
@@ -117,7 +124,7 @@ object LabTreeForm extends SimpleSwingApplication {
         }, NameTabSource)
 
         // Таблица лексем (Вкладка 2)
-        private val NameTabLexem = "Lexem table"
+        val NameTabLexem = "Lexem table"
         pages += new Page(NameTabLexem, new GridBagPanel {
           val c = new Constraints
           c.weightx = 1
@@ -125,6 +132,16 @@ object LabTreeForm extends SimpleSwingApplication {
           c.fill = GridBagPanel.Fill.Both
           layout(new ScrollPane(lexemTable)) = c
         }, NameTabLexem)
+
+        // Синтаксическое дерево (Вкладка 3)
+        val NameTabSyntaxTree = "Syntax tree"
+        pages += new Page(NameTabSyntaxTree, new GridBagPanel {
+          val c = new Constraints
+          c.weightx = 1
+          c.weighty = 1
+          c.fill = GridBagPanel.Fill.Both
+          layout(syntaxTree) = c
+        }, NameTabSyntaxTree)
 
       }) = BorderPanel.Position.Center
 
@@ -175,21 +192,26 @@ object LabTreeForm extends SimpleSwingApplication {
     // Разбор текста
     val auto = new LexAuto
     val lines = fileContentTextArea.text.split("\n")
-    val out = ListBuffer[LexElem]()
-    val statusOrPos = auto.makeLexList(lines, out)
+    val lexList = ListBuffer[LexElem]()
+    val statusOrPos = auto.makeLexList(lines, lexList)
 
     // Установка статуса разбора текста
     parsingStatusLabel.text = if (statusOrPos == LexAuto.NoErrors) {
+      val rootSymbol = SyntSymb.buildSyntList(lexList.toList, new TSymbStack)
+      //TODO добавить обработку ошибки
+      syntaxTree.model = TreeModel(rootSymbol)(_.children)
+      syntaxTree.expandAll()
+
       "Разбор выполнен без ошибок"
     } else "В ходе разбора обнаружена ошибка"
 
     // Добавление лексем в таблицу
-    out.zipWithIndex.map {
+    lexList.zipWithIndex.map {
       case (e, index) => Seq(s"${index+1}", e.lexInfo.name, e.value)
     }.foreach(lexemModel.addRow)
 
-    // Переключение на вкладку с таблицей
-    tabbedPane.setSelectedIndex(1)
+    // Переключение на вкладку с синтаксическим деревом
+    tabbedPane.setSelectedIndex(2)
   }
 
 }
