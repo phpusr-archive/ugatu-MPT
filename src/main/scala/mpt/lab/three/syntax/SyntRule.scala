@@ -48,7 +48,7 @@ object SyntRule {
     Array(E, ";"), // 1
     Array("if", E, "then", E, "else", E), // 2
     Array("if", E, "then", E), // 3
-    Array("a", ":=", E), // 4
+    Array("a", ":=", E), // 4 //TODO задействовать
     Array("if", E, "then", E, "else", E), // 5
     Array("a", ":=", E), // 6
     Array(E, "<", E), // 7
