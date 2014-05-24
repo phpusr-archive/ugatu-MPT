@@ -8,7 +8,9 @@ unmanagedJars in Compile += file(s"${Path.userHome}/.ivy2/cache/org.scala-lang/s
 libraryDependencies ++= Seq(
   //"org.scala-lang" % "scala-swing" % scalaVersion.value,
   "org.scalatest" % "scalatest_2.10" % "2.1.3" % "test",
-  "org.pegdown" % "pegdown" % "1.4.2" % "test"
+  "org.pegdown" % "pegdown" % "1.4.2" % "test",
+  // https://github.com/kenbot/ScalaSwingTreeWrapper
+  "com.github.benhutchison" % "scalaswingcontrib" % "1.4"
 )
 
 
