@@ -28,7 +28,12 @@ object SyntSymb {
   val Stop = "stop"
   val LexStop = LexElem.createKey(Stop, new Position(0, 0, 0))
 
-  /** Сдвиг-свертка */
+  /**
+   * Сдвиг-свертка
+   * Результат функции:
+   * - нетерминальный символ (корень синтаксического дерева), если разбор был выполнен успешно
+   * - терминальный символ, ссылающийся на лексему, где была обнаружена ошибка, если разбор выполнен с ошибками
+   */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {    
     symbStack.push(LexStop)
 
