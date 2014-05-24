@@ -3,6 +3,7 @@ package mpt.lab.one.idtable.binarytree
 import mpt.lab.one.idtable.{NodeAbstract, IdTableAbstract}
 import mpt.lab.one.idtable.IndexType._
 import scala.collection.mutable.ListBuffer
+import org.dyndns.phpusr.log.Logger
 
 /**
  * @author phpusr
@@ -35,6 +36,9 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   /** Корневой элемент дерева */
   private var root: Option[Node] = None
 
+  /** Логирование */
+  private val logger = Logger(infoEnable = false, debugEnable = false, traceEnable = false)
+
   ///////////////////////////////////////////
 
   init()
@@ -66,7 +70,7 @@ class BinaryTree(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
     if (node.isEmpty) { // Если узел пустой
       new Some(new Node(idName, hash)) //Создаем новый узел, знач-е узла берем из idName
     } else if (node.get.name == idName) { // Если элемент уже есть, не добавляем его
-      println(">> Already exists!") //TODO
+      logger.debug(">> Already exists!")
       node
     } else if (hash > node.get.hash) { // Если hash > текущего узла
       node.get.right = addRec(idName, hash, node.get.right)
