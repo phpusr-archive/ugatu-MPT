@@ -66,7 +66,7 @@ object LabTwoForm extends SimpleSwingApplication {
   // !!! Тестирование
   private val test = new Thread(new Runnable {
     override def run() {
-      fileContentTextArea.text = Source.fromFile("data/TestProg.txt").mkString
+      fileContentTextArea.text = Source.fromFile("data/TestLex.txt").mkString
       Thread.sleep(1000)
       processing()
     }

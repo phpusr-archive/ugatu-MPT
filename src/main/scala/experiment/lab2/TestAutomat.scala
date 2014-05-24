@@ -16,7 +16,7 @@ import scala.io.Source
  */
 object TestAutomat extends App {
 
-  val lines = Source.fromFile("data/TestProg.txt").getLines().toArray
+  val lines = Source.fromFile("data/TestLex.txt").getLines().toArray
 
   val auto = new LexAuto
   val out = ListBuffer[LexElem]()
