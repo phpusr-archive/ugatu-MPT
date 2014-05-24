@@ -22,9 +22,11 @@ object SyntSymb {
 
   val RuleLength = 10 //TODO вставить правильное значение
 
-  val LexStart = LexElem.createInfo("[start|end]", new Position(0, 0, 0)) //TODO разобраться с названиями
+  val Start = "start"
+  val LexStart = LexElem.createKey(Start, new Position(0, 0, 0)) //TODO разобраться с названиями
 
-  val LexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0))
+  val Stop = "stop"
+  val LexStop = LexElem.createKey(Stop, new Position(0, 0, 0))
 
   /** Сдвиг-свертка */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {    

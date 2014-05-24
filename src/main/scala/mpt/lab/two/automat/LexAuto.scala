@@ -4,6 +4,7 @@ import scala.collection.mutable.ListBuffer
 import mpt.lab.two.lexem.{LexOperators, LexElem}
 import org.dyndns.phpusr.log.Logger
 import mpt.lab.two.automat.StringMatcher._
+import mpt.lab.three.SyntSymb
 
 /**
  * @author phpusr
@@ -95,6 +96,9 @@ class LexAuto extends ElementAdder {
 
         lineIndex += 1
       }
+
+      // Добавление конечной лексемы
+      listLex += SyntSymb.LexStart
 
       LexAuto.NoErrors
     } catch {
