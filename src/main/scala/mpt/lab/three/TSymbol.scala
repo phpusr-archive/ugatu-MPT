@@ -36,7 +36,7 @@ class TSymbol {
     if (symbType == TSymbKind.SymbSynt) {
       SyntRule.makeSymbolStr(iRuleNum)
     } else {
-      lexem.lexInfo.info.get
+      lexem.value
     }
   }
 
@@ -46,6 +46,9 @@ class TSymbol {
   /** Ссылка на лексему для терминального символа */
   def lexem = symbInfo.lexOne
 
+  /** Дочерние элементы */
+  def children = symbInfo.lexList
+
 }
 
 object TSymbol {
@@ -53,7 +56,7 @@ object TSymbol {
   /** Создание терминального символа по лексеме */
   def createLex(lex: TLexem) = {
     new TSymbol {
-      symbInfo = new TSymbInfo(TSymbKind.SymbLex, lex, null)
+      symbInfo = new TSymbInfo(TSymbKind.SymbLex, lex, List[TSymbol]())
       // Правило не используется пэ 0
       iRuleNum = 0
     }
