@@ -20,13 +20,13 @@ object Types {
  */
 object SyntSymb {
 
-  val RuleLength = ???
+  val RuleLength = ??? //TODO
 
-  val LexStart: LexType = ???
+  val LexStart: LexType = ??? //TODO
 
   /** Сдвиг-свертка */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
-    val lexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0)) //TODO почему stop, а не start
+    val lexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0))
     symbStack.push(lexStop)
 
     val iCnt = listLex.size - 1
@@ -40,7 +40,8 @@ object SyntSymb {
       val lexTCur = symbStack.topLexem.get
       val lexCurFromList = listLex(i)
 
-      if (lexTCur == LexStart && lexCurFromList.lexInfo == LexStart) { //TODO несоответствие типов
+      // Если на вершине стека начальная лексема, а текущая лексема - конечная, то разбор завершен
+      if (lexTCur.lexInfo == LexStart && lexCurFromList.lexInfo == LexStart) {
         break = true
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке
@@ -53,19 +54,18 @@ object SyntSymb {
             i += 1
           case '>' => // Надо выполнить свертку
             if (symbStack.makeTopSymb.isEmpty) {
-              // Если не удалось выполнить свертку //TODO возможно неверный коммент
-              result = TSymbol.createLex(lexCurFromList)
-              break = true
-            } else {
-              // Отношение не установлено - ошибка разбора
+              // Если не удалось выполнить свертку
               result = TSymbol.createLex(lexCurFromList)
               break = true
             }
+          case _ => // Отношение не установлено - ошибка разбора
+            result = TSymbol.createLex(lexCurFromList)
+            break = true
         }
       }
     }
 
-    if (result == null) {
+    if (result == null) { // Если разбор прошел без ошибок
       if (symbStack.count == 2) {
         result = symbStack.getSymbol(1)
       } else {
