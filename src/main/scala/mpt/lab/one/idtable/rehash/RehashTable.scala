@@ -4,6 +4,7 @@ import scala.collection.mutable.ArrayBuffer
 import mpt.lab.one.idtable.{NodeAbstract, IdTableAbstract, IndexType}
 import IndexType.Index
 import scala.annotation.tailrec
+import org.dyndns.phpusr.log.Logger
 
 /**
  * @author phpusr
@@ -28,6 +29,9 @@ class RehashTable(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
   /** Хранилище элементов таблицы */
   private val hashTable = new ArrayBuffer[Node](MaxTableSize)
 
+  /** Логирование */
+  private val logger = Logger(infoEnable = false, debugEnable = false, traceEnable = false)
+
   ///////////////////////////////////////////
 
   init()
@@ -47,7 +51,7 @@ class RehashTable(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
       addRec(idName, idHash)
     } else {
       // Если нет, то выдать сообщение и возвратить None
-      println(">> Table is full") //TODO
+      logger.debug(">> Table is full")
       None
     }
   }
@@ -68,7 +72,7 @@ class RehashTable(MaxTableSize: Index) extends IdTableAbstract(MaxTableSize) {
       Some(node)
     } else if (el.name == idName) {
       // Если в ячейке уже есть данный Id, то выводим оообщение
-      println(">> Already exists!") //TODO
+      logger.debug(">> Already exists!")
       Some(el)
     } else {
       // Иначе запуск этой же функции с другим хэшем
