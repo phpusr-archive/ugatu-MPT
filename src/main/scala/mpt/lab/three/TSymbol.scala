@@ -2,6 +2,7 @@ package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
 import mpt.lab.three.TSymbKind.TSymbKind
+import scala.collection.mutable.ListBuffer
 
 /**
  * @author phpusr
@@ -52,17 +53,17 @@ object TSymbol {
   /** Создание терминального символа по лексеме */
   def createLex(lex: TLexem) = {
     new TSymbol {
-      symbInfo = new TSymbInfo(lex, null, TSymbKind.SymbLex)
+      symbInfo = new TSymbInfo(TSymbKind.SymbLex, lex, null)
       // Правило не используется пэ 0
       iRuleNum = 0
     }
   }
 
   /** Создание нетерминального символа на основе правила и массива символов */
-  def createSymb(iR: Int, iSymbN: Int, symbArr: Array[TSymbol]) = {
+  def createSymb(iR: Int, iSymbN: Int, symbArr: ListBuffer[TSymbol]) = {
     new TSymbol {
       val lexList = symbArr.reverse.toList
-      symbInfo = new TSymbInfo(null, lexList, TSymbKind.SymbSynt)
+      symbInfo = new TSymbInfo(TSymbKind.SymbSynt, null, lexList)
       // Запоминаем номер правила
       iRuleNum = iR
     }
@@ -73,7 +74,7 @@ object TSymbol {
 /**
  * Структура данных для символа грамматики
  */
-case class TSymbInfo(lexOne: TLexem, lexList: List[TSymbol], symbType: TSymbKind)
+case class TSymbInfo(symbType: TSymbKind, lexOne: TLexem, lexList: List[TSymbol])
 
 /**
  * Типы символов: терминальные (лексемы) и нетерминальные
