@@ -77,12 +77,15 @@ object TSymbol {
 case class TSymbInfo(symbType: TSymbKind, lexOne: TLexem, lexList: List[TSymbol])
 
 /**
- * Типы символов: терминальные (лексемы) и нетерминальные
+ * Типы символов
  */
 object TSymbKind extends Enumeration {
   type TSymbKind = Value
 
+  /** Терминальный символ (лексема) */
   val SymbLex = Value
+
+  /** Нетерминальный символ */
   val SymbSynt = Value
 }
 
