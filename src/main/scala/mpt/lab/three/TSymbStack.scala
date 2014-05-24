@@ -14,10 +14,8 @@ import mpt.lab.three.Types.TLexem
  */
 class TSymbStack {
 
-  private val items = ListBuffer[TSymbol]() //TODO возмоно это не список символов
-
-  private val symbols: ListBuffer[TSymbol] = ??? //TODO
-
+  /** Символы */
+  private val items = ListBuffer[TSymbol]()
 
   /** Очистка стека */
   def clear() = items.clear()
@@ -34,8 +32,8 @@ class TSymbStack {
   }
 
   /** Самая верхняя лексема в стеке */
-  def topLexem = {
-    val find = symbols.reverse.find(_.symbType == TSymbKind.SymbLex)
+  def topLexem: Option[TLexem] = {
+    val find = items.reverse.find(_.symbType == TSymbKind.SymbLex)
     if (find.isDefined) {
       Some(find.get.lexem)
     } else None
@@ -45,60 +43,64 @@ class TSymbStack {
   def delete(index: Int) = items.remove(index)
 
   /** Свертка и помещение нового символа на вершину стека */
-  def makeTopSymb = {
-    val symbArr: Array[TSymbol] = ???
-    var iSymbN = 0
+  def makeTopSymb: Option[TSymbol] = {
+
+    /** Массив хранения символов правила */
+    val symbArr = ListBuffer[TSymbol]()
+
+    /** Счетчик символов в стеке */
     var i = 0
 
     /** Строка правила */
-    var sRuleStr = ""
+    var sRuleList = ListBuffer[String]()
 
     /** Текущий символ */
     var symCur: TSymbol = null
 
     val addToRule = (sStr: String, sym: TSymbol) => {
       symCur = sym
-      symbArr(iSymbN) = symbols(i)
-      sRuleStr += sStr
+      symbArr += getSymbol(i)
+      sRuleList += sStr
       delete(i)
-      iSymbN += 1
     }
 
-    i = symbols.size
-    symbols.reverse.foreach { s =>
-      i -= 1
+    i = items.size - 1
+    var break = false
+    while (i >= 0 && !break) {
+      val s = getSymbol(i)
 
       if (s.symbType == TSymbKind.SymbSynt) {
         addToRule(s.symbolStr, symCur)
       } else {
         if (symCur == null) {
-          addToRule(s.lexem.lexInfo.name, s)
+          addToRule(s.lexem.lexInfo.name, s) //TODO возможно тоже стоит вызывать symbolStr
         } else {
-          val rowIndex = s.lexem.lexInfo.name.toInt //TODO
-          val columnIndex = symCur.lexem.lexInfo.name.toInt //TODO
+          val rowIndex = s.lexem.index
+          val columnIndex = symCur.lexem.index
           if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Basis) {
             addToRule(s.lexem.lexInfo.name, s)
           } else {
-            //TODO прерываем цикл
+            break = true
           }
         }
       }
 
-      if (iSymbN > SyntSymb.RuleLength) {
-        //TODO прервать цикл
-      }
+      if (symbArr.size > SyntSymb.RuleLength) break = true
+
+      i -= 1
     }
 
     var symbol: Option[TSymbol] = None
 
     // Если выбран хотя бы один символ из стека
-    if (iSymbN != 0) {
-      val find = SyntRule.GrammRules.find(_ == sRuleStr)
+    if (symbArr.size > 0) {
+      val sRuleStr = sRuleList.mkString("|")
+      val find = SyntRule.GrammRules.find(_.mkString("|") == sRuleStr)
       if (find.isDefined) {
-        symbol = Some(TSymbol.createSymb(i, iSymbN, symbArr))
+        symbol = Some(TSymbol.createSymb(i, symbArr.size, symbArr))
         items += symbol.get
       } else {
-        for (i <- 0 until iSymbN) symbArr(i) = null
+        symbArr.clear()
       }
     }
 
