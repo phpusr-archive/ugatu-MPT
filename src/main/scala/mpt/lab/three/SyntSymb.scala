@@ -1,7 +1,7 @@
 package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
-import mpt.lab.two.lexem.{LexType, Position, LexElem}
+import mpt.lab.two.lexem.{Position, LexElem}
 
 /**
  * @author phpusr
@@ -20,14 +20,15 @@ object Types {
  */
 object SyntSymb {
 
-  val RuleLength = ??? //TODO
+  val RuleLength = 10 //TODO вставить правильное значение
 
-  val LexStart: LexType = ??? //TODO
+  val LexStart = LexElem.createInfo("[start|end]", new Position(0, 0, 0)) //TODO разобраться с названиями
+
+  val LexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0))
 
   /** Сдвиг-свертка */
-  def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {
-    val lexStop = LexElem.createInfo("Начало файла", new Position(0, 0, 0))
-    symbStack.push(lexStop)
+  def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {    
+    symbStack.push(LexStop)
 
     val iCnt = listLex.size - 1
     var result: TSymbol = null
@@ -41,7 +42,7 @@ object SyntSymb {
       val lexCurFromList = listLex(i)
 
       // Если на вершине стека начальная лексема, а текущая лексема - конечная, то разбор завершен
-      if (lexTCur.lexInfo == LexStart && lexCurFromList.lexInfo == LexStart) {
+      if (lexTCur == LexStop && lexCurFromList == LexStart) {
         break = true
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке

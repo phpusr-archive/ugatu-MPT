@@ -49,7 +49,7 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
         case "==" => 8
         case "(" => 9
         case ")" => 10
-        case "\n" => 11 //TODO Начало строки и конец строки
+        case "[start|end]" => 11 //TODO Начало строки и конец строки
       }
     }
   }
