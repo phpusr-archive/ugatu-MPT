@@ -33,7 +33,7 @@ class LexAuto extends ElementAdder {
   var prevState = AutoPos.H
 
   /** Логирование */
-  private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
+  private val logger = Logger(infoEnable = false, debugEnable = false, traceEnable = false)
 
   /** Текущее имя идентификатора */
   private var currentIdName = ""
@@ -98,7 +98,7 @@ class LexAuto extends ElementAdder {
       }
 
       // Добавление конечной лексемы
-      listLex += SyntSymb.LexStart
+      listLex += SyntSymb.LexStart //TODO вынести
 
       LexAuto.NoErrors
     } catch {

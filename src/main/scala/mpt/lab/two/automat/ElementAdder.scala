@@ -17,7 +17,7 @@ import mpt.lab.one.idtable.rehash.RehashTable
 trait ElementAdder {
 
   /** Логирование */
-  private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
+  private val logger = Logger(infoEnable = false, debugEnable = false, traceEnable = false)
 
   /** Таблица найденных лексем */
   protected var lexList: ListBuffer[LexElem] = null
