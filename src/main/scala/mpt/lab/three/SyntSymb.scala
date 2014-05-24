@@ -2,6 +2,7 @@ package mpt.lab.three
 
 import mpt.lab.three.Types.TLexem
 import mpt.lab.two.lexem.{Position, LexElem}
+import org.dyndns.phpusr.log.Logger
 
 /**
  * @author phpusr
@@ -28,6 +29,9 @@ object SyntSymb {
   val Stop = "stop"
   val LexStop = LexElem.createKey(Stop, new Position(0, 0, 0))
 
+  /** Логирование */
+  private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
+
   /**
    * Сдвиг-свертка
    * Результат функции:
@@ -46,7 +50,10 @@ object SyntSymb {
     var i = 0
     while (i <= iCnt && !break) {
       val lexTCur = symbStack.topLexem.get
+      logger.debug("lexTCur: " + lexTCur)
+
       val lexCurFromList = listLex(i)
+      logger.debug("lexCurFromList: " + lexCurFromList)
 
       // Если на вершине стека начальная лексема, а текущая лексема - конечная, то разбор завершен
       if (lexTCur == LexStop && lexCurFromList == LexStart) {
@@ -56,12 +63,14 @@ object SyntSymb {
         var cRule = SyntRule.GrammMatrix(lexTCur.index)(lexCurFromList.index)
         cRule = SyntRule.correctRule(cRule, lexTCur, lexCurFromList.lexInfo, symbStack)
 
+        logger.debug("cRule: " + cRule)
         cRule match {
           case '<' | '=' => // Надо выполнить сдвиг (перенос)
             symbStack.push(lexCurFromList)
             i += 1
           case '>' => // Надо выполнить свертку
             if (symbStack.makeTopSymb.isEmpty) {
+              logger.debug("Unable to perform convolution")
               // Если не удалось выполнить свертку
               result = TSymbol.createLex(lexCurFromList)
               break = true

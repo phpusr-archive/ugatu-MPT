@@ -2,6 +2,7 @@ package mpt.lab.three
 
 import scala.collection.mutable.ListBuffer
 import mpt.lab.three.Types.TLexem
+import org.dyndns.phpusr.log.Logger
 
 /**
  * @author phpusr
@@ -16,6 +17,9 @@ class TSymbStack {
 
   /** Символы */
   private val items = ListBuffer[TSymbol]()
+
+  /** Логирование */
+  private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
 
   /** Очистка стека */
   def clear() = items.clear()
@@ -73,12 +77,12 @@ class TSymbStack {
         addToRule(s.symbolStr, symCur)
       } else {
         if (symCur == null) {
-          addToRule(s.lexem.lexInfo.name, s) //TODO возможно тоже стоит вызывать symbolStr
+          addToRule(s.lexem.value, s) //TODO правильные значения
         } else {
           val rowIndex = s.lexem.index
           val columnIndex = symCur.lexem.index
           if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Basis) {
-            addToRule(s.lexem.lexInfo.name, s)
+            addToRule(s.lexem.value, s) //TODO правильные значения
           } else {
             break = true
           }
@@ -95,6 +99,7 @@ class TSymbStack {
     // Если выбран хотя бы один символ из стека
     if (symbArr.size > 0) {
       val sRuleStr = sRuleList.mkString("|")
+      logger.debug("\tsRule: " + sRuleStr)
       val find = SyntRule.GrammRules.find(_.mkString("|") == sRuleStr)
       if (find.isDefined) {
         symbol = Some(TSymbol.createSymb(i, symbArr.size, symbArr))
