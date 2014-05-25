@@ -99,6 +99,8 @@ object LabTreeForm extends SimpleSwingApplication {
 
   def top = new MainFrame {
     contents = new BorderPanel {
+      title = "Syntax tree builder (Doronin S. PRO-301v)"
+
       // Центральная панель
       layout(new TabbedPane {
         tabbedPane = peer
