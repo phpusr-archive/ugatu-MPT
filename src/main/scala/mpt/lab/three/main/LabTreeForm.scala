@@ -5,7 +5,7 @@ import scala.swing.TabbedPane.Page
 import scala.swing.event.ButtonClicked
 import scala.io.Source
 import mpt.lab.two.automat.LexAuto
-import mpt.lab.two.lexem.{LexControl, LexElem}
+import mpt.lab.two.lexem.{Position, LexControl, LexElem}
 import scala.collection.mutable.ListBuffer
 import java.awt.Font
 import scala.swing.Font
@@ -196,7 +196,8 @@ object LabTreeForm extends SimpleSwingApplication {
   private def processing() {
     // Очистка таблицы
     lexemModel.clear()
-    //TODO очистка дерева
+    val root = TSymbol.createLex(LexElem.createKey("", Position(0, 0, 0)))
+    syntaxTree.model = TreeModel(root)(_.children)
 
     // Разбор текста
     val auto = new LexAuto
@@ -222,8 +223,14 @@ object LabTreeForm extends SimpleSwingApplication {
         syntaxParsingStatusLabel.text = "В ходе синтаксического разбора обнаружена ошибка"
       }
 
+      // Переключение на вкладку с синтаксическим деревом
+      tabbedPane.setSelectedIndex(2)
     } else {
       lexParsingStatusLabel.text = "В ходе лексического разбора обнаружена ошибка"
+      syntaxParsingStatusLabel.text = ""
+
+      // Переключение на вкладку с таблицей лексем
+      tabbedPane.setSelectedIndex(1)
     }
 
     // Добавление лексем в таблицу
@@ -231,8 +238,6 @@ object LabTreeForm extends SimpleSwingApplication {
       case (e, index) => Seq(s"${index+1}", e.lexInfo.name, e.value)
     }.foreach(lexemModel.addRow)
 
-    // Переключение на вкладку с синтаксическим деревом
-    tabbedPane.setSelectedIndex(2)
   }
 
 }
