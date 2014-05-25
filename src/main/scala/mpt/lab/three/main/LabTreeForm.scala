@@ -55,8 +55,10 @@ object LabTreeForm extends SimpleSwingApplication {
   }
   private val lexemModel = lexemTable.model.asInstanceOf[LexTableModel]
 
-  /** Лейбл статуса разбора */
-  private val parsingStatusLabel = new Label
+  /** Лейбл статуса лексического разбора */
+  private val lexParsingStatusLabel = new Label
+  /** Лейбл статуса лексического разбора */
+  private val syntaxParsingStatusLabel = new Label("Test")
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
     preferredSize = new Dimension(200, preferredSize.height)
@@ -152,8 +154,13 @@ object LabTreeForm extends SimpleSwingApplication {
         c.insets = new Insets(5, 5, 5, 5)
 
         c.weightx = 1
-        layout(parsingStatusLabel) = c
+        layout(lexParsingStatusLabel) = c
 
+        c.gridy = 1
+        layout(syntaxParsingStatusLabel) = c
+
+        c.gridy = 0
+        c.gridheight = 2
         c.anchor = GridBagPanel.Anchor.East
         layout(exitButton) = c
       }) = BorderPanel.Position.South
@@ -199,18 +206,24 @@ object LabTreeForm extends SimpleSwingApplication {
 
     // Установка статуса разбора текста
     if (statusOrPos == LexAuto.NoErrors) {
+      lexParsingStatusLabel.text = "Лексический разбор выполнен без ошибок"
 
       // Добавление конечной лексемы
-      lexList += LexControl.LexStop
+      val lexListForSyntax = lexList.toList :+ LexControl.LexStop
 
-      val rootSymbol = SyntSymb.buildSyntList(lexList.toList, new TSymbStack)
-      //TODO добавить обработку ошибки
+      val symbStack = new TSymbStack
+      val rootSymbol = SyntSymb.buildSyntList(lexListForSyntax, symbStack)
       syntaxTree.model = TreeModel(rootSymbol)(_.children)
       syntaxTree.expandAll()
+      
+      if (rootSymbol.lexem == null) {
+        syntaxParsingStatusLabel.text = "Синтаксический разбор выполнен без ошибок"
+      } else {
+        syntaxParsingStatusLabel.text = "В ходе синтаксического разбора обнаружена ошибка"
+      }
 
-      parsingStatusLabel.text = "Разбор выполнен без ошибок"
     } else {
-      parsingStatusLabel.text = "В ходе разбора обнаружена ошибка"
+      lexParsingStatusLabel.text = "В ходе лексического разбора обнаружена ошибка"
     }
 
     // Добавление лексем в таблицу

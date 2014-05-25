@@ -116,4 +116,6 @@ class TSymbStack {
   /** Кол-во элементов в стеке */
   def count = items.size
 
+  override def toString = items.map(_.symbolStr).mkString(" | ")
+
 }

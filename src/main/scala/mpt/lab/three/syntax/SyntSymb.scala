@@ -1,6 +1,6 @@
 package mpt.lab.three.syntax
 
-import mpt.lab.two.lexem.{LexControl, LexElem}
+import mpt.lab.two.lexem.{Position, LexControl, LexElem}
 import org.dyndns.phpusr.log.Logger
 import mpt.lab.three.syntax.Types.TLexem
 import mpt.lab.three.symbol.{TSymbol, TSymbStack}
@@ -26,10 +26,10 @@ object SyntSymb {
   private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
 
   /**
-   * Сдвиг-свертка
-   * Результат функции:
-   * - нетерминальный символ (корень синтаксического дерева), если разбор был выполнен успешно
-   * - терминальный символ, ссылающийся на лексему, где была обнаружена ошибка, если разбор выполнен с ошибками
+   * Сдвиг-свертка <br/>
+   * Результат функции: <br/>
+   * - нетерминальный символ (корень синтаксического дерева), если разбор был выполнен успешно <br/>
+   * - терминальный символ, ссылающийся на лексему, где была обнаружена ошибка, если разбор выполнен с ошибками <br/>
    */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {    
     symbStack.push(LexControl.LexStart)
@@ -75,12 +75,19 @@ object SyntSymb {
       }
     }
 
-    if (result == null) { // Если разбор прошел без ошибок
+    if (result == null) {
+      // Если разбор прошел без ошибок
       if (symbStack.count == 2) {
         result = symbStack.getSymbol(1)
       } else {
         result = TSymbol.createLex(listLex(iCnt))
       }
+    } else {
+      // Добавление иформации об ошибке
+      val posLex = LexElem.createInfo("Position", result.lexem.pos)
+      val stackStr = s"Stack: ${symbStack.toString}"
+      val stackLex = LexElem.createKey(stackStr, new Position(0, 0, 0))
+      result.children = List(posLex, stackLex).map(TSymbol.createLex)
     }
 
     result

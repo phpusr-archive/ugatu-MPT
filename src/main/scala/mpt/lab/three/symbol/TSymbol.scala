@@ -50,6 +50,9 @@ class TSymbol {
   /** Дочерние элементы */
   def children = symbInfo.lexList
 
+  /** Добавление дочерних элементов */
+  def children_=(childrenList: List[TSymbol]) = symbInfo.lexList = childrenList
+
 }
 
 object TSymbol {
@@ -78,7 +81,7 @@ object TSymbol {
 /**
  * Структура данных для символа грамматики
  */
-case class TSymbInfo(symbType: TSymbKind, lexOne: TLexem, lexList: List[TSymbol])
+case class TSymbInfo(symbType: TSymbKind, lexOne: TLexem, var lexList: List[TSymbol])
 
 /**
  * Типы символов
