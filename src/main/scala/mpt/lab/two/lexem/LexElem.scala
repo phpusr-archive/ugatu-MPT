@@ -37,8 +37,11 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
 
   /** Значение лексемы с заменой переменных и констант */
   def valueWithReplace = {
-    if (lexInfo.name == LexType.Var || lexInfo.name == LexType.Const) SyntRule.E
-    else value
+    lexInfo.name match {
+      case LexType.Var => SyntRule.A
+      case LexType.Const => SyntRule.E
+      case _ => value
+    }
   }
 
   /** Индекс для получения значения в матрице операторного предшествования */
@@ -48,7 +51,7 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
       case "if" => 1
       case "then" => 2
       case "else" => 3
-      case SyntRule.E => 4
+      case SyntRule.E | SyntRule.A => 4
       case ":=" => 5
       case "<" => 6
       case ">" => 7
