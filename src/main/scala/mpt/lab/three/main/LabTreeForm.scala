@@ -5,7 +5,7 @@ import scala.swing.TabbedPane.Page
 import scala.swing.event.ButtonClicked
 import scala.io.Source
 import mpt.lab.two.automat.LexAuto
-import mpt.lab.two.lexem.LexElem
+import mpt.lab.two.lexem.{LexControl, LexElem}
 import scala.collection.mutable.ListBuffer
 import java.awt.Font
 import scala.swing.Font
@@ -198,14 +198,20 @@ object LabTreeForm extends SimpleSwingApplication {
     val statusOrPos = auto.makeLexList(lines, lexList)
 
     // Установка статуса разбора текста
-    parsingStatusLabel.text = if (statusOrPos == LexAuto.NoErrors) {
+    if (statusOrPos == LexAuto.NoErrors) {
+
+      // Добавление конечной лексемы
+      lexList += LexControl.LexStop
+
       val rootSymbol = SyntSymb.buildSyntList(lexList.toList, new TSymbStack)
       //TODO добавить обработку ошибки
       syntaxTree.model = TreeModel(rootSymbol)(_.children)
       syntaxTree.expandAll()
 
-      "Разбор выполнен без ошибок"
-    } else "В ходе разбора обнаружена ошибка"
+      parsingStatusLabel.text = "Разбор выполнен без ошибок"
+    } else {
+      parsingStatusLabel.text = "В ходе разбора обнаружена ошибка"
+    }
 
     // Добавление лексем в таблицу
     lexList.zipWithIndex.map {
