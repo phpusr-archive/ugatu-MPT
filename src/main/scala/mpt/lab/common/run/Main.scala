@@ -1,7 +1,7 @@
 package mpt.lab.common.run
 
 import javax.swing.{JFrame, UIManager}
-import mpt.lab.two.form.main.LabTwoForm
+import mpt.lab.three.main.LabTreeForm
 
 
 /**
@@ -26,5 +26,5 @@ object Main extends App {
   JFrame.setDefaultLookAndFeelDecorated(true)
 
   // Создание и запуск главной формы
-  LabTwoForm.main(args)
+  LabTreeForm.main(args)
 }
