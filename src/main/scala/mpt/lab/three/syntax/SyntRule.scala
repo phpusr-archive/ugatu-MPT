@@ -44,6 +44,9 @@ object SyntRule {
   val E = "E"
   val A = "A"
 
+  /** Максимальная длина правила */
+  val RuleLength = 6
+
   /** Правила грамматики */
   val GrammRules: Array[Array[String]] = Array(
     Array(E, ";"), // 1

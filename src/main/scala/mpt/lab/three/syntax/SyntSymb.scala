@@ -22,8 +22,6 @@ object Types {
  */
 object SyntSymb {
 
-  val RuleLength = 10 //TODO вставить правильное значение
-
   /** Логирование */
   private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
 

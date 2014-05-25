@@ -1,7 +1,7 @@
 package mpt.lab.three.symbol
 
 import scala.collection.mutable.ListBuffer
-import mpt.lab.three.syntax.{SyntSymb, SyntRule, Types}
+import mpt.lab.three.syntax.{SyntRule, Types}
 import Types.TLexem
 import org.dyndns.phpusr.log.Logger
 
@@ -56,7 +56,7 @@ class TSymbStack {
     /** Счетчик символов в стеке */
     var i = 0
 
-    /** Строка правила */
+    /** Список элементов правила */
     var sRuleList = ListBuffer[String]()
 
     /** Текущий символ */
@@ -90,7 +90,7 @@ class TSymbStack {
         }
       }
 
-      if (symbArr.size > SyntSymb.RuleLength) break = true
+      if (symbArr.size > SyntRule.RuleLength) break = true
 
       i -= 1
     }
