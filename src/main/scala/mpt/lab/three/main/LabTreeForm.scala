@@ -147,7 +147,7 @@ object LabTreeForm extends SimpleSwingApplication {
           c.weightx = 1
           c.weighty = 1
           c.fill = GridBagPanel.Fill.Both
-          layout(syntaxTree) = c
+          layout(defaultScrollPane(syntaxTree)) = c
         }, NameTabSyntaxTree)
 
       }) = BorderPanel.Position.Center
