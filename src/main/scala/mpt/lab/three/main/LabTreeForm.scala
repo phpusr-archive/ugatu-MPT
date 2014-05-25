@@ -58,7 +58,7 @@ object LabTreeForm extends SimpleSwingApplication {
   /** Лейбл статуса лексического разбора */
   private val lexParsingStatusLabel = new Label
   /** Лейбл статуса лексического разбора */
-  private val syntaxParsingStatusLabel = new Label("Test")
+  private val syntaxParsingStatusLabel = new Label
   /** Кнопка выхода */
   private val exitButton = new Button("Exit") {
     preferredSize = new Dimension(200, preferredSize.height)
