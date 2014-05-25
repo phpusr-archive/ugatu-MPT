@@ -78,12 +78,12 @@ class TSymbStack {
         addToRule(s.symbolStr, symCur)
       } else {
         if (symCur == null) {
-          addToRule(s.lexem.valueWithReplace, s) //TODO правильные значения
+          addToRule(s.lexem.valueWithReplace, s)
         } else {
           val rowIndex = s.lexem.index
           val columnIndex = symCur.lexem.index
           if (SyntRule.GrammMatrix(rowIndex)(columnIndex) == SyntRule.Basis) {
-            addToRule(s.lexem.valueWithReplace, s) //TODO правильные значения
+            addToRule(s.lexem.valueWithReplace, s)
           } else {
             break = true
           }
