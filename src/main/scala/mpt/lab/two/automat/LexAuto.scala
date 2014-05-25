@@ -1,10 +1,9 @@
 package mpt.lab.two.automat
 
 import scala.collection.mutable.ListBuffer
-import mpt.lab.two.lexem.{LexOperators, LexElem}
+import mpt.lab.two.lexem.{LexControl, LexOperators, LexElem}
 import org.dyndns.phpusr.log.Logger
 import mpt.lab.two.automat.StringMatcher._
-import mpt.lab.three.syntax.SyntSymb
 
 /**
  * @author phpusr
@@ -98,7 +97,7 @@ class LexAuto extends ElementAdder {
       }
 
       // Добавление конечной лексемы
-      listLex += SyntSymb.LexStart //TODO вынести
+      listLex += LexControl.LexStop //TODO вынести
 
       LexAuto.NoErrors
     } catch {

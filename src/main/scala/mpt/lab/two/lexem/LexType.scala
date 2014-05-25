@@ -78,3 +78,16 @@ object LexOperators {
   }
 
 }
+
+/**
+ * Управляющие лексемы
+ */
+object LexControl {
+
+  val Stop = "start"
+  val LexStop = LexElem.createKey(Stop, new Position(0, 0, 0))
+
+  val Start = "stop"
+  val LexStart = LexElem.createKey(Start, new Position(0, 0, 0))
+
+}

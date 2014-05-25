@@ -1,6 +1,6 @@
 package mpt.lab.three.syntax
 
-import mpt.lab.two.lexem.{Position, LexElem}
+import mpt.lab.two.lexem.{LexControl, LexElem}
 import org.dyndns.phpusr.log.Logger
 import mpt.lab.three.syntax.Types.TLexem
 import mpt.lab.three.symbol.{TSymbol, TSymbStack}
@@ -24,12 +24,6 @@ object SyntSymb {
 
   val RuleLength = 10 //TODO вставить правильное значение
 
-  val Start = "start"
-  val LexStart = LexElem.createKey(Start, new Position(0, 0, 0)) //TODO разобраться с названиями
-
-  val Stop = "stop"
-  val LexStop = LexElem.createKey(Stop, new Position(0, 0, 0))
-
   /** Логирование */
   private val logger = Logger(infoEnable = true, debugEnable = true, traceEnable = true)
 
@@ -40,7 +34,7 @@ object SyntSymb {
    * - терминальный символ, ссылающийся на лексему, где была обнаружена ошибка, если разбор выполнен с ошибками
    */
   def buildSyntList(listLex: List[TLexem], symbStack: TSymbStack): TSymbol = {    
-    symbStack.push(LexStop)
+    symbStack.push(LexControl.LexStart)
 
     val iCnt = listLex.size - 1
     var result: TSymbol = null
@@ -57,7 +51,7 @@ object SyntSymb {
       logger.debug("lexCurFromList: " + lexCurFromList)
 
       // Если на вершине стека начальная лексема, а текущая лексема - конечная, то разбор завершен
-      if (lexTCur == LexStop && lexCurFromList == LexStart) {
+      if (lexTCur == LexControl.LexStart && lexCurFromList == LexControl.LexStop) {
         break = true
       } else {
         // Смотрим отношение лексемы на вершине стека и текущей лексемы в строке

@@ -1,7 +1,7 @@
 package mpt.lab.two.lexem
 
 import mpt.lab.one.idtable.NodeAbstract
-import mpt.lab.three.syntax.{SyntSymb, SyntRule}
+import mpt.lab.three.syntax.SyntRule
 
 /**
  * @author phpusr
@@ -58,8 +58,7 @@ case class LexElem(lexInfo: LexType, varInfo: Option[NodeAbstract], constVal: Op
       case "==" => 8
       case "(" => 9
       case ")" => 10
-      case SyntSymb.Start => 11 //TODO Начало строки и конец строки
-      case SyntSymb.Stop => 11
+      case LexControl.Start | LexControl.Stop => 11
     }
   }
 }
