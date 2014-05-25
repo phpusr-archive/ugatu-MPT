@@ -48,7 +48,7 @@ object SyntRule {
   val RuleLength = 6
 
   /** Правила грамматики */
-  val GrammRules: Array[Array[String]] = Array(
+  val _GrammRules: Array[Array[String]] = Array(
     Array(E, ";"), // 1
     Array("if", E, "then", E, "else", E), // 2
     Array("if", E, "then", E), // 3
@@ -63,6 +63,9 @@ object SyntRule {
     Array(A), // 12
     Array("(", E, ")") // 13
   )
+
+  /** Правила грамматики */
+  val GrammRules: Array[String] = _GrammRules.map(_.mkString("|"))
 
   /** Корректировка отношения */
   def correctRule(cRule: Char, lexTCur: TLexem, lex: LexType, symbStack: TSymbStack): Char = cRule

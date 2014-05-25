@@ -14,7 +14,7 @@ import javax.swing.JTabbedPane
 import mpt.lab.two.form.main.LexTableModel
 import scalaswingcontrib.tree.{TreeModel, Tree}
 import mpt.lab.three.syntax.SyntSymb
-import mpt.lab.three.symbol.{TSymbStack, TSymbol}
+import mpt.lab.three.symbol.{TSymbKind, TSymbStack, TSymbol}
 
 /**
  * @author phpusr
@@ -69,7 +69,11 @@ object LabTreeForm extends SimpleSwingApplication {
 
   /** Синтаксическое дерево */
   val syntaxTree = new Tree[TSymbol] {
-    renderer = Tree.Renderer(_.symbolStr)
+    renderer = Tree.Renderer {e =>
+      // Если нетерминальный символ, отобразить помимо символа № правила свертки
+      if (e.symbType == TSymbKind.SymbSynt) s"${e.symbolStr} (${e.ruleNum})"
+      else e.symbolStr
+    }
   }
 
   //////////////////////////////////////////////////////////////

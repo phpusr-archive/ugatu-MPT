@@ -101,9 +101,9 @@ class TSymbStack {
     if (symbArr.size > 0) {
       val sRuleStr = sRuleList.reverse.mkString("|")
       logger.debug("\tsRule: " + sRuleStr)
-      val find = SyntRule.GrammRules.find(_.mkString("|") == sRuleStr)
-      if (find.isDefined) {
-        symbol = Some(TSymbol.createSymb(i, symbArr.size, symbArr)) //TODO вместо i д.б. № правила замены
+      val ruleIndex = SyntRule.GrammRules.indexOf(sRuleStr)
+      if (ruleIndex != -1) {
+        symbol = Some(TSymbol.createSymb(ruleIndex+1, symbArr.size, symbArr))
         items += symbol.get
       } else {
         symbArr.clear()

@@ -26,6 +26,9 @@ class TSymbol {
    */
   private var iRuleNum: Int = 0
 
+  /** Номер правила, которым создан символ */
+  def ruleNum = iRuleNum
+
   /** Получение символа из правила по номеру символа */
   def getItem(symbolIndex: Int): TSymbol = symbInfo.lexList(symbolIndex)
 
